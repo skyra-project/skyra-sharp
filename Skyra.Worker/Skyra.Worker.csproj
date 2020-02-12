@@ -6,4 +6,8 @@
         <RootNamespace>Skyra</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Skyra.Framework\Skyra.Framework.csproj" />
+    </ItemGroup>
+
 </Project>

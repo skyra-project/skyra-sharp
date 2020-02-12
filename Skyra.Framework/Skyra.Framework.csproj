@@ -1,8 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Spectacles.NET.Broker" Version="0.6.0" />
+      <PackageReference Include="Spectacles.NET.Rest" Version="0.10.2" />
+      <PackageReference Include="Spectacles.NET.Types" Version="0.9.5" />
+      <PackageReference Include="Spectacles.NET.Util" Version="0.3.0" />
+    </ItemGroup>
 
 </Project>

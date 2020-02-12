@@ -4,7 +4,7 @@ namespace Skyra.Framework.Structures
 {
 	public abstract class Event : Piece
 	{
-		public Client Client;
+		public readonly Client Client;
 
 		protected Event(Client client, EventOptions options)
 		{

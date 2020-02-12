@@ -14,7 +14,8 @@ namespace Skyra.Events
 
 		private static void Run(object sender, OnReadyArgs args)
 		{
-			Console.WriteLine($"Skyra VI ready! [{args.Data.User.Username}#{args.Data.User.Discriminator}] [{args.Data.Guilds.Length} [G]]");
+			Console.WriteLine(
+				$"Skyra VI ready! [{args.Data.User.Username}#{args.Data.User.Discriminator}] [{args.Data.Guilds.Length} [G]]");
 		}
 	}
 }

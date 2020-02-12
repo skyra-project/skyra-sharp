@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Skyra.Framework;
 using Skyra.Framework.Models.Gateway;
 using Skyra.Framework.Structures;
@@ -12,9 +14,15 @@ namespace Skyra.Events
 			client.OnMessageCreate += Run;
 		}
 
-		private static void Run(object sender, OnMessageCreateArgs args)
+		private void Run(object sender, OnMessageCreateArgs args)
 		{
-			Console.WriteLine($"Received Message [{args.Data.Id}] from {args.Data.Author.Username}.");
+			Task.Run(async () =>
+			{
+				foreach (var monitor in Client.Monitors.Values.Where(monitor => monitor.ShouldRun(args.Data)))
+				{
+					if (!await monitor.Run(args.Data)) break;
+				}
+			});
 		}
 	}
 }

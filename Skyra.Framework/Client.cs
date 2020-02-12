@@ -20,6 +20,7 @@ namespace Skyra.Framework
 		public event EventHandler<OnMessageCreateArgs> OnMessageCreate;
 
 		public readonly Store<Event> Events = new Store<Event>();
+		public readonly Store<Monitor> Monitors = new Store<Monitor>();
 
 		public Client(string brokerName, Uri brokerUri)
 		{
@@ -123,7 +124,8 @@ namespace Skyra.Framework
 				case GatewayEvent.INVITE_DELETE:
 					break;
 				case GatewayEvent.MESSAGE_CREATE:
-					OnMessageCreate?.Invoke(this, new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
+					OnMessageCreate?.Invoke(this,
+						new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
 					break;
 				case GatewayEvent.MESSAGE_UPDATE:
 					break;

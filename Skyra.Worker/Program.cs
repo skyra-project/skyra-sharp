@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Skyra.Events;
 using Skyra.Framework;
+using Skyra.Monitors;
 
 namespace Skyra
 {
@@ -29,6 +30,10 @@ namespace Skyra
 			client.Events
 				.Insert(new EventMessage(client))
 				.Insert(new EventReady(client));
+
+			client.Monitors
+				.Insert(new CommandHandler(client))
+				.Insert(new SocialCounter(client));
 		}
 	}
 }

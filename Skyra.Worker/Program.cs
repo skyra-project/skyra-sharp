@@ -4,7 +4,7 @@ using Skyra.Framework;
 
 namespace Skyra
 {
-	public class Program
+	public static class Program
 	{
 		public static void Main()
 			=> Start().GetAwaiter().GetResult();

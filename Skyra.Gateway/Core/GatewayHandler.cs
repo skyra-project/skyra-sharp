@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
 using Spectacles.NET.Types;
@@ -11,6 +12,7 @@ using Spectacles.NET.Gateway.Event;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Util.Logging;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Skyra.Gateway.Core
 {
@@ -44,16 +46,16 @@ namespace Skyra.Gateway.Core
 			_gatewayCluster.Error += OnError;
 			_gatewayCluster.Dispatch += (_, args) => Task.Run(() =>
 				_broker.PublishAsync(Enum.GetName(typeof(GatewayEvent), args.Event),
-					Encoding.UTF8.GetBytes(JsonSerializer.Serialize(args.Data,
-						new JsonSerializerOptions {IgnoreNullValues = true}))));
+					Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(args.Data, Formatting.None,
+						new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}))));
 
 			_broker.Receive += BrokerOnReceive;
 		}
 
 		public async Task ConnectAsync()
 		{
-			await _gatewayCluster.ConnectAsync();
 			await _broker.ConnectAsync(_brokerUri);
+			await _gatewayCluster.ConnectAsync();
 
 			await Task.WhenAll(_gatewayCluster.Shards.Values.Select(s => _broker.SubscribeAsync($"{s.Id}")));
 

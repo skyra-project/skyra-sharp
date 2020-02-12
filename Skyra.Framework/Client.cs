@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Skyra.Framework.Models.Gateway;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Broker.Amqp.EventArgs;
@@ -23,7 +23,6 @@ namespace Skyra.Framework
 			_broker = new AmqpBroker(brokerName);
 			_broker.Receive += (sender, args) =>
 			{
-				Console.WriteLine($"Received {args.Event}");
 				HandleEvent((GatewayEvent) Enum.Parse(typeof(GatewayEvent), args.Event), args);
 				_broker.Ack(args.Event, args.DeliveryTag);
 			};
@@ -76,7 +75,7 @@ namespace Skyra.Framework
 			switch (@event)
 			{
 				case GatewayEvent.READY:
-					OnReady?.Invoke(this, new OnReadyArgs(JsonSerializer.Deserialize<ReadyDispatch>(data)));
+					OnReady?.Invoke(this, new OnReadyArgs(JsonConvert.DeserializeObject<ReadyDispatch>(data)));
 					break;
 				case GatewayEvent.RESUMED:
 					break;
@@ -121,7 +120,7 @@ namespace Skyra.Framework
 				case GatewayEvent.INVITE_DELETE:
 					break;
 				case GatewayEvent.MESSAGE_CREATE:
-					OnMessageCreate?.Invoke(this, new OnMessageCreateArgs(JsonSerializer.Deserialize<Message>(data)));
+					OnMessageCreate?.Invoke(this, new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
 					break;
 				case GatewayEvent.MESSAGE_UPDATE:
 					break;

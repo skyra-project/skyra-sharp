@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Skyra.Events;
 using Skyra.Framework;
 
 namespace Skyra
@@ -18,9 +19,16 @@ namespace Skyra
 				throw new SystemException("Missing core arguments");
 
 			var client = new Client(brokerName, new Uri(brokerUrl));
-			client.OnReady += (_, args) => { Console.WriteLine("Got ready!"); };
-			client.OnMessageCreate += (_, args) => { Console.WriteLine($"Got Message! {args.Data.Id} Content: {args.Data.Content}"); };
+
+			PopulateCache(client);
 			await client.ConnectAsync();
+		}
+
+		private static void PopulateCache(Client client)
+		{
+			client.Events
+				.Insert(new EventMessage(client))
+				.Insert(new EventReady(client));
 		}
 	}
 }

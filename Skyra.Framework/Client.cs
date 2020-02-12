@@ -3,6 +3,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Skyra.Framework.Models.Gateway;
+using Skyra.Framework.Structures;
+using Skyra.Framework.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
@@ -16,6 +18,8 @@ namespace Skyra.Framework
 
 		public event EventHandler<OnReadyArgs> OnReady;
 		public event EventHandler<OnMessageCreateArgs> OnMessageCreate;
+
+		public readonly Store<Event> Events = new Store<Event>();
 
 		public Client(string brokerName, Uri brokerUri)
 		{
@@ -60,7 +64,6 @@ namespace Skyra.Framework
 				"MESSAGE_REACTION_ADD",
 				"MESSAGE_REACTION_REMOVE",
 				"MESSAGE_REACTION_REMOVE_ALL",
-				"PRESENCE_UPDATE",
 				"TYPING_START",
 				"USER_UPDATE",
 				"VOICE_STATE_UPDATE",

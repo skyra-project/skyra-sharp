@@ -1,0 +1,11 @@
+# Ignore a blackhole and the folder for development
+.vs/
+.idea/
+*.iml
+
+# Ignore build artifacts
+**/obj/
+**/bin/
+
+# Ignore log files
+*.log

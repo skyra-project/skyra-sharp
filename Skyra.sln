@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Worker", "Skyra.Worker\Skyra.Worker.csproj", "{592BD9FB-B9F4-4D33-B344-3D17D48736CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Gateway", "Skyra.Gateway\Skyra.Gateway.csproj", "{0D869F1E-8CD0-4E21-A722-4C04798A24AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Framework", "Skyra.Framework\Skyra.Framework.csproj", "{3D57BE98-9E6D-427F-A597-4AAE2A53302A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{592BD9FB-B9F4-4D33-B344-3D17D48736CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592BD9FB-B9F4-4D33-B344-3D17D48736CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592BD9FB-B9F4-4D33-B344-3D17D48736CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592BD9FB-B9F4-4D33-B344-3D17D48736CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D869F1E-8CD0-4E21-A722-4C04798A24AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D869F1E-8CD0-4E21-A722-4C04798A24AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D869F1E-8CD0-4E21-A722-4C04798A24AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D869F1E-8CD0-4E21-A722-4C04798A24AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D57BE98-9E6D-427F-A597-4AAE2A53302A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D57BE98-9E6D-427F-A597-4AAE2A53302A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D57BE98-9E6D-427F-A597-4AAE2A53302A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D57BE98-9E6D-427F-A597-4AAE2A53302A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -10,13 +10,14 @@ namespace Skyra.Gateway
 	{
 		public static async Task Main()
 		{
-			var token = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
-			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME");
-			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL");
+			var token = Environment.GetEnvironmentVariable("DISCORD_TOKEN")
+			            ?? throw new ArgumentNullException("DISCORD_TOKEN"); // TODO: replace these with EnvironmentVariableNullException
+			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME")
+			                 ?? throw new ArgumentNullException("BROKER_NAME");
+			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL")
+			                ?? throw new ArgumentNullException("BROKER_URL");
 			var shardCount = Environment.GetEnvironmentVariable("DISCORD_SHARD_COUNT") ?? "";
 
-			if (token == null || brokerName == null || brokerUrl == null)
-				throw new SystemException("Missing core arguments");
 
 			var identifyOptions = new IdentifyOptions
 			{

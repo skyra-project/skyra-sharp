@@ -3,7 +3,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Models.Gateway
 {
-	public class OnReadyArgs : EventArgs
+	public struct OnReadyArgs
 	{
 		public readonly ReadyDispatch Data;
 

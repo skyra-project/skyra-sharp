@@ -12,9 +12,4 @@ namespace Skyra.Structures
 			Name = options.Name;
 		}
 	}
-
-	public struct EventOptions
-	{
-		public string Name;
-	}
 }

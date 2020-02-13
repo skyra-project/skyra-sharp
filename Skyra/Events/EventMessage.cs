@@ -7,12 +7,12 @@ namespace Skyra.Events
 {
 	public class EventMessage : Event
 	{
-		public EventMessage(Client client) : base(client, new EventOptions {Name = "EventMessage"})
+		public EventMessage(Client client) : base(client, new EventOptions(nameof(EventMessage)))
 		{
 			client.OnMessageCreate += Run;
 		}
 
-		private void Run(object sender, OnMessageCreateArgs args)
+		private void Run(OnMessageCreateArgs args)
 		{
 			Task.Run(async () =>
 			{

@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Skyra.Events;
-using Skyra.Framework;
 using Skyra.Monitors;
 
 namespace Skyra
 {
 	public static class Program
 	{
-		public static void Main()
-			=> Start().GetAwaiter().GetResult();
-
-		private static async Task Start()
+		public static async Task Main()
 		{
-			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME");
-			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL");
-
-			if (brokerName == null || brokerUrl == null)
-				throw new SystemException("Missing core arguments");
+			await StartAsync();
+		}
+		private static async Task StartAsync()
+		{
+			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME")
+			                 ?? throw new ArgumentNullException("BROKER_NAME");
+			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL")
+			                ?? throw new ArgumentNullException("BROKER_URL");
 
 			var client = new Client(brokerName, new Uri(brokerUrl));
 

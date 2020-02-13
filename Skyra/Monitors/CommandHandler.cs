@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using Skyra.Framework;
-using Skyra.Framework.Structures;
+﻿using System.Threading.Tasks;
+using RabbitMQ.Client.Impl;
+using Skyra.Structures;
 using Spectacles.NET.Types;
 
 namespace Skyra.Monitors
@@ -9,7 +8,7 @@ namespace Skyra.Monitors
 	public class CommandHandler : Monitor
 	{
 		public CommandHandler(Client client) : base(client,
-			new MonitorOptions {Name = "CommandHandler", IgnoreOthers = false, IgnoreEdits = false})
+			new MonitorOptions(nameof(CommandHandler), ignoreOthers: false, ignoreSelf: false))
 		{
 		}
 

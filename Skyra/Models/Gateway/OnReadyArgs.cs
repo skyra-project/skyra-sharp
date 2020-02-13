@@ -1,9 +1,9 @@
 ﻿using System;
 using Spectacles.NET.Types;
 
-namespace Skyra.Framework.Models.Gateway
+namespace Skyra.Models.Gateway
 {
-	public class OnReadyArgs : EventArgs
+	public struct OnReadyArgs
 	{
 		public readonly ReadyDispatch Data;
 

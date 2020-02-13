@@ -1,4 +1,4 @@
-﻿namespace Skyra.Framework.Structures.Base
+﻿namespace Skyra.Structures.Base
 {
 	public abstract class Piece
 	{

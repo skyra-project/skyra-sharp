@@ -1,6 +1,6 @@
-﻿using Skyra.Framework.Structures.Base;
+﻿using Skyra.Structures.Base;
 
-namespace Skyra.Framework.Structures
+namespace Skyra.Structures
 {
 	public abstract class Event : Piece
 	{
@@ -11,10 +11,5 @@ namespace Skyra.Framework.Structures
 			Client = client;
 			Name = options.Name;
 		}
-	}
-
-	public struct EventOptions
-	{
-		public string Name;
 	}
 }

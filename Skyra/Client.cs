@@ -2,22 +2,22 @@
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Skyra.Framework.Models.Gateway;
-using Skyra.Framework.Structures;
-using Skyra.Framework.Structures.Base;
+using Skyra.Models.Gateway;
+using Skyra.Structures;
+using Skyra.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
-namespace Skyra.Framework
+namespace Skyra
 {
 	public class Client
 	{
 		private readonly Uri _brokerUri;
 		private readonly AmqpBroker _broker;
 
-		public event EventHandler<OnReadyArgs> OnReady;
-		public event EventHandler<OnMessageCreateArgs> OnMessageCreate;
+		public Action<OnReadyArgs> OnReady;
+		public event Action<OnMessageCreateArgs> OnMessageCreate;
 
 		public readonly Store<Event> Events = new Store<Event>();
 		public readonly Store<Monitor> Monitors = new Store<Monitor>();
@@ -79,7 +79,7 @@ namespace Skyra.Framework
 			switch (@event)
 			{
 				case GatewayEvent.READY:
-					OnReady?.Invoke(this, new OnReadyArgs(JsonConvert.DeserializeObject<ReadyDispatch>(data)));
+					OnReady(new OnReadyArgs(JsonConvert.DeserializeObject<ReadyDispatch>(data)));
 					break;
 				case GatewayEvent.RESUMED:
 					break;
@@ -124,8 +124,7 @@ namespace Skyra.Framework
 				case GatewayEvent.INVITE_DELETE:
 					break;
 				case GatewayEvent.MESSAGE_CREATE:
-					OnMessageCreate?.Invoke(this,
-						new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
+					OnMessageCreate(new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
 					break;
 				case GatewayEvent.MESSAGE_UPDATE:
 					break;

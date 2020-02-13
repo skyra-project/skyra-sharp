@@ -1,20 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Skyra.Framework;
-using Skyra.Framework.Models.Gateway;
-using Skyra.Framework.Structures;
+using Skyra.Models.Gateway;
+using Skyra.Structures;
 
 namespace Skyra.Events
 {
 	public class EventMessage : Event
 	{
-		public EventMessage(Client client) : base(client, new EventOptions {Name = "EventMessage"})
+		public EventMessage(Client client) : base(client, new EventOptions(nameof(EventMessage)))
 		{
 			client.OnMessageCreate += Run;
 		}
 
-		private void Run(object sender, OnMessageCreateArgs args)
+		private void Run(OnMessageCreateArgs args)
 		{
 			Task.Run(async () =>
 			{

@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    env_file:
+      - ./rabbitmq/.env
+  redis:
+    build: ./redis
+    image: skyrabot/redis:latest
+  postgres:
+    image: postgres
+    env_file:
+      - ./postgres/.env
+  lavalink:
+    build: ./lavalink
+    image: skyrabot/lavalink:latest
+  pokedex:
+    image: favware/graphql-pokemon:latest

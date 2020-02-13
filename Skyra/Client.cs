@@ -18,8 +18,8 @@ namespace Skyra
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
 
-		public readonly Store<Event> Events = new Store<Event>();
-		public readonly Store<Monitor> Monitors = new Store<Monitor>();
+		public Store<Event> Events { get; } = new Store<Event>();
+		public MonitorStore Monitors { get; } = new MonitorStore();
 
 		public Client(ClientOptions clientOptions)
 		{

@@ -29,7 +29,8 @@ namespace Skyra
 		private static void PopulateCache(Client client)
 		{
 			client.Events
-				.Insert(new EventMessage(client))
+				.Insert(new EventMessageCreate(client))
+				.Insert(new EventMessageEdit(client))
 				.Insert(new EventReady(client));
 
 			client.Monitors

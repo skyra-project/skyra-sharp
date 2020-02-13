@@ -1,7 +1,8 @@
 # Ignore a blackhole and the folder for development
 .vs/
-.idea/
+.idea
 *.iml
+*.DotSettings.user
 
 # Ignore build artifacts
 **/obj/

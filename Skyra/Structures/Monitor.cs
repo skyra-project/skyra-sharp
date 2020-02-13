@@ -39,27 +39,4 @@ namespace Skyra.Structures
 			       && !(_ignoreEdits && message.EditedTimestamp != null);
 		}
 	}
-
-	public struct MonitorOptions
-	{
-		public string Name;
-		public MessageType[] AllowedTypes;
-		public bool IgnoreBots;
-		public bool IgnoreSelf;
-		public bool IgnoreOthers;
-		public bool IgnoreWebhooks;
-		public bool IgnoreEdits;
-
-		public MonitorOptions(string name, MessageType[] allowedTypes = null, bool ignoreBots = true,
-			bool ignoreSelf = true, bool ignoreOthers = true, bool ignoreWebhooks = true, bool ignoreEdits = true)
-		{
-			Name = name;
-			AllowedTypes = allowedTypes ?? new[] {MessageType.DEFAULT};
-			IgnoreBots = ignoreBots;
-			IgnoreSelf = ignoreSelf;
-			IgnoreOthers = ignoreOthers;
-			IgnoreWebhooks = ignoreWebhooks;
-			IgnoreEdits = ignoreEdits;
-		}
-	}
 }

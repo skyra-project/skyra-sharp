@@ -1,4 +1,3 @@
-﻿using System;
 using Spectacles.NET.Types;
 
 namespace Skyra.Models.Gateway

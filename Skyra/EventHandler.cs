@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Newtonsoft.Json;
 using Skyra.Models.Gateway;
+using Skyra.Models.Gateway.Base;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
@@ -10,9 +11,11 @@ namespace Skyra
 	public class EventHandler
 	{
 		public event Action<OnReadyArgs> OnReady;
+		public event Action<GenericEventArgs<GuildBanAddPayload>> OnGuildBanAdd;
+		public event Action<GenericEventArgs<GuildBanRemovePayload>> OnGuildBanRemove;
 		public event Action<OnMessageCreateArgs> OnMessageCreate;
 
-		private readonly Client Client;
+		private Client Client { get; }
 
 		public EventHandler(Client client)
 		{
@@ -44,8 +47,10 @@ namespace Skyra
 				case GatewayEvent.GUILD_DELETE:
 					break;
 				case GatewayEvent.GUILD_BAN_ADD:
+					OnGuildBanAdd(new GenericEventArgs<GuildBanAddPayload>(JsonConvert.DeserializeObject<GuildBanAddPayload>(data)));
 					break;
 				case GatewayEvent.GUILD_BAN_REMOVE:
+					OnGuildBanRemove(new GenericEventArgs<GuildBanRemovePayload>(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data)));
 					break;
 				case GatewayEvent.GUILD_EMOJIS_UPDATE:
 					break;

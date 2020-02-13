@@ -1,7 +1,7 @@
 ﻿using System;
 using Spectacles.NET.Types;
 
-namespace Skyra.Framework.Models.Gateway
+namespace Skyra.Models.Gateway
 {
 	public class OnMessageCreateArgs : EventArgs
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Skyra.Framework.Structures.Base
+namespace Skyra.Structures.Base
 {
 	public class Store<T> : Dictionary<string, T> where T : Piece
 	{

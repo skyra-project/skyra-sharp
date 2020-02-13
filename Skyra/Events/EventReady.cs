@@ -1,7 +1,6 @@
 ﻿using System;
-using Skyra.Framework;
-using Skyra.Framework.Models.Gateway;
-using Skyra.Framework.Structures;
+using Skyra.Models.Gateway;
+using Skyra.Structures;
 
 namespace Skyra.Events
 {

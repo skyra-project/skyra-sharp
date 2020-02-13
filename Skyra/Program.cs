@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Skyra.Events;
-using Skyra.Framework;
 using Skyra.Monitors;
 
 namespace Skyra

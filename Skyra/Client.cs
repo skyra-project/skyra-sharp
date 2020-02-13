@@ -2,14 +2,14 @@
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Skyra.Framework.Models.Gateway;
-using Skyra.Framework.Structures;
-using Skyra.Framework.Structures.Base;
+using Skyra.Models.Gateway;
+using Skyra.Structures;
+using Skyra.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
-namespace Skyra.Framework
+namespace Skyra
 {
 	public class Client
 	{

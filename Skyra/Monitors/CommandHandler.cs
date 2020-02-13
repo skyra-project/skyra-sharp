@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Skyra.Framework;
-using Skyra.Framework.Structures;
+using Skyra.Structures;
 using Spectacles.NET.Types;
 
 namespace Skyra.Monitors

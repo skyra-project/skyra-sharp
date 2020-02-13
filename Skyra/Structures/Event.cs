@@ -1,6 +1,6 @@
-﻿using Skyra.Framework.Structures.Base;
+﻿using Skyra.Structures.Base;
 
-namespace Skyra.Framework.Structures
+namespace Skyra.Structures
 {
 	public abstract class Event : Piece
 	{

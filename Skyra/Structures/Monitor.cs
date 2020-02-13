@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Skyra.Framework.Structures.Base;
+using Skyra.Structures.Base;
 using Spectacles.NET.Types;
 
-namespace Skyra.Framework.Structures
+namespace Skyra.Structures
 {
 	public abstract class Monitor : Piece
 	{

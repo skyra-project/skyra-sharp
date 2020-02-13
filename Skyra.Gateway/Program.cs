@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Skyra.Gateway.Core;
 using Spectacles.NET.Gateway;
@@ -23,7 +23,7 @@ namespace Skyra.Gateway
 			{
 				GuildSubscriptions = true,
 				LargeThreshold = 250,
-				Presence = new UpdateStatusDispatch {Status = "Skyra, help"}
+				Presence = new UpdateStatusDispatch { Status = "Skyra, help" }
 			};
 
 			var gateway = new GatewayHandler(token,

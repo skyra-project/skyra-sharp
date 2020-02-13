@@ -7,7 +7,7 @@ namespace Skyra.Structures
 {
 	public abstract class Monitor : Piece
 	{
-		public readonly Client Client;
+		public Client Client { get; }
 		private readonly MessageType[] _allowedTypes;
 		private readonly bool _ignoreBots;
 		private readonly bool _ignoreSelf;
@@ -15,10 +15,9 @@ namespace Skyra.Structures
 		private readonly bool _ignoreWebhooks;
 		private readonly bool _ignoreEdits;
 
-		protected Monitor(Client client, MonitorOptions options)
+		protected Monitor(Client client, MonitorOptions options): base(options.Name)
 		{
 			Client = client;
-			Name = options.Name;
 			_allowedTypes = options.AllowedTypes;
 			_ignoreBots = options.IgnoreBots;
 			_ignoreSelf = options.IgnoreSelf;

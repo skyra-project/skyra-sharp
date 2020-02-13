@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using Newtonsoft.Json;
-using Skyra.Models.Gateway;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
@@ -9,10 +8,14 @@ namespace Skyra
 {
 	public class EventHandler
 	{
-		public event Action<OnReadyArgs> OnReady;
-		public event Action<OnMessageCreateArgs> OnMessageCreate;
+		public event Action<ReadyDispatch> OnReady = dispatch => {};
+		public event Action<GuildBanAddPayload> OnGuildBanAdd = dispatch => {};
+		public event Action<GuildBanRemovePayload> OnGuildBanRemove = dispatch => {};
+		public event Action<Message> OnMessageCreate = dispatch => {};
+		public event Action<MessageUpdatePayload> OnMessageUpdate = dispatch => {};
+		public event Action<MessageDeletePayload> OnMessageDelete = dispatch => {};
 
-		private readonly Client Client;
+		private Client Client { get; }
 
 		public EventHandler(Client client)
 		{
@@ -25,7 +28,7 @@ namespace Skyra
 			switch (@event)
 			{
 				case GatewayEvent.READY:
-					OnReady(new OnReadyArgs(JsonConvert.DeserializeObject<ReadyDispatch>(data)));
+					OnReady(JsonConvert.DeserializeObject<ReadyDispatch>(data));
 					break;
 				case GatewayEvent.RESUMED:
 					break;
@@ -44,8 +47,10 @@ namespace Skyra
 				case GatewayEvent.GUILD_DELETE:
 					break;
 				case GatewayEvent.GUILD_BAN_ADD:
+					OnGuildBanAdd(JsonConvert.DeserializeObject<GuildBanAddPayload>(data));
 					break;
 				case GatewayEvent.GUILD_BAN_REMOVE:
+					OnGuildBanRemove(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data));
 					break;
 				case GatewayEvent.GUILD_EMOJIS_UPDATE:
 					break;
@@ -70,11 +75,13 @@ namespace Skyra
 				case GatewayEvent.INVITE_DELETE:
 					break;
 				case GatewayEvent.MESSAGE_CREATE:
-					OnMessageCreate(new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
+					OnMessageCreate(JsonConvert.DeserializeObject<Message>(data));
 					break;
 				case GatewayEvent.MESSAGE_UPDATE:
+					OnMessageUpdate(JsonConvert.DeserializeObject<MessageUpdatePayload>(data));
 					break;
 				case GatewayEvent.MESSAGE_DELETE:
+					OnMessageDelete(JsonConvert.DeserializeObject<MessageDeletePayload>(data));
 					break;
 				case GatewayEvent.MESSAGE_DELETE_BULK:
 					break;

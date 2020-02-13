@@ -1,6 +1,6 @@
 using System;
-using Skyra.Models.Gateway;
 using Skyra.Structures;
+using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
@@ -11,10 +11,10 @@ namespace Skyra.Events
 			EventHandler.OnReady += Run;
 		}
 
-		private static void Run(OnReadyArgs args)
+		private static void Run(ReadyDispatch args)
 		{
 			Console.WriteLine(
-				$"Skyra VI ready! [{args.Data.User.Username}#{args.Data.User.Discriminator}] [{args.Data.Guilds.Length} [G]]");
+				$"Skyra VI ready! [{args.User.Username}#{args.User.Discriminator}] [{args.Guilds.Length} [G]]");
 		}
 	}
 }

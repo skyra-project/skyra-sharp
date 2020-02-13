@@ -4,14 +4,13 @@ namespace Skyra.Structures
 {
 	public abstract class Event : Piece
 	{
-		public readonly Client Client;
-		public readonly EventHandler EventHandler;
+		public Client Client { get; }
+		public EventHandler EventHandler { get; }
 
-		protected Event(Client client, EventOptions options)
+		protected Event(Client client, EventOptions options) : base(options.Name)
 		{
 			Client = client;
 			EventHandler = client.EventHandler;
-			Name = options.Name;
 		}
 	}
 }

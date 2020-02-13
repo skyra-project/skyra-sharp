@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Skyra.Models.Gateway;
 using Skyra.Structures;
+using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
@@ -12,13 +12,13 @@ namespace Skyra.Events
 			EventHandler.OnMessageCreate += Run;
 		}
 
-		private void Run(OnMessageCreateArgs args)
+		private void Run(Message message)
 		{
 			Task.Run(async () =>
 			{
-				foreach (var monitor in Client.Monitors.Values.Where(monitor => monitor.ShouldRun(args.Data)))
+				foreach (var monitor in Client.Monitors.Values.Where(monitor => monitor.ShouldRun(message)))
 				{
-					if (!await monitor.Run(args.Data)) break;
+					if (!await monitor.Run(message)) break;
 				}
 			});
 		}

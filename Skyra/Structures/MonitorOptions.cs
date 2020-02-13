@@ -1,4 +1,4 @@
-﻿using Spectacles.NET.Types;
+using Spectacles.NET.Types;
 
 namespace Skyra.Structures
 {
@@ -12,11 +12,11 @@ namespace Skyra.Structures
 		public bool IgnoreWebhooks { get; }
 		public bool IgnoreEdits { get; }
 
-		public MonitorOptions(string name, MessageType[] allowedTypes = null, bool ignoreBots = true,
+		public MonitorOptions(string name, MessageType[]? allowedTypes = null, bool ignoreBots = true,
 			bool ignoreSelf = true, bool ignoreOthers = true, bool ignoreWebhooks = true, bool ignoreEdits = true)
 		{
 			Name = name;
-			AllowedTypes = allowedTypes ?? new[] {MessageType.DEFAULT};
+			AllowedTypes = allowedTypes ?? new[] { MessageType.DEFAULT };
 			IgnoreBots = ignoreBots;
 			IgnoreSelf = ignoreSelf;
 			IgnoreOthers = ignoreOthers;

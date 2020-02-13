@@ -13,7 +13,7 @@ namespace Skyra
 		private readonly Uri _brokerUri;
 		private readonly AmqpBroker _broker;
 
-		public readonly EventHandler EventHandler;
+		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
 
 		public readonly Store<Event> Events = new Store<Event>();

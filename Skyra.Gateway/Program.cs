@@ -16,7 +16,7 @@ namespace Skyra.Gateway
 			                 ?? throw new ArgumentNullException("BROKER_NAME");
 			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL")
 			                ?? throw new ArgumentNullException("BROKER_URL");
-			var shardCount = Environment.GetEnvironmentVariable("DISCORD_SHARD_COUNT") ?? "";
+			var shardCount = Environment.GetEnvironmentVariable("DISCORD_SHARD_COUNT") ?? "1";
 
 
 			var identifyOptions = new IdentifyOptions

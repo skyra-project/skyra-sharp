@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management-alpine
+    restart: always
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+  redis:
+    container_name: redis
+    image: skyrabot/redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+  postgres:
+    container_name: pgsql
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+  lavalink:
+    container_name: lavalink
+    image: skyrabot/lavalink:latest
+    restart: always
+    ports:
+      - "2333:2333"
+  pokedex:
+    container_name: pokedex
+    image: favware/graphql-pokemon:latest
+    restart: always
+    ports:
+      - "4000:8080"

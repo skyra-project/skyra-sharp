@@ -1,4 +1,4 @@
-﻿using Spectacles.NET.Types;
+using Spectacles.NET.Types;
 
 namespace Skyra.Structures
 {
@@ -16,7 +16,7 @@ namespace Skyra.Structures
 			bool ignoreSelf = true, bool ignoreOthers = true, bool ignoreWebhooks = true, bool ignoreEdits = true)
 		{
 			Name = name;
-			AllowedTypes = allowedTypes ?? new[] {MessageType.DEFAULT};
+			AllowedTypes = allowedTypes ?? new[] { MessageType.DEFAULT };
 			IgnoreBots = ignoreBots;
 			IgnoreSelf = ignoreSelf;
 			IgnoreOthers = ignoreOthers;

@@ -14,6 +14,8 @@ namespace Skyra
 		public event Action<GenericEventArgs<GuildBanAddPayload>> OnGuildBanAdd;
 		public event Action<GenericEventArgs<GuildBanRemovePayload>> OnGuildBanRemove;
 		public event Action<OnMessageCreateArgs> OnMessageCreate;
+		public event Action<GenericEventArgs<MessageUpdatePayload>> OnMessageUpdate;
+		public event Action<GenericEventArgs<MessageDeletePayload>> OnMessageDelete;
 
 		private Client Client { get; }
 
@@ -78,8 +80,10 @@ namespace Skyra
 					OnMessageCreate(new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
 					break;
 				case GatewayEvent.MESSAGE_UPDATE:
+					OnMessageUpdate(new GenericEventArgs<MessageUpdatePayload>(JsonConvert.DeserializeObject<MessageUpdatePayload>(data)));
 					break;
 				case GatewayEvent.MESSAGE_DELETE:
+					OnMessageDelete(new GenericEventArgs<MessageDeletePayload>(JsonConvert.DeserializeObject<MessageDeletePayload>(data)));
 					break;
 				case GatewayEvent.MESSAGE_DELETE_BULK:
 					break;

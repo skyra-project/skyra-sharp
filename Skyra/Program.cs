@@ -7,10 +7,11 @@ namespace Skyra
 {
 	public static class Program
 	{
-		public static void Main()
-			=> Start().GetAwaiter().GetResult();
-
-		private static async Task Start()
+		public static async Task Main()
+		{
+			await StartAsync();
+		}
+		private static async Task StartAsync()
 		{
 			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME");
 			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL");

@@ -11,6 +11,7 @@ namespace Skyra
 		{
 			await StartAsync();
 		}
+
 		private static async Task StartAsync()
 		{
 			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME")

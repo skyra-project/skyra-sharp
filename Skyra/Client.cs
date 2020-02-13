@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Skyra.Cache;
 using Skyra.Structures;
 using Skyra.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
@@ -13,6 +14,7 @@ namespace Skyra
 		private readonly AmqpBroker _broker;
 
 		public readonly EventHandler EventHandler;
+		public CacheClient Cache { get; }
 
 		public readonly Store<Event> Events = new Store<Event>();
 		public readonly Store<Monitor> Monitors = new Store<Monitor>();
@@ -20,6 +22,7 @@ namespace Skyra
 		public Client(string brokerName, Uri brokerUri)
 		{
 			EventHandler = new EventHandler(this);
+			Cache = new CacheClient(Environment.GetEnvironmentVariable("REDIS_PREFIX") ?? "skyra");
 
 			_brokerUri = brokerUri;
 			_broker = new AmqpBroker(brokerName);

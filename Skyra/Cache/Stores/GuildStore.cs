@@ -8,15 +8,19 @@ namespace Skyra.Cache.Stores
 {
 	public class GuildStore : CacheStore<Guild>
 	{
-		public GuildStore(CacheClient cacheClient) : base(cacheClient, "guilds")
+		public GuildStore(CacheClient client) : base(client, "guilds")
 		{
 		}
 
 		public override async Task SetAsync(Guild entry, string? _ = null)
 		{
 			// Store the guild sub-data into different tables
-			// TODO: Set the other data and use Task.WhenAll
-			await Client.Channels.SetAsync(entry.Channels, entry.Id);
+			await Task.WhenAll(
+				Client.Members.SetAsync(entry.Members, entry.Id),
+				Client.Roles.SetAsync(entry.Roles, entry.Id),
+				Client.Channels.SetAsync(entry.Channels, entry.Id),
+				Client.VoiceStates.SetAsync(entry.VoiceStates, entry.Id),
+				Client.Emojis.SetAsync(entry.Emojis, entry.Id));
 
 			// Set data that is stored in other Redis keys as null in the entry, so SerializeValue doesn't include them in the data
 			entry.Members = null;

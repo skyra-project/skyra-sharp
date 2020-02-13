@@ -8,7 +8,7 @@ namespace Skyra.Cache.Stores
 {
 	public class ChannelStore : CacheStore<Channel>
 	{
-		public ChannelStore(CacheClient cacheClient) : base(cacheClient, "channels")
+		public ChannelStore(CacheClient client) : base(client, "channels")
 		{
 		}
 

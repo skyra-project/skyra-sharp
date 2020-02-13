@@ -20,13 +20,31 @@ namespace Skyra.Cache
 
 		public ChannelStore Channels { get; }
 
+		public EmojiStore Emojis { get; }
+
 		public GuildStore Guilds { get; }
+
+		public MemberStore Members { get; }
+
+		public MessageStore Messages { get; }
+
+		public RoleStore Roles { get; }
+
+		public UserStore Users { get; }
+
+		public VoiceStateStore VoiceStates { get; }
 
 		public CacheClient(string prefix)
 		{
 			Prefix = prefix;
 			Channels = new ChannelStore(this);
+			Emojis = new EmojiStore(this);
 			Guilds = new GuildStore(this);
+			Members = new MemberStore(this);
+			Messages = new MessageStore(this);
+			Roles = new RoleStore(this);
+			Users = new UserStore(this);
+			VoiceStates = new VoiceStateStore(this);
 		}
 
 		public async Task ConnectAsync(string url)

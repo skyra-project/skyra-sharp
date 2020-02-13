@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Skyra.Models.Gateway;
 using Skyra.Structures;
 
@@ -8,7 +8,7 @@ namespace Skyra.Events
 	{
 		public EventReady(Client client) : base(client, new EventOptions(nameof(EventReady)))
 		{
-			client.OnReady += Run;
+			EventHandler.OnReady += Run;
 		}
 
 		private static void Run(OnReadyArgs args)

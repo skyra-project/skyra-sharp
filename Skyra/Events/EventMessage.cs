@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Skyra.Models.Gateway;
 using Skyra.Structures;
@@ -9,7 +9,7 @@ namespace Skyra.Events
 	{
 		public EventMessage(Client client) : base(client, new EventOptions(nameof(EventMessage)))
 		{
-			client.OnMessageCreate += Run;
+			EventHandler.OnMessageCreate += Run;
 		}
 
 		private void Run(OnMessageCreateArgs args)

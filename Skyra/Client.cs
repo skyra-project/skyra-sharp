@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Skyra.Cache;
+using Skyra.Models;
 using Skyra.Structures;
 using Skyra.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
@@ -10,8 +11,9 @@ namespace Skyra
 {
 	public class Client
 	{
-		private readonly Uri _brokerUri;
-		private readonly AmqpBroker _broker;
+		private string BrokerUri { get; }
+		private string RedisUri { get; }
+		private AmqpBroker Broker { get; }
 
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
@@ -19,24 +21,26 @@ namespace Skyra
 		public readonly Store<Event> Events = new Store<Event>();
 		public readonly Store<Monitor> Monitors = new Store<Monitor>();
 
-		public Client(string brokerName, Uri brokerUri)
+		public Client(ClientOptions clientOptions)
 		{
 			EventHandler = new EventHandler(this);
-			Cache = new CacheClient(Environment.GetEnvironmentVariable("REDIS_PREFIX") ?? "skyra");
+			Cache = new CacheClient(clientOptions.RedisPrefix);
 
-			_brokerUri = brokerUri;
-			_broker = new AmqpBroker(brokerName);
-			_broker.Receive += (sender, args) =>
+			BrokerUri = clientOptions.BrokerUri;
+			RedisUri = clientOptions.BrokerUri;
+			Broker = new AmqpBroker(clientOptions.BrokerName);
+			Broker.Receive += (sender, args) =>
 			{
 				EventHandler.HandleEvent((GatewayEvent) Enum.Parse(typeof(GatewayEvent), args.Event), args);
-				_broker.Ack(args.Event, args.DeliveryTag);
+				Broker.Ack(args.Event, args.DeliveryTag);
 			};
 		}
 
 		public async Task ConnectAsync()
 		{
-			await _broker.ConnectAsync(_brokerUri);
-			await _broker.SubscribeAsync(new[]
+			await Cache.ConnectAsync(RedisUri);
+			await Broker.ConnectAsync(new Uri(BrokerUri));
+			await Broker.SubscribeAsync(new[]
 			{
 				"READY",
 				"RESUMED",

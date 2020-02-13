@@ -2,7 +2,7 @@
 {
 	public readonly ref struct EventOptions
 	{
-		public readonly string Name { get; }
+		public string Name { get; }
 
 		public EventOptions(string name)
 		{

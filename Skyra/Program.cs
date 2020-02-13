@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Skyra.Events;
+using Skyra.Models;
 using Skyra.Monitors;
 
 namespace Skyra
@@ -14,12 +15,12 @@ namespace Skyra
 
 		private static async Task StartAsync()
 		{
-			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME")
-			                 ?? throw new ArgumentNullException("BROKER_NAME");
-			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL")
-			                ?? throw new ArgumentNullException("BROKER_URL");
-
-			var client = new Client(brokerName, new Uri(brokerUrl));
+			var client = new Client(new ClientOptions(
+				Environment.GetEnvironmentVariable("BROKER_NAME") ?? "skyra",
+				Environment.GetEnvironmentVariable("BROKER_URL") ?? throw new ArgumentNullException("BROKER_URL"),
+				Environment.GetEnvironmentVariable("REDIS_PREFIX") ?? "skyra",
+				Environment.GetEnvironmentVariable("REDIS_URL") ?? throw new ArgumentNullException("REDIS_URL"))
+			);
 
 			PopulateCache(client);
 			await client.ConnectAsync();

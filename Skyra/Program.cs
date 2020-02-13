@@ -13,11 +13,10 @@ namespace Skyra
 		}
 		private static async Task StartAsync()
 		{
-			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME");
-			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL");
-
-			if (brokerName == null || brokerUrl == null)
-				throw new SystemException("Missing core arguments");
+			var brokerName = Environment.GetEnvironmentVariable("BROKER_NAME")
+			                 ?? throw new ArgumentNullException("BROKER_NAME");
+			var brokerUrl = Environment.GetEnvironmentVariable("BROKER_URL")
+			                ?? throw new ArgumentNullException("BROKER_URL");
 
 			var client = new Client(brokerName, new Uri(brokerUrl));
 

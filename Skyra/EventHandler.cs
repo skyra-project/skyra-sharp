@@ -1,8 +1,6 @@
 using System;
 using System.Text;
 using Newtonsoft.Json;
-using Skyra.Models.Gateway;
-using Skyra.Models.Gateway.Base;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
@@ -10,12 +8,12 @@ namespace Skyra
 {
 	public class EventHandler
 	{
-		public event Action<OnReadyArgs> OnReady;
-		public event Action<GenericEventArgs<GuildBanAddPayload>> OnGuildBanAdd;
-		public event Action<GenericEventArgs<GuildBanRemovePayload>> OnGuildBanRemove;
-		public event Action<OnMessageCreateArgs> OnMessageCreate;
-		public event Action<GenericEventArgs<MessageUpdatePayload>> OnMessageUpdate;
-		public event Action<GenericEventArgs<MessageDeletePayload>> OnMessageDelete;
+		public event Action<ReadyDispatch> OnReady = dispatch => {};
+		public event Action<GuildBanAddPayload> OnGuildBanAdd = dispatch => {};
+		public event Action<GuildBanRemovePayload> OnGuildBanRemove = dispatch => {};
+		public event Action<Message> OnMessageCreate = dispatch => {};
+		public event Action<MessageUpdatePayload> OnMessageUpdate = dispatch => {};
+		public event Action<MessageDeletePayload> OnMessageDelete = dispatch => {};
 
 		private Client Client { get; }
 
@@ -30,7 +28,7 @@ namespace Skyra
 			switch (@event)
 			{
 				case GatewayEvent.READY:
-					OnReady(new OnReadyArgs(JsonConvert.DeserializeObject<ReadyDispatch>(data)));
+					OnReady(JsonConvert.DeserializeObject<ReadyDispatch>(data));
 					break;
 				case GatewayEvent.RESUMED:
 					break;
@@ -49,10 +47,10 @@ namespace Skyra
 				case GatewayEvent.GUILD_DELETE:
 					break;
 				case GatewayEvent.GUILD_BAN_ADD:
-					OnGuildBanAdd(new GenericEventArgs<GuildBanAddPayload>(JsonConvert.DeserializeObject<GuildBanAddPayload>(data)));
+					OnGuildBanAdd(JsonConvert.DeserializeObject<GuildBanAddPayload>(data));
 					break;
 				case GatewayEvent.GUILD_BAN_REMOVE:
-					OnGuildBanRemove(new GenericEventArgs<GuildBanRemovePayload>(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data)));
+					OnGuildBanRemove(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data));
 					break;
 				case GatewayEvent.GUILD_EMOJIS_UPDATE:
 					break;
@@ -77,13 +75,13 @@ namespace Skyra
 				case GatewayEvent.INVITE_DELETE:
 					break;
 				case GatewayEvent.MESSAGE_CREATE:
-					OnMessageCreate(new OnMessageCreateArgs(JsonConvert.DeserializeObject<Message>(data)));
+					OnMessageCreate(JsonConvert.DeserializeObject<Message>(data));
 					break;
 				case GatewayEvent.MESSAGE_UPDATE:
-					OnMessageUpdate(new GenericEventArgs<MessageUpdatePayload>(JsonConvert.DeserializeObject<MessageUpdatePayload>(data)));
+					OnMessageUpdate(JsonConvert.DeserializeObject<MessageUpdatePayload>(data));
 					break;
 				case GatewayEvent.MESSAGE_DELETE:
-					OnMessageDelete(new GenericEventArgs<MessageDeletePayload>(JsonConvert.DeserializeObject<MessageDeletePayload>(data)));
+					OnMessageDelete(JsonConvert.DeserializeObject<MessageDeletePayload>(data));
 					break;
 				case GatewayEvent.MESSAGE_DELETE_BULK:
 					break;

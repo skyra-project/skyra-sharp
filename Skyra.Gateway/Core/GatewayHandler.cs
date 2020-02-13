@@ -62,7 +62,7 @@ namespace Skyra.Gateway.Core
 		}
 
 		// Thank you Yukine. Guys please go check out the bot named Senpai by Yukine#8080. An awesome bot by an awesome dev.
-		private void BrokerOnReceive(object _, AmqpReceiveEventArgs e)
+		private void BrokerOnReceive(object? _, AmqpReceiveEventArgs e)
 		{
 			Task.Run(async () =>
 			{
@@ -99,7 +99,7 @@ namespace Skyra.Gateway.Core
 		}
 
 
-		private void OnLog(object _, LogEventArgs e)
+		private void OnLog(object? _, LogEventArgs e)
 		{
 			if (e.LogLevel <= MinimumLogLevel) return;
 
@@ -126,7 +126,7 @@ namespace Skyra.Gateway.Core
 			}
 		}
 
-		private void OnError(object _, ExceptionEventArgs e)
+		private void OnError(object? _, ExceptionEventArgs e)
 			=> _logger.Error($"[{e.ShardId}] {e.Exception}");
 	}
 }

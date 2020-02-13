@@ -12,7 +12,7 @@ namespace Skyra.Structures
 		public bool IgnoreWebhooks { get; }
 		public bool IgnoreEdits { get; }
 
-		public MonitorOptions(string name, MessageType[] allowedTypes = null, bool ignoreBots = true,
+		public MonitorOptions(string name, MessageType[]? allowedTypes = null, bool ignoreBots = true,
 			bool ignoreSelf = true, bool ignoreOthers = true, bool ignoreWebhooks = true, bool ignoreEdits = true)
 		{
 			Name = name;

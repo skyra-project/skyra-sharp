@@ -2,6 +2,11 @@
 {
 	public abstract class Piece
 	{
-		public string Name;
+		public string Name { get; }
+
+		protected Piece(string name)
+		{
+			Name = name;
+		}
 	}
 }

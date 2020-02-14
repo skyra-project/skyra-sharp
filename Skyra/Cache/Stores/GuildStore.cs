@@ -33,7 +33,7 @@ namespace Skyra.Cache.Stores
 				await Database.SetAddAsync(FormatKeyName(parent), unboxedIds.ToArray());
 			}
 
-			await Database.HashSetAsync(Prefix,
+			await Database.HashSetAsync(FormatKeyName(parent),
 				guilds.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
 		}
 	}

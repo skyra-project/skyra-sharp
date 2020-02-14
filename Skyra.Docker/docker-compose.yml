@@ -8,7 +8,7 @@ services:
       - "5672:5672"
   redis:
     container_name: redis
-    image: skyrabot/redis:latest
+    image: redis:alpine
     restart: always
     ports:
       - "6379:6379"

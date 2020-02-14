@@ -2,23 +2,24 @@ version: "3.7"
 services:
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:management-alpine
+    image: rabbitmq:alpine
     restart: always
     ports:
-      - '15672:15672'
-      - '5672:5672'
+      - "5672:5672"
   redis:
     container_name: redis
     image: skyrabot/redis:latest
     restart: always
     ports:
-      - '6379:6379'
+      - "6379:6379"
   postgres:
     container_name: pgsql
-    image: postgres
+    image: postgres:alpine
     restart: always
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
   lavalink:
     container_name: lavalink
     image: skyrabot/lavalink:latest
@@ -31,3 +32,7 @@ services:
     restart: always
     ports:
       - "4000:8080"
+
+volumes:
+  postgres-data:
+    external: true

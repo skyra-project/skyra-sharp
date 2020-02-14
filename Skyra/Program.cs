@@ -29,6 +29,8 @@ namespace Skyra
 		private static void PopulateCache(Client client)
 		{
 			client.Events
+				.Insert(new EventGuildCreate(client))
+				.Insert(new EventGuildUpdate(client))
 				.Insert(new EventMessageCreate(client))
 				.Insert(new EventMessageEdit(client))
 				.Insert(new EventReady(client));

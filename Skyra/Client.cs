@@ -27,7 +27,7 @@ namespace Skyra
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
 			BrokerUri = clientOptions.BrokerUri;
-			RedisUri = clientOptions.BrokerUri;
+			RedisUri = clientOptions.RedisUri;
 			Broker = new AmqpBroker(clientOptions.BrokerName);
 			Broker.Receive += (sender, args) =>
 			{

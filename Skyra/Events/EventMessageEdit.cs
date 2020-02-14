@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Skyra.Cache.Models;
 using Skyra.Structures;
 using Spectacles.NET.Types;
 
@@ -25,13 +26,13 @@ namespace Skyra.Events
 				Client.Monitors.Run(message));
 		}
 
-		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, Message? previousMessage)
+		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CachedMessage? previousMessage)
 			=> new Message
 			{
 				Id = messageUpdate.Id,
 				Content = messageUpdate.Content,
 				Embeds = messageUpdate.Embeds,
-				Type = messageUpdate.Type ?? previousMessage?.Type ?? MessageType.DEFAULT,
+				Type = messageUpdate.Type ?? MessageType.DEFAULT,
 				Timestamp = messageUpdate.Timestamp ?? previousMessage?.Timestamp ?? DateTime.MinValue,
 				ChannelId = messageUpdate.ChannelId,
 				EditedTimestamp = messageUpdate.EditedTimestamp,

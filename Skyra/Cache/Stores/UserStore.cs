@@ -1,26 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Skyra.Cache.Models;
 using Spectacles.NET.Types;
 using StackExchange.Redis;
 
 namespace Skyra.Cache.Stores
 {
-	public class UserStore : CacheStore<User>
+	public class UserStore : CacheStore<CachedUser>
 	{
 		public UserStore(CacheClient client) : base(client, "users")
 		{
 		}
 
-		public override async Task SetAsync(User entry, string? parent = null)
+		public new async Task<CachedUser?> GetAsync(string id, string? parent = null)
 		{
-			await Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+			var result = await Database.StringGetAsync($"{FormatKeyName(parent)}:{id}");
+			return !result.IsNull ? JsonConvert.DeserializeObject<CachedUser>(result) : null;
 		}
 
-		public override async Task SetAsync(IEnumerable<User> entries, string? parent = null)
+		public Task SetAsync(User entry, string? parent = null)
+			=> SetAsync(new CachedUser(entry), parent);
+
+		public override async Task SetAsync(CachedUser entry, string? parent = null)
 		{
-			await Database.HashSetAsync(FormatKeyName(parent),
-				entries.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
+			await Database.SetAddAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
 		}
+
+		public Task SetAsync(IEnumerable<User> entries, string? parent = null)
+			=> Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+
+		public override Task SetAsync(IEnumerable<CachedUser> entries, string? parent = null)
+			=> Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
 	}
 }

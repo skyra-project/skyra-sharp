@@ -1,42 +1,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Skyra.Cache.Models;
 using Spectacles.NET.Types;
 using StackExchange.Redis;
 
 namespace Skyra.Cache.Stores
 {
-	public class GuildStore : CacheStore<Guild>
+	public class GuildStore : CacheStore<CachedGuild>
 	{
 		public GuildStore(CacheClient client) : base(client, "guilds")
 		{
 		}
 
-		public override async Task SetAsync(Guild entry, string? _ = null)
-		{
-			// Store the guild sub-data into different tables
-			await Task.WhenAll(
-				Client.Members.SetAsync(entry.Members, entry.Id),
+		public Task SetAsync(Guild entry, string? parent = null)
+			=> Task.WhenAll(Client.Members.SetAsync(entry.Members, entry.Id),
 				Client.Roles.SetAsync(entry.Roles, entry.Id),
 				Client.Channels.SetAsync(entry.Channels, entry.Id),
 				Client.VoiceStates.SetAsync(entry.VoiceStates, entry.Id),
-				Client.Emojis.SetAsync(entry.Emojis, entry.Id));
+				Client.Emojis.SetAsync(entry.Emojis, entry.Id),
+				SetAsync(new CachedGuild(entry), parent));
 
-			// Set data that is stored in other Redis keys as null in the entry, so SerializeValue doesn't include them in the data
-			entry.Members = null;
-			entry.Roles = null;
-			entry.Channels = null;
-			entry.VoiceStates = null;
-			entry.Presences = null;
-			entry.Emojis = null;
+		public override Task SetAsync(CachedGuild entry, string? parent = null)
+			=> Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
 
-			// Store the guild data
-			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});
-		}
-
-		public override async Task SetAsync(IEnumerable<Guild> entries, string? parent = null)
+		public override async Task SetAsync(IEnumerable<CachedGuild> entries, string? parent = null)
 		{
-			var guilds = entries as Guild[] ?? entries.ToArray();
+			var guilds = entries as CachedGuild[] ?? entries.ToArray();
 			if (parent != null)
 			{
 				var unboxedIds = guilds.Select(entry => RedisValue.Unbox(entry.Id));

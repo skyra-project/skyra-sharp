@@ -9,6 +9,8 @@ namespace Skyra
 	public class EventHandler
 	{
 		public event Action<ReadyDispatch> OnReady = dispatch => {};
+		public event Action<Guild> OnGuildCreate = dispatch => {};
+		public event Action<Guild> OnGuildUpdate = dispatch => {};
 		public event Action<GuildBanAddPayload> OnGuildBanAdd = dispatch => {};
 		public event Action<GuildBanRemovePayload> OnGuildBanRemove = dispatch => {};
 		public event Action<Message> OnMessageCreate = dispatch => {};
@@ -41,8 +43,10 @@ namespace Skyra
 				case GatewayEvent.CHANNEL_PINS_UPDATE:
 					break;
 				case GatewayEvent.GUILD_CREATE:
+					OnGuildCreate(JsonConvert.DeserializeObject<Guild>(data));
 					break;
 				case GatewayEvent.GUILD_UPDATE:
+					OnGuildUpdate(JsonConvert.DeserializeObject<Guild>(data));
 					break;
 				case GatewayEvent.GUILD_DELETE:
 					break;

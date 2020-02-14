@@ -1,7 +1,7 @@
 # Skyra [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://join.skyra.pw)
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/skyra-project/skyra-sharp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/skyra-sharp/alerts/)
-[![Language grade: C#](https://img.shields.io/lgtm/grade/csharp/g/skyra-project/skyra-sharp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/skyra-sharp/context:csharp)
+<!-- [![Language grade: C#](https://img.shields.io/lgtm/grade/csharp/g/skyra-project/skyra-sharp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/skyra-sharp/context:csharp) -->
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/servers/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
@@ -9,10 +9,10 @@
 ## Development Requirements
 
 -   [`.NET Core`]: To build and run the project.
--   [`RabbitMQ`]: Message queueing service
+-   [`RabbitMQ`]: Advanced Message Queuing Protocol service.
 -   [`PostgreSQL`]: (Dev Optional) To store persistent data.
 -   [`Lavalink`]: (Dev Optional) Audio server.
--   [`Redis`]: (Dev Optional) Audio server.
+-   [`Redis`]: Cache server.
 <!-- -   [`InfluxDB`]: (Dev Optional) Analytics, Statistics, and Audit storage. -->
 
 ## Set-Up

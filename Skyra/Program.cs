@@ -17,9 +17,9 @@ namespace Skyra
 		{
 			var client = new Client(new ClientOptions(
 				Environment.GetEnvironmentVariable("BROKER_NAME") ?? "skyra",
-				Environment.GetEnvironmentVariable("BROKER_URL") ?? throw new ArgumentNullException("BROKER_URL"),
+				Environment.GetEnvironmentVariable("BROKER_URL") ?? "amqp://localhost:5672",
 				Environment.GetEnvironmentVariable("REDIS_PREFIX") ?? "skyra",
-				Environment.GetEnvironmentVariable("REDIS_URL") ?? throw new ArgumentNullException("REDIS_URL"))
+				Environment.GetEnvironmentVariable("REDIS_URL") ?? "redis://localhost:6379")
 			);
 
 			PopulateCache(client);

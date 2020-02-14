@@ -8,7 +8,7 @@ namespace Skyra.Monitors
 	public class SocialCounter : Monitor
 	{
 		public SocialCounter(Client client) : base(client,
-			new MonitorOptions(nameof(SocialCounter), ignoreOthers: false))
+			new MonitorOptions(nameof(SocialCounter), ignoreOthers: false, ignoreEdits: false))
 		{
 		}
 

@@ -8,7 +8,7 @@ namespace Skyra.Events
 {
 	public class EventMessageEdit : Event
 	{
-		public EventMessageEdit(Client client) : base(client, new EventOptions(nameof(EventMessageCreate)))
+		public EventMessageEdit(Client client) : base(client, new EventOptions(nameof(EventMessageEdit)))
 		{
 			EventHandler.OnMessageUpdate += Run;
 		}

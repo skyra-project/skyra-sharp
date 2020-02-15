@@ -13,8 +13,7 @@ namespace Skyra.Events
 
 		private void Run(Message message)
 		{
-			Task.Run(() => Task.WhenAll(Client.Cache.Messages.SetAsync(message),
-				Client.Monitors.Run(message)));
+			Task.Run(() => Task.WhenAll(Client.Cache.Messages.SetAsync(message), Client.Monitors.Run(message)));
 		}
 	}
 }

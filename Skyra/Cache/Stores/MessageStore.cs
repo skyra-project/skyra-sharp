@@ -20,13 +20,18 @@ namespace Skyra.Cache.Stores
 			return !result.IsNull ? JsonConvert.DeserializeObject<CachedMessage>(result) : null;
 		}
 
-		public Task SetAsync(Message entry, string? parent = null)
-			=> Task.WhenAll(
-				Client.Users.SetAsync(entry.Author),
-				entry.Member == null
-					? Task.FromResult(false)
-					: Client.Members.SetAsync(new CachedGuildMember(entry.Member)),
-				SetAsync(new CachedMessage(entry), parent));
+		public async Task SetAsync(Message entry, string? parent = null)
+		{
+			if (entry.Member == null)
+			{
+				await Task.WhenAll(Client.Users.SetAsync(entry.Author), SetAsync(new CachedMessage(entry), parent));
+			}
+			else
+			{
+				await Task.WhenAll(Client.Users.SetAsync(entry.Author), SetAsync(new CachedMessage(entry), parent),
+					Client.Members.SetAsync(new CachedGuildMember(entry.Member)));
+			}
+		}
 
 		public override async Task SetAsync(CachedMessage entry, string? parent = null)
 		{

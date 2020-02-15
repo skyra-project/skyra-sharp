@@ -14,7 +14,7 @@ namespace Skyra.Monitors
 
 		public override Task<bool> Run(Message message)
 		{
-			Console.WriteLine($"Received Message [{message.Id}] from {message.Author.Username} with content {message.Content}.");
+			Console.WriteLine($"Received Message [{message.Id}] from {message.Author.Username} with content '{message.Content}'.");
 			return Task.FromResult(true);
 		}
 	}

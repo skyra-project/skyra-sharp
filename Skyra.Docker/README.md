@@ -21,7 +21,7 @@ Skyra currently has the following microservices that can be dockerized:
 - RabbitMQ
   - Service name in docker-compose: `rabbitmq`
   - Image used: `rabbitmq:management-alpine`
-- Reddis
+- Redis
   - Service name in docker-compose: `redis`
   - Image used: `skyrabot/redis`
     <!-- - InfluxDB

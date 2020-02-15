@@ -19,18 +19,18 @@ Skyra currently has the following microservices that can be dockerized:
   - Service name in docker-compose: `pokedex`
   - Image used: `favware/graphql-pokemon`
 - RabbitMQ
-    - Service name in docker-compose: `rabbitmq`
-    - Image used: `rabbitmq:management-alpine`
-- Reddit
-    - Service name in docker-compose: `redis`
-    - Image used: `skyrabot/redis`
-<!--- InfluxDB-->
-<!--  - Service name in docker-compose: `influxdb`-->
-<!--  - Image used: `skyrabot/influxdb`-->
+  - Service name in docker-compose: `rabbitmq`
+  - Image used: `rabbitmq:management-alpine`
+- Reddis
+  - Service name in docker-compose: `redis`
+  - Image used: `skyrabot/redis`
+    <!-- - InfluxDB
+  - Service name in docker-compose: `influxdb`
+  - Image used: `skyrabot/influxdb` -->
 
 # Image Configuration
 
-The following steps are required for each image for it to build on your machine
+The following steps are required for each image for it to build on your machine. These images can run just fine without locally building, however for customization such as modifying the default password you need to build the image locally.
 
 ## Lavalink
 
@@ -46,4 +46,14 @@ The following steps are required for each image for it to build on your machine
 ## Postgres
 
 1. Duplicate the `.env.example` file in the `postgres` folder and name it `.env`
+2. Fill out any desired values or keep the defaults
+
+## Rabbitmq
+
+1. Duplicate the `.env.example` file in the `rabbitmq` folder and name it `.env`
+2. Fill out any desired values or keep the defaults
+
+## Redis
+
+1. Duplicate the `redis.conf.example` file in the `redis` folder and name it `redis.conf`
 2. Fill out any desired values or keep the defaults

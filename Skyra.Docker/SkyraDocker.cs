@@ -1,5 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace Skyra.Docker
 {
@@ -7,8 +8,10 @@ namespace Skyra.Docker
 	{
 		private static void Main(string[] args)
 		{
+			var scriptDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+
 			var processInfo = new ProcessStartInfo("powershell.exe",
-				"-File " + Environment.CurrentDirectory + "\\ps-skyra.ps1")
+				"-File " + scriptDirectory + "..\\..\\..\\..\\ps-skyra.ps1")
 			{
 				CreateNoWindow = false,
 				UseShellExecute = false

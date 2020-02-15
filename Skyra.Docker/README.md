@@ -9,21 +9,21 @@ Alternatively if you have access to the .NET SDK you can also run `SkyraDocker.c
 
 Skyra currently has the following microservices that can be dockerized:
 
-- PostgreSQL Database
-  - Service name in docker-compose: `postgres`
-  - Image used: `postgres`
 - Lavalink
   - Service name in docker-compose: `lavalink`
-  - Image used: `skyrabot/lavalink`
-- Graphql-Pokémon
+  - Image used: `skyrabot/lavalink:latest`
+- PostgreSQL Database
+  - Service name in docker-compose: `postgres`
+  - Image used: `skyrabot/postgres:latest`
+- GraphQL-Pokémon
   - Service name in docker-compose: `pokedex`
-  - Image used: `favware/graphql-pokemon`
+  - Image used: `favware/graphql-pokemon:latest`
 - RabbitMQ
   - Service name in docker-compose: `rabbitmq`
   - Image used: `rabbitmq:management-alpine`
 - Redis
   - Service name in docker-compose: `redis`
-  - Image used: `skyrabot/redis`
+  - Image used: `redis:alpine`
     <!-- - InfluxDB
   - Service name in docker-compose: `influxdb`
   - Image used: `skyrabot/influxdb` -->
@@ -39,21 +39,11 @@ The following steps are required for each image for it to build on your machine.
 3. Duplicate the 'application.example.yml' file and rename it to 'application.yml'
 4. Set any password in the yaml file and also set the same password in config.ts in the root folder of this project
 
+## Postgres
+
+1. Duplicate the `Dockerfile.example` file in the `postgres` folder and name it `Dockerfile`
+2. Fill in your desired `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`
+
 <!--## InfluxDB-->
 
 <!--1. In the influxdb folder, duplicate the 'config.sample.toml' file and rename it to 'config.toml'-->
-
-## Postgres
-
-1. Duplicate the `.env.example` file in the `postgres` folder and name it `.env`
-2. Fill out any desired values or keep the defaults
-
-## Rabbitmq
-
-1. Duplicate the `.env.example` file in the `rabbitmq` folder and name it `.env`
-2. Fill out any desired values or keep the defaults
-
-## Redis
-
-1. Duplicate the `redis.conf.example` file in the `redis` folder and name it `redis.conf`
-2. Fill out any desired values or keep the defaults

@@ -6,7 +6,7 @@ namespace Skyra.Events
 {
 	public class EventGuildCreate : Event
 	{
-		public EventGuildCreate(Client client) : base(client, new EventOptions(nameof(EventMessageCreate)))
+		public EventGuildCreate(Client client) : base(client, new EventOptions(nameof(EventGuildCreate)))
 		{
 			EventHandler.OnGuildCreate += Run;
 		}

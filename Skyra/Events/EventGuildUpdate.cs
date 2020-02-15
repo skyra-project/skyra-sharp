@@ -6,7 +6,7 @@ namespace Skyra.Events
 {
 	public class EventGuildUpdate : Event
 	{
-		public EventGuildUpdate(Client client) : base(client, new EventOptions(nameof(EventMessageCreate)))
+		public EventGuildUpdate(Client client) : base(client, new EventOptions(nameof(EventGuildUpdate)))
 		{
 			EventHandler.OnGuildUpdate += Run;
 		}

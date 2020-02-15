@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Skyra.Cache.Models;
 using Spectacles.NET.Types;
-using StackExchange.Redis;
 
 namespace Skyra.Cache.Stores
 {
@@ -23,10 +22,8 @@ namespace Skyra.Cache.Stores
 		public Task SetAsync(User entry, string? parent = null)
 			=> SetAsync(new CachedUser(entry), parent);
 
-		public override async Task SetAsync(CachedUser entry, string? parent = null)
-		{
-			await Database.SetAddAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
-		}
+		public override Task SetAsync(CachedUser entry, string? parent = null)
+			=> Database.SetAddAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
 
 		public Task SetAsync(IEnumerable<User> entries, string? parent = null)
 			=> Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));

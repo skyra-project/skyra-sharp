@@ -12,15 +12,11 @@ namespace Skyra.Cache.Stores
 		{
 		}
 
-		public override async Task SetAsync(VoiceState entry, string? parent = null)
-		{
-			await Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.UserId, SerializeValue(entry))});
-		}
+		public override Task SetAsync(VoiceState entry, string? parent = null)
+			=> Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.UserId, SerializeValue(entry))});
 
-		public override async Task SetAsync(IEnumerable<VoiceState> entries, string? parent = null)
-		{
-			await Database.HashSetAsync(FormatKeyName(parent),
+		public override Task SetAsync(IEnumerable<VoiceState> entries, string? parent = null)
+			=> Database.HashSetAsync(FormatKeyName(parent),
 				entries.Select(entry => new HashEntry(entry.UserId, SerializeValue(entry))).ToArray());
-		}
 	}
 }

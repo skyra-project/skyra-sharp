@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Database.Models
 {
@@ -13,7 +14,6 @@ namespace Skyra.Database.Models
 		public GuildTag[] Tags { get; set; } = new GuildTag[0];
 		public GuildStickyRole[] StickyRoles { get; set; } = new GuildStickyRole[0];
 		public GuildCommandAutoDelete[] CommandAutoDelete { get; set; } = new GuildCommandAutoDelete[0];
-
 		public GuildDisabledCommandChannels[] DisabledCommandChannels { get; set; } =
 			new GuildDisabledCommandChannels[0];
 
@@ -28,25 +28,29 @@ namespace Skyra.Database.Models
 		public GuildMusic Music { get; set; }
 	}
 
-	public struct GuildTag
+	[ComplexType]
+	public class GuildTag
 	{
 		public string Name { get; set; }
 		public string Content { get; set; }
 	}
 
-	public struct GuildCommandAutoDelete
+	[ComplexType]
+	public class GuildCommandAutoDelete
 	{
 		public string Command { get; set; }
 		public TimeSpan Duration { get; set; }
 	}
 
-	public struct GuildDisabledCommandChannels
+	[ComplexType]
+	public class GuildDisabledCommandChannels
 	{
 		public ulong Channel { get; set; }
 		public string[] Commands { get; set; }
 	}
 
-	public struct GuildStickyRole
+	[ComplexType]
+	public class GuildStickyRole
 	{
 		public ulong User { get; set; }
 		public ulong[] Roles { get; set; }

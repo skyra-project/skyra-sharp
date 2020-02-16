@@ -1,6 +1,18 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Skyra.Database.Models
 {
-	public struct GuildActionAlias
+	public class GuildAction
+	{
+		public GuildActionAlias Alias { get; set; }
+		public GuildActionTrigger Trigger { get; set; }
+
+		public ulong GuildId { get; set; }
+		public virtual Guild Guild { get; set; }
+	}
+
+	[ComplexType]
+	public class GuildActionAlias
 	{
 		public string Command { get; set; }
 		public string Alias { get; set; }
@@ -11,19 +23,11 @@ namespace Skyra.Database.Models
 		React
 	}
 
-	public struct GuildActionTrigger
+	[ComplexType]
+	public class GuildActionTrigger
 	{
 		public GuildActionTriggerTypes Type { get; set; }
 		public string Input { get; set; }
 		public string Output { get; set; }
-	}
-
-	public class GuildAction
-	{
-		public GuildActionAlias Alias { get; set; }
-		public GuildActionTrigger Trigger { get; set; }
-
-		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
 	}
 }

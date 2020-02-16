@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Skyra.Database;
 using Skyra.Events;
 using Skyra.Models;
 using Skyra.Monitors;
@@ -24,6 +26,10 @@ namespace Skyra
 
 			PopulateCache(client);
 			await client.ConnectAsync();
+
+			await using var db = new SkyraDatabaseContext();
+			// await db.Database.EnsureCreatedAsync();
+			Console.WriteLine(db.Database.GenerateCreateScript());
 		}
 
 		private static void PopulateCache(Client client)

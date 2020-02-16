@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Skyra.Database.Models
 {
 	public class GuildPermission
@@ -10,7 +12,8 @@ namespace Skyra.Database.Models
 		public virtual Guild Guild { get; set; }
 	}
 
-	public struct GuildPermissionNode
+	[ComplexType]
+	public class GuildPermissionNode
 	{
 		public ulong Id { get; set; }
 		public string[] Commands { get; set; }

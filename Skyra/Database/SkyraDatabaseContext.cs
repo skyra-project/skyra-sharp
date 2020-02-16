@@ -38,7 +38,8 @@ namespace Skyra.Database
 			var name = Environment.GetEnvironmentVariable("POSTGRES_NAME") ?? "skyra";
 
 			optionsBuilder.UseNpgsql(
-				$"User ID={user};Password={password};Server={host};Port={port};Database={name};Pooling=true;");
+				$"User ID={user};Password={password};Server={host};Port={port};Database={name};Pooling=true;",
+				options => options.EnableRetryOnFailure());
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

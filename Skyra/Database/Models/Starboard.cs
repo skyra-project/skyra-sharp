@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Skyra.Database.Models
+﻿namespace Skyra.Database.Models
 {
-    public class Starboard
-    {
-        public bool Enabled { get; set; }
-        public string UserId { get; set; }
-        public string MessageId { get; set; }
-        public string ChannelId { get; set; }
-        public string GuildId { get; set; }
-        public string StarMessageId { get; set; }
-        public int Stars { get; set; }
-    }
+	public class Starboard
+	{
+		public bool Enabled { get; set; } = true;
+		public ulong UserId { get; set; }
+		public ulong MessageId { get; set; }
+		public ulong ChannelId { get; set; }
+		public ulong GuildId { get; set; }
+		public ulong? StarMessageId { get; set; } = null;
+		public int Stars { get; set; } = 0;
+	}
 }

@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Skyra.Database.Models
 {
-    public class Giveaway
-    {
-        public string Title { get; set; }
-        public long EndsAt { get; set; }
-        public string GuildId { get; set; }
-        public string ChannelId { get; set; }
-        public string MessageId { get; set; }
-        public int Minimum { get; set; }
-        public int MinimumWinners { get; set; }
-    }
+	public class Giveaway
+	{
+		[MaxLength(256)]
+		public string Title { get; set; }
+
+		public DateTime EndsAt { get; set; }
+		public ulong GuildId { get; set; }
+		public ulong ChannelId { get; set; }
+		public ulong MessageId { get; set; }
+		public uint MinimumParticipants { get; set; }
+		public uint MinimumWinners { get; set; }
+	}
 }

@@ -64,6 +64,22 @@ namespace Skyra.Database
 			modelBuilder.Entity<Starboard>(entity =>
 				entity.HasKey(e => new {e.GuildId, e.MessageId})
 					.HasName("starboard_guild_message_idx"));
+
+			modelBuilder.Entity<Guild>(entity =>
+			{
+				entity.OwnsMany(x => x.Actions);
+				entity.OwnsMany(x => x.Tags);
+				entity.OwnsMany(x => x.CommandAutoDelete);
+				entity.OwnsMany(x => x.DisabledCommandChannels);
+				entity.OwnsMany(x => x.StickyRoles);
+			});
+
+			modelBuilder.Entity<GuildRole>(entity =>
+			{
+				entity.OwnsMany(x => x.Automatic);
+				entity.OwnsMany(x => x.MessageReactions);
+				entity.OwnsMany(x => x.UniqueRoleSets);
+			});
 		}
 	}
 }

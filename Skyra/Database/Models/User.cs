@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Skyra.Database.Models
 {
@@ -21,5 +22,7 @@ namespace Skyra.Database.Models
 		public DateTime? NextDaily { get; set; } = null;
 		public DateTime? NextReputation { get; set; } = null;
 		public ulong Vault { get; set; } = 0;
+
+		public ICollection<Member> Member { get; set; }
 	}
 }

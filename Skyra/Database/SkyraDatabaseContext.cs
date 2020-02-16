@@ -16,16 +16,16 @@ namespace Skyra.Database
 		{
 		}
 
-		public DbSet<Banner> Banners { get; set; }
-		public DbSet<Models.Client> ClientStorage { get; set; }
-		public DbSet<CommandUsage> CommandCounter { get; set; }
-		public DbSet<DashboardUser> DashboardUsers { get; set; }
-		public DbSet<Giveaway> Giveaway { get; set; }
-		public DbSet<Guild> Guilds { get; set; }
-		public DbSet<Member> Members { get; set; }
-		public DbSet<Moderation> Moderation { get; set; }
-		public DbSet<Starboard> Starboard { get; set; }
-		public DbSet<User> Users { get; set; }
+		public DbSet<Banner> Banners { get; set; } = null!;
+		public DbSet<Models.Client> ClientStorage { get; set; } = null!;
+		public DbSet<CommandUsage> CommandCounter { get; set; } = null!;
+		public DbSet<DashboardUser> DashboardUsers { get; set; } = null!;
+		public DbSet<Giveaway> Giveaway { get; set; } = null!;
+		public DbSet<Guild> Guilds { get; set; } = null!;
+		public DbSet<Member> Members { get; set; } = null!;
+		public DbSet<Moderation> Moderation { get; set; } = null!;
+		public DbSet<Starboard> Starboard { get; set; } = null!;
+		public DbSet<User> Users { get; set; } = null!;
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

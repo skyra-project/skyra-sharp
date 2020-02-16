@@ -6,7 +6,7 @@ namespace Skyra.Docker
 {
 	internal static class SkyraDocker
 	{
-		private static void Main(string[] args)
+		private static void Main()
 		{
 			var scriptDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
 

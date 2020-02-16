@@ -29,33 +29,43 @@ namespace Skyra.Database.Models
 		public GuildMusic Music { get; set; }
 	}
 
-	public class GuildTag(string name, string content)
+	public struct GuildTag
 	{
+		[JsonProperty("name")]
+		public string Name { get; set; }
+
+		[JsonProperty("content")]
+		public string Content { get; set; }
 	}
 
-	public class GuildCommandAutoDelete(string command, TimeSpan duration)
+	public struct GuildCommandAutoDelete
 	{
+		[JsonProperty("command")]
+		public string Command { get; set; }
+
+		[JsonProperty("duration")]
+		public TimeSpan Duration { get; set; }
 	}
 
-	public class GuildDisabledCommandChannels
+	public struct GuildDisabledCommandChannels
 	{
 		[JsonProperty("channel")]
 		public ulong Channel { get; set; }
 
 		[JsonProperty("commands")]
-		public string[] Commands { get; set; } = new string[0];
+		public string[] Commands { get; set; }
 	}
 
-	public class GuildStickyRole
+	public struct GuildStickyRole
 	{
 		[JsonProperty("user")]
 		public ulong User { get; set; }
 
 		[JsonProperty("roles")]
-		public ulong[] Roles { get; set; } = new ulong[0];
+		public ulong[] Roles { get; set; }
 	}
 
-	public class GuildPermissionNode
+	public struct GuildPermissionNode
 	{
 		[JsonProperty("id")]
 		public ulong Id { get; set; }
@@ -122,7 +132,7 @@ namespace Skyra.Database.Models
 		public virtual Guild Guild { get; set; }
 	}
 
-	public class GuildRolesAutomatic
+	public struct GuildRolesAutomatic
 	{
 		[JsonProperty("role_id")]
 		public ulong RoleId { get; set; }
@@ -131,7 +141,7 @@ namespace Skyra.Database.Models
 		public ulong Points { get; set; }
 	}
 
-	public class GuildRolesReaction
+	public struct GuildRolesReaction
 	{
 		[JsonProperty("role_id")]
 		public ulong RoleId { get; set; }
@@ -143,7 +153,7 @@ namespace Skyra.Database.Models
 		public ulong MessageId { get; set; }
 	}
 
-	public class GuildRolesRoleSet
+	public struct GuildRolesRoleSet
 	{
 		[JsonProperty("name")]
 		public string Name { get; set; }
@@ -303,7 +313,7 @@ namespace Skyra.Database.Models
 		public virtual Guild Guild { get; set; }
 	}
 
-	public class GuildActionAlias
+	public struct GuildActionAlias
 	{
 		[JsonProperty("command")]
 		public string Command { get; set; }
@@ -317,10 +327,10 @@ namespace Skyra.Database.Models
 		React
 	}
 
-	public class GuildActionTrigger
+	public struct GuildActionTrigger
 	{
 		[JsonProperty("type")]
-		public GuildActionTriggerTypes Type { get; set; } = GuildActionTriggerTypes.React;
+		public GuildActionTriggerTypes Type { get; set; }
 
 		[JsonProperty("input")]
 		public string Input { get; set; }

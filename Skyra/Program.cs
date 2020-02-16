@@ -26,10 +26,6 @@ namespace Skyra
 
 			PopulateCache(client);
 			await client.ConnectAsync();
-
-			await using var db = new SkyraDatabaseContext();
-			// await db.Database.EnsureCreatedAsync();
-			Console.WriteLine(db.Database.GenerateCreateScript());
 		}
 
 		private static void PopulateCache(Client client)

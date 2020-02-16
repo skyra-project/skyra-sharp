@@ -14,6 +14,7 @@ namespace Skyra.Database.Models
 		public GuildTag[] Tags { get; set; } = new GuildTag[0];
 		public GuildStickyRole[] StickyRoles { get; set; } = new GuildStickyRole[0];
 		public GuildCommandAutoDelete[] CommandAutoDelete { get; set; } = new GuildCommandAutoDelete[0];
+
 		public GuildDisabledCommandChannels[] DisabledCommandChannels { get; set; } =
 			new GuildDisabledCommandChannels[0];
 

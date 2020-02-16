@@ -23,14 +23,10 @@ namespace Skyra.Cache.Stores
 		public async Task SetAsync(Message entry, string? parent = null)
 		{
 			if (entry.Member == null)
-			{
 				await Task.WhenAll(Client.Users.SetAsync(entry.Author), SetAsync(new CachedMessage(entry), parent));
-			}
 			else
-			{
 				await Task.WhenAll(Client.Users.SetAsync(entry.Author), SetAsync(new CachedMessage(entry), parent),
 					Client.Members.SetAsync(new CachedGuildMember(entry.Member)));
-			}
 		}
 
 		public override async Task SetAsync(CachedMessage entry, string? parent = null)
@@ -41,6 +37,8 @@ namespace Skyra.Cache.Stores
 		}
 
 		public override Task SetAsync(IEnumerable<CachedMessage> entries, string? parent = null)
-			=> Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+		{
+			return Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+		}
 	}
 }

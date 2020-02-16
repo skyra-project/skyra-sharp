@@ -20,15 +20,23 @@ namespace Skyra.Cache.Stores
 		}
 
 		public Task SetAsync(User entry, string? parent = null)
-			=> SetAsync(new CachedUser(entry), parent);
+		{
+			return SetAsync(new CachedUser(entry), parent);
+		}
 
 		public override Task SetAsync(CachedUser entry, string? parent = null)
-			=> Database.SetAddAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
+		{
+			return Database.SetAddAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
+		}
 
 		public Task SetAsync(IEnumerable<User> entries, string? parent = null)
-			=> Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+		{
+			return Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+		}
 
 		public override Task SetAsync(IEnumerable<CachedUser> entries, string? parent = null)
-			=> Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+		{
+			return Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+		}
 	}
 }

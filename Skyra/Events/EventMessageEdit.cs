@@ -14,7 +14,9 @@ namespace Skyra.Events
 		}
 
 		private void Run(MessageUpdatePayload message)
-			=> Task.Run(() => RunAsync(message));
+		{
+			Task.Run(() => RunAsync(message));
+		}
 
 		private async Task RunAsync(MessageUpdatePayload messageUpdate)
 		{
@@ -27,7 +29,8 @@ namespace Skyra.Events
 		}
 
 		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CachedMessage? previousMessage)
-			=> new Message
+		{
+			return new Message
 			{
 				Id = messageUpdate.Id,
 				Content = messageUpdate.Content,
@@ -39,5 +42,6 @@ namespace Skyra.Events
 				GuildId = messageUpdate.GuildId,
 				WebhookId = messageUpdate.WebhookId
 			};
+		}
 	}
 }

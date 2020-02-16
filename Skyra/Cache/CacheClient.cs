@@ -8,6 +8,19 @@ namespace Skyra.Cache
 {
 	public class CacheClient
 	{
+		public CacheClient(string prefix)
+		{
+			Prefix = prefix;
+			Channels = new ChannelStore(this);
+			Emojis = new EmojiStore(this);
+			Guilds = new GuildStore(this);
+			Members = new MemberStore(this);
+			Messages = new MessageStore(this);
+			Roles = new RoleStore(this);
+			Users = new UserStore(this);
+			VoiceStates = new VoiceStateStore(this);
+		}
+
 		public string Prefix { get; }
 		public ConnectionPool Pool { get; } = new ConnectionPool();
 
@@ -33,19 +46,6 @@ namespace Skyra.Cache
 		public UserStore Users { get; }
 
 		public VoiceStateStore VoiceStates { get; }
-
-		public CacheClient(string prefix)
-		{
-			Prefix = prefix;
-			Channels = new ChannelStore(this);
-			Emojis = new EmojiStore(this);
-			Guilds = new GuildStore(this);
-			Members = new MemberStore(this);
-			Messages = new MessageStore(this);
-			Roles = new RoleStore(this);
-			Users = new UserStore(this);
-			VoiceStates = new VoiceStateStore(this);
-		}
 
 		public async Task ConnectAsync(string url)
 		{

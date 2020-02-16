@@ -1,5 +1,3 @@
-using System;
-
 namespace Skyra.Models
 {
 	public readonly ref struct ClientOptions

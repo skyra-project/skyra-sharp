@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using RabbitMQ.Client.Impl;
 using Skyra.Structures;
 using Spectacles.NET.Types;
 

@@ -11,7 +11,7 @@ namespace Skyra.Database.Models
 		public string[] BadgeList { get; set; } = new string[0];
 		public uint Color { get; set; } = 0x000000;
 		public ulong[] Marry { get; set; } = new ulong[0];
-		public long Money { get; set; } = 0;
+		public ulong Money { get; set; } = 0;
 		public uint PointCount { get; set; } = 0;
 		public uint ReputationCount { get; set; } = 0;
 		public string ThemeLevel { get; set; } = "1001";
@@ -20,6 +20,6 @@ namespace Skyra.Database.Models
 		public bool ModerationDm { get; set; } = true;
 		public DateTime? NextDaily { get; set; } = null;
 		public DateTime? NextReputation { get; set; } = null;
-		public int Vault { get; set; } = 0;
+		public ulong Vault { get; set; } = 0;
 	}
 }

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
-using Spectacles.NET.Types;
-using Spectacles.NET.Gateway;
-using Spectacles.NET.Gateway.Event;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Broker.Amqp.EventArgs;
+using Spectacles.NET.Gateway;
+using Spectacles.NET.Gateway.Event;
+using Spectacles.NET.Types;
 using Spectacles.NET.Util.Logging;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -17,20 +17,18 @@ namespace Skyra.Gateway.Core
 {
 	public class GatewayHandler
 	{
-		private readonly Logger _logger = new LoggerConfiguration()
-			.WriteTo.Console()
-			.CreateLogger();
-
 		private const int DiscordShardingFormula = 22;
 
 		private const LogLevel MinimumLogLevel = LogLevel.DEBUG;
 
-		private readonly Uri _brokerUri;
-
 		private readonly AmqpBroker _broker;
+
+		private readonly Uri _brokerUri;
 		private readonly Cluster _gatewayCluster;
 
-		private int ShardCount => _gatewayCluster.Gateway.ShardCount;
+		private readonly Logger _logger = new LoggerConfiguration()
+			.WriteTo.Console()
+			.CreateLogger();
 
 		public GatewayHandler(string token, string brokerName, Uri brokerUri, IdentifyOptions identifyOptions,
 			int? shardCount)
@@ -50,6 +48,8 @@ namespace Skyra.Gateway.Core
 
 			_broker.Receive += BrokerOnReceive;
 		}
+
+		private int ShardCount => _gatewayCluster.Gateway.ShardCount;
 
 		public async Task ConnectAsync()
 		{
@@ -127,6 +127,8 @@ namespace Skyra.Gateway.Core
 		}
 
 		private void OnError(object? _, ExceptionEventArgs e)
-			=> _logger.Error($"[{e.ShardId}] {e.Exception}");
+		{
+			_logger.Error($"[{e.ShardId}] {e.Exception}");
+		}
 	}
 }

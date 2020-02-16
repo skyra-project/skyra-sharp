@@ -1,6 +1,6 @@
 ﻿namespace Skyra.Database.Models
 {
-	public class Guild
+	public sealed class Guild
 	{
 		public ulong Id { get; set; }
 		public string Prefix { get; set; } = "s!";
@@ -10,7 +10,7 @@
 		public string[] DisabledCommands { get; set; } = new string[0];
 		public GuildTag[] Tags { get; set; } = new GuildTag[0];
 		public GuildStickyRole[] StickyRoles { get; set; } = new GuildStickyRole[0];
-		public GuildActionTrigger[] Actions { get; set; } = new GuildActionTrigger[0];
+		public GuildAction[] Actions { get; set; } = new GuildAction[0];
 		public GuildCommandAutoDelete[] CommandAutoDelete { get; set; } = new GuildCommandAutoDelete[0];
 
 		public GuildDisabledCommandChannels[] DisabledCommandChannels { get; set; } =

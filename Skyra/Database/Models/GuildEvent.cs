@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public class GuildEvent
+	public sealed class GuildEvent
 	{
 		public ulong Id { get; set; }
 		public bool BanAdd { get; set; } = false;
@@ -13,6 +13,6 @@ namespace Skyra.Database.Models
 		public bool Twemoji { get; set; } = false;
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

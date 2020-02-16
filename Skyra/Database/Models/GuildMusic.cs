@@ -2,7 +2,7 @@ using System;
 
 namespace Skyra.Database.Models
 {
-	public class GuildMusic
+	public sealed class GuildMusic
 	{
 		public ulong Id { get; set; }
 		public uint DefaultVolume { get; set; } = 100;
@@ -11,6 +11,6 @@ namespace Skyra.Database.Models
 		public bool AllowStreams { get; set; } = false;
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

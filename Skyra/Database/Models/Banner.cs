@@ -2,7 +2,7 @@
 
 namespace Skyra.Database.Models
 {
-	public class Banner
+	public sealed class Banner
 	{
 		[MaxLength(6)]
 		public string Id { get; set; }

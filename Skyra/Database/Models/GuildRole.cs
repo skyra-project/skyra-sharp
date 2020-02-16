@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public class GuildRole
+	public sealed class GuildRole
 	{
 		public ulong Id { get; set; }
 		public string Administrator { get; set; }
@@ -20,6 +20,6 @@ namespace Skyra.Database.Models
 		public GuildRolesRoleSet[] UniqueRoleSets { get; set; }
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

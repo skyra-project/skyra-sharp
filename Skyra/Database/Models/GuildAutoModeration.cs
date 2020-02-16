@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public class GuildAutoModeration
+	public sealed class GuildAutoModeration
 	{
 		public ulong Id { get; set; }
 		public ulong[] IgnoredRoles { get; set; } = new ulong[0];
@@ -17,6 +17,6 @@ namespace Skyra.Database.Models
 		public GuildModerationNoMentionSpam NoMentionSpam { get; set; }
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

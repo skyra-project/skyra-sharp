@@ -2,7 +2,7 @@
 
 namespace Skyra.Database.Models
 {
-	public class User
+	public sealed class User
 	{
 		public ulong Id { get; set; }
 		public uint CommandUses { get; set; } = 0;

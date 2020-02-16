@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public class GuildChannel
+	public sealed class GuildChannel
 	{
 		public ulong Id { get; set; }
 		public ulong? Announcements { get; set; } = null;
@@ -15,6 +15,6 @@ namespace Skyra.Database.Models
 		public ulong? ReactionLogs { get; set; } = null;
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace Skyra.Database.Models
 {
-	public class DashboardUser
+	public sealed class DashboardUser
 	{
 		public ulong Id { get; set; }
 		public string AccessToken { get; set; }

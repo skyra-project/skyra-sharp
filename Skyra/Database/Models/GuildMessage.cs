@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public class GuildMessage
+	public sealed class GuildMessage
 	{
 		public ulong Id { get; set; }
 		public string? Farewell { get; set; } = null;
@@ -14,6 +14,6 @@ namespace Skyra.Database.Models
 		public bool ModeratorNameDisplay { get; set; } = true;
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

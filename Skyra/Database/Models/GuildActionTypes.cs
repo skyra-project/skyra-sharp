@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public enum GuildActionTriggerTypes
+	public enum GuildActionTypes
 	{
 		Alias,
 		React

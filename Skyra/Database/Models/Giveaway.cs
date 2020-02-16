@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Skyra.Database.Models
 {
-	public class Giveaway
+	public sealed class Giveaway
 	{
 		[MaxLength(256)]
 		public string Title { get; set; }

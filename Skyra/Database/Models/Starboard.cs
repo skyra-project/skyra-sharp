@@ -1,6 +1,6 @@
 ﻿namespace Skyra.Database.Models
 {
-	public class Starboard
+	public sealed class Starboard
 	{
 		public bool Enabled { get; set; } = true;
 		public ulong UserId { get; set; }

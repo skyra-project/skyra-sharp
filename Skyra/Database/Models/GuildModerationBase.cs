@@ -15,5 +15,8 @@ namespace Skyra.Database.Models
 		public TimeSpan HardActionDuration { get; set; } = TimeSpan.Zero;
 		public ushort HardActionThresholdMaximum { get; set; } = 120;
 		public TimeSpan HardActionThresholdDuration { get; set; } = TimeSpan.FromMinutes(2);
+
+		public ulong GuildId { get; set; }
+		public GuildAutoModeration Guild { get; set; }
 	}
 }

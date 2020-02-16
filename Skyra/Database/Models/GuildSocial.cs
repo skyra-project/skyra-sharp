@@ -1,6 +1,6 @@
 namespace Skyra.Database.Models
 {
-	public class GuildSocial
+	public sealed class GuildSocial
 	{
 		public ulong Id { get; set; }
 		public bool Enabled { get; set; } = true;
@@ -9,6 +9,6 @@ namespace Skyra.Database.Models
 		public float Multiplier { get; set; } = 1.0f;
 
 		public ulong GuildId { get; set; }
-		public virtual Guild Guild { get; set; }
+		public Guild Guild { get; set; }
 	}
 }

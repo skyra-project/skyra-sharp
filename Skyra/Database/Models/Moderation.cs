@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Database.Models
 {
-	public class Moderation
+	public sealed class Moderation
 	{
 		public uint CaseId { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.Now;

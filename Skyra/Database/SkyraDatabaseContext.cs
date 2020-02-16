@@ -5,7 +5,7 @@ using Skyra.Database.Models;
 
 namespace Skyra.Database
 {
-	public class SkyraDatabaseContext : DbContext
+	public sealed class SkyraDatabaseContext : DbContext
 	{
 		public SkyraDatabaseContext()
 		{
@@ -16,16 +16,16 @@ namespace Skyra.Database
 		{
 		}
 
-		public virtual DbSet<Banner> Banners { get; set; }
-		public virtual DbSet<Models.Client> ClientStorage { get; set; }
-		public virtual DbSet<CommandUsage> CommandCounter { get; set; }
-		public virtual DbSet<DashboardUser> DashboardUsers { get; set; }
-		public virtual DbSet<Giveaway> Giveaway { get; set; }
-		public virtual DbSet<Guild> Guilds { get; set; }
-		public virtual DbSet<Member> Members { get; set; }
-		public virtual DbSet<Moderation> Moderation { get; set; }
-		public virtual DbSet<Starboard> Starboard { get; set; }
-		public virtual DbSet<User> Users { get; set; }
+		public DbSet<Banner> Banners { get; set; }
+		public DbSet<Models.Client> ClientStorage { get; set; }
+		public DbSet<CommandUsage> CommandCounter { get; set; }
+		public DbSet<DashboardUser> DashboardUsers { get; set; }
+		public DbSet<Giveaway> Giveaway { get; set; }
+		public DbSet<Guild> Guilds { get; set; }
+		public DbSet<Member> Members { get; set; }
+		public DbSet<Moderation> Moderation { get; set; }
+		public DbSet<Starboard> Starboard { get; set; }
+		public DbSet<User> Users { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

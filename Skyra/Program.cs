@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Skyra.Database;
 using Skyra.Events;
 using Skyra.Models;
 using Skyra.Monitors;

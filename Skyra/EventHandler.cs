@@ -111,7 +111,7 @@ namespace Skyra
 				case GatewayEvent.WEBHOOKS_UPDATE:
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(nameof(@event), @event, null);
+					throw new ArgumentOutOfRangeException(nameof(@event), @event.ToString(), null);
 			}
 		}
 	}

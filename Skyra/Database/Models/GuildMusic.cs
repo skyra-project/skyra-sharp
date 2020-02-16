@@ -4,6 +4,7 @@ namespace Skyra.Database.Models
 {
 	public class GuildMusic
 	{
+		public ulong Id { get; set; }
 		public uint DefaultVolume { get; set; } = 100;
 		public TimeSpan MaximumDuration { get; set; } = TimeSpan.FromHours(1);
 		public ushort MaximumEntriesPerUser { get; set; } = 100;

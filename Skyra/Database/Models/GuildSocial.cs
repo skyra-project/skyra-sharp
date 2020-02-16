@@ -2,6 +2,7 @@ namespace Skyra.Database.Models
 {
 	public class GuildSocial
 	{
+		public ulong Id { get; set; }
 		public bool Enabled { get; set; } = true;
 		public ulong[] IgnoredChannels { get; set; } = new ulong[0];
 		public ulong? LevelUpChannel { get; set; } = null;

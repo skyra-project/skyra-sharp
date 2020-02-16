@@ -2,6 +2,7 @@ namespace Skyra.Database.Models
 {
 	public class GuildChannel
 	{
+		public ulong Id { get; set; }
 		public ulong? Announcements { get; set; } = null;
 		public ulong? Greetings { get; set; } = null;
 		public ulong? Farewell { get; set; } = null;

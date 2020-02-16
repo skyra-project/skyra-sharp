@@ -2,6 +2,7 @@ namespace Skyra.Database.Models
 {
 	public class GuildEvent
 	{
+		public ulong Id { get; set; }
 		public bool BanAdd { get; set; } = false;
 		public bool BanRemove { get; set; } = false;
 		public bool MemberAdd { get; set; } = false;

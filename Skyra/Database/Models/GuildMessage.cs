@@ -2,6 +2,7 @@ namespace Skyra.Database.Models
 {
 	public class GuildMessage
 	{
+		public ulong Id { get; set; }
 		public string? Farewell { get; set; } = null;
 		public string? Greeting { get; set; } = null;
 		public string? JoinDm { get; set; } = null;

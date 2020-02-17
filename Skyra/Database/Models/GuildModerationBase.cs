@@ -17,6 +17,10 @@ namespace Skyra.Database.Models
 		public TimeSpan HardActionThresholdDuration { get; set; } = TimeSpan.FromMinutes(2);
 
 		public ulong GuildId { get; set; }
-		public GuildAutoModeration Guild { get; set; }
+
+		/// <summary>
+		///     The navigation property to the <see cref="GuildAutoModeration" /> entity.
+		/// </summary>
+		public GuildAutoModeration Guild { get; set; } = null!;
 	}
 }

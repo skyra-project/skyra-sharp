@@ -80,13 +80,13 @@ namespace Skyra.Database.Models
 		[NotMapped]
 		public GuildTag[] Tags { get; set; } = new GuildTag[0];
 
-		public GuildPermission Permission { get; set; }
-		public GuildChannel Channel { get; set; }
-		public GuildEvent Event { get; set; }
-		public GuildMessage Message { get; set; }
-		public GuildRole Role { get; set; }
-		public GuildAutoModeration AutoModeration { get; set; }
-		public GuildSocial Social { get; set; }
-		public GuildMusic Music { get; set; }
+		public GuildPermission Permission { get; set; } = null!;
+		public GuildChannel Channel { get; set; } = null!;
+		public GuildEvent Event { get; set; } = null!;
+		public GuildMessage Message { get; set; } = null!;
+		public GuildRole Role { get; set; } = null!;
+		public GuildAutoModeration AutoModeration { get; set; } = null!;
+		public GuildSocial Social { get; set; } = null!;
+		public GuildMusic Music { get; set; } = null!;
 	}
 }

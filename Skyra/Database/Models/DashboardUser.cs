@@ -18,13 +18,13 @@ namespace Skyra.Database.Models
 		///     The access token used by the end-user to retrieve information from Discord.
 		/// </summary>
 		[Column("access_token")]
-		public string AccessToken { get; set; }
+		public string AccessToken { get; set; } = null!;
 
 		/// <summary>
 		///     The refresh token used to get a new <see cref="AccessToken" /> before <see cref="ExpiresAt" /> runs out.
 		/// </summary>
 		[Column("refresh_token")]
-		public string RefreshToken { get; set; }
+		public string RefreshToken { get; set; } = null!;
 
 		/// <summary>
 		///     The time in which this entry will be automatically invalidated and removed from the database.

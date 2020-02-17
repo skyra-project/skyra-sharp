@@ -7,6 +7,10 @@ namespace Skyra.Database.Models
 		public GuildPermissionNode[] Roles { get; set; } = new GuildPermissionNode[0];
 
 		public ulong GuildId { get; set; }
-		public Guild Guild { get; set; }
+
+		/// <summary>
+		///     The navigation property to the <see cref="Guild" /> entity.
+		/// </summary>
+		public Guild Guild { get; set; } = null!;
 	}
 }

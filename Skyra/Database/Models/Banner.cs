@@ -11,21 +11,21 @@ namespace Skyra.Database.Models
 		/// </summary>
 		[Column("id")]
 		[MaxLength(6)]
-		public string Id { get; set; }
+		public string Id { get; set; } = null!;
 
 		/// <summary>
 		///     The group this banner belongs to.
 		/// </summary>
 		[Column("group")]
 		[MaxLength(32)]
-		public string Group { get; set; }
+		public string Group { get; set; } = null!;
 
 		/// <summary>
 		///     The title of this banner.
 		/// </summary>
 		[Column("title")]
 		[MaxLength(128)]
-		public string Title { get; set; }
+		public string Title { get; set; } = null!;
 
 		/// <summary>
 		///     The author of this banner, referencing to a Discord User ID.

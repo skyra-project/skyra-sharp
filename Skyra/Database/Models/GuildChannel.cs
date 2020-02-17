@@ -15,6 +15,10 @@ namespace Skyra.Database.Models
 		public ulong? ReactionLogs { get; set; } = null;
 
 		public ulong GuildId { get; set; }
-		public Guild Guild { get; set; }
+
+		/// <summary>
+		///     The navigation property to the <see cref="Guild" /> entity.
+		/// </summary>
+		public Guild Guild { get; set; } = null!;
 	}
 }

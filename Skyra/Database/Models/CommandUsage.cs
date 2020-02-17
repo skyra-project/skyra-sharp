@@ -9,12 +9,12 @@ namespace Skyra.Database.Models
 		///     The name of the command that was run.
 		/// </summary>
 		[Column("id")]
-		public string Id { get; set; }
+		public string Id { get; set; } = null!;
 
 		/// <summary>
 		///     The amount of uses the command has, globally.
 		/// </summary>
 		[Column("uses")]
-		public uint Uses { get; set; }
+		public uint Uses { get; set; } = 0;
 	}
 }

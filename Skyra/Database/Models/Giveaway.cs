@@ -11,7 +11,7 @@ namespace Skyra.Database.Models
 		/// </summary>
 		[Column("title")]
 		[MaxLength(256)]
-		public string Title { get; set; }
+		public string Title { get; set; } = null!;
 
 		/// <summary>
 		///     The time in which this giveaway ends.
@@ -41,12 +41,12 @@ namespace Skyra.Database.Models
 		///     The minimum amount of participants this giveaway needs in order to search for winners.
 		/// </summary>
 		[Column("minimum_participants")]
-		public uint MinimumParticipants { get; set; }
+		public uint MinimumParticipants { get; set; } = 1;
 
 		/// <summary>
 		///     The minimum amount of winners that will be picked from the giveaway.
 		/// </summary>
 		[Column("minimum_winners")]
-		public uint MinimumWinners { get; set; }
+		public uint MinimumWinners { get; set; } = 1;
 	}
 }

@@ -9,6 +9,10 @@ namespace Skyra.Database.Models
 		public float Multiplier { get; set; } = 1.0f;
 
 		public ulong GuildId { get; set; }
-		public Guild Guild { get; set; }
+
+		/// <summary>
+		///     The navigation property to the <see cref="Guild" /> entity.
+		/// </summary>
+		public Guild Guild { get; set; } = null!;
 	}
 }

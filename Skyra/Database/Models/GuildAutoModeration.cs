@@ -6,17 +6,21 @@ namespace Skyra.Database.Models
 		public ulong[] IgnoredRoles { get; set; } = new ulong[0];
 		public ulong[] IgnoredChannels { get; set; } = new ulong[0];
 
-		public GuildModerationAttachment Attachment { get; set; }
-		public GuildModerationCapital Capital { get; set; }
-		public GuildModerationLink Link { get; set; }
-		public GuildModerationMessage Message { get; set; }
-		public GuildModerationNewLine NewLine { get; set; }
-		public GuildModerationInvites Invites { get; set; }
-		public GuildModerationWord Word { get; set; }
-		public GuildModerationReaction Reaction { get; set; }
-		public GuildModerationNoMentionSpam NoMentionSpam { get; set; }
+		public GuildModerationAttachment Attachment { get; set; } = null!;
+		public GuildModerationCapital Capital { get; set; } = null!;
+		public GuildModerationLink Link { get; set; } = null!;
+		public GuildModerationMessage Message { get; set; } = null!;
+		public GuildModerationNewLine NewLine { get; set; } = null!;
+		public GuildModerationInvites Invites { get; set; } = null!;
+		public GuildModerationWord Word { get; set; } = null!;
+		public GuildModerationReaction Reaction { get; set; } = null!;
+		public GuildModerationNoMentionSpam NoMentionSpam { get; set; } = null!;
 
 		public ulong GuildId { get; set; }
-		public Guild Guild { get; set; }
+
+		/// <summary>
+		///     The navigation property to the <see cref="Guild" /> entity.
+		/// </summary>
+		public Guild Guild { get; set; } = null!;
 	}
 }

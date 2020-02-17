@@ -133,6 +133,10 @@ namespace Skyra.Database.Models
 		public RoleSet[] UniqueRoleSets { get; set; } = new RoleSet[0];
 
 		public ulong GuildId { get; set; }
-		public Guild Guild { get; set; }
+
+		/// <summary>
+		///     The navigation property to the <see cref="Guild" /> entity.
+		/// </summary>
+		public Guild Guild { get; set; } = null!;
 	}
 }

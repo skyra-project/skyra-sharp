@@ -21,24 +21,24 @@ namespace Skyra.Database.Models
 		///     The user blacklist, keyed by their Discord User <see cref="Spectacles.NET.Types.User.Id" />.
 		/// </summary>
 		[Column("user_blacklist")]
-		public ulong[] UserBlacklist { get; set; }
+		public ulong[] UserBlacklist { get; set; } = new ulong[0];
 
 		/// <summary>
 		///     The guild blacklist, keyed by their Discord Guild <see cref="Spectacles.NET.Types.Guild.Id" />.
 		/// </summary>
 		[Column("guild_blacklist")]
-		public ulong[] GuildBlacklist { get; set; }
+		public ulong[] GuildBlacklist { get; set; } = new ulong[0];
 
 		/// <summary>
 		///     The boosted users, keyed by their Discord User <see cref="Spectacles.NET.Types.User.Id" />.
 		/// </summary>
 		[Column("boosts_users")]
-		public ulong[] BoostsUsers { get; set; }
+		public ulong[] BoostsUsers { get; set; } = new ulong[0];
 
 		/// <summary>
 		///     The boosted guilds, keyed by their Discord Guild <see cref="Spectacles.NET.Types.Guild.Id" />.
 		/// </summary>
 		[Column("boosts_guilds")]
-		public ulong[] BoostsGuilds { get; set; }
+		public ulong[] BoostsGuilds { get; set; } = new ulong[0];
 	}
 }

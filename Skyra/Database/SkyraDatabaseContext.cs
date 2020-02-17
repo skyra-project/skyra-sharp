@@ -50,7 +50,7 @@ namespace Skyra.Database
 			modelBuilder.Entity<Member>(entity =>
 			{
 				entity.HasKey(e => new {e.GuildId, e.UserId});
-				entity.HasIndex(e => e.PointCount)
+				entity.HasIndex(e => e.Points)
 					.HasSortOrder(SortOrder.Descending);
 			});
 

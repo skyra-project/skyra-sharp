@@ -1,17 +1,22 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
-	[ComplexType]
-	public sealed class GuildPermissionNode
+	public struct GuildPermissionNode
 	{
-		public GuildPermissionNode(ulong id, string[] commands)
-		{
-			Id = id;
-			Commands = commands;
-		}
-
+		[JsonProperty("i")]
 		public ulong Id { get; set; }
-		public string[] Commands { get; set; }
+
+		/// <summary>
+		///     The commands to be allowed for this permission node
+		/// </summary>
+		[JsonProperty("a")]
+		public string[] Allowed { get; set; }
+
+		/// <summary>
+		///     The commands to be disallowed for this permission node
+		/// </summary>
+		[JsonProperty("d")]
+		public string[] Disallowed { get; set; }
 	}
 }

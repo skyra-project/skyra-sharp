@@ -6,6 +6,7 @@ namespace Skyra.Database.Models
 	// TODO(kyranet): Discuss with the team whether or not we want to migrate this to Redis.
 	// TODO(kyranet): Investigate which one of PGSQL or Redis is safer for sensitive information.
 	// TODO(kyranet): Find a way to securely encrypt this data.
+	[Table("dashboard_users")]
 	public sealed class DashboardUser
 	{
 		/// <summary>

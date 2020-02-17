@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Skyra.Database.Models
 {
+	[Table("guild_auto_moderation")]
 	public sealed class GuildAutoModeration
 	{
-		public ulong Id { get; set; }
 		public ulong[] IgnoredRoles { get; set; } = new ulong[0];
 		public ulong[] IgnoredChannels { get; set; } = new ulong[0];
 
@@ -16,6 +19,11 @@ namespace Skyra.Database.Models
 		public GuildModerationReaction Reaction { get; set; } = null!;
 		public GuildModerationNoMentionSpam NoMentionSpam { get; set; } = null!;
 
+		/// <summary>
+		///     The <see cref="Guild" /> foreign key and primary key for this entity.
+		/// </summary>
+		[Key]
+		[Column("guild_id")]
 		public ulong GuildId { get; set; }
 
 		/// <summary>

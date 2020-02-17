@@ -4,13 +4,25 @@ using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
+	[Table("guilds")]
 	public sealed class Guild
 	{
+		[Column("id")]
 		public ulong Id { get; set; }
+
+		[Column("prefix")]
 		public string Prefix { get; set; } = "s!";
+
+		[Column("disable_natural_prefix")]
 		public bool DisableNaturalPrefix { get; set; } = false;
+
+		[Column("language")]
 		public string Language { get; set; } = "en-US";
+
+		[Column("command_uses")]
 		public uint CommandUses { get; set; } = 0;
+
+		[Column("disabled_commands")]
 		public string[] DisabledCommands { get; set; } = new string[0];
 
 		/// <summary>

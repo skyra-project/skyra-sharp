@@ -2,6 +2,7 @@
 
 namespace Skyra.Database.Models
 {
+	[Table("command_usages")]
 	public sealed class CommandUsage
 	{
 		// TODO(TylerTron1998): Add reference to the Command structure.

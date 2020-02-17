@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Newtonsoft.Json;
@@ -7,12 +8,6 @@ namespace Skyra.Database.Models
 	[Table("guild_roles")]
 	public sealed class GuildRole
 	{
-		/// <summary>
-		///     The <see cref="Spectacles.NET.Types.Guild" />.
-		/// </summary>
-		[Column("id")]
-		public ulong Id { get; set; }
-
 		/// <summary>
 		///     The collection of <see cref="Spectacles.NET.Types.Role" />s which have Administrator permission level.
 		/// </summary>
@@ -132,6 +127,11 @@ namespace Skyra.Database.Models
 		[NotMapped]
 		public RoleSet[] UniqueRoleSets { get; set; } = new RoleSet[0];
 
+		/// <summary>
+		///     The <see cref="Guild" /> foreign key and primary key for this entity.
+		/// </summary>
+		[Key]
+		[Column("guild_id")]
 		public ulong GuildId { get; set; }
 
 		/// <summary>

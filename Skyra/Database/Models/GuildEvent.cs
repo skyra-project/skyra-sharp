@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Skyra.Database.Models
 {
 	public sealed class GuildEvent
 	{
-		public ulong Id { get; set; }
 		public bool BanAdd { get; set; } = false;
 		public bool BanRemove { get; set; } = false;
 		public bool MemberAdd { get; set; } = false;
@@ -12,6 +14,11 @@ namespace Skyra.Database.Models
 		public bool MessageEdit { get; set; } = false;
 		public bool Twemoji { get; set; } = false;
 
+		/// <summary>
+		///     The <see cref="Guild" /> foreign key and primary key for this entity.
+		/// </summary>
+		[Key]
+		[Column("guild_id")]
 		public ulong GuildId { get; set; }
 
 		/// <summary>

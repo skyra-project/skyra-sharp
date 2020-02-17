@@ -73,13 +73,6 @@ namespace Skyra.Database
 				entity.OwnsMany(x => x.DisabledCommandChannels);
 				entity.OwnsMany(x => x.StickyRoles);
 			});
-
-			modelBuilder.Entity<GuildRole>(entity =>
-			{
-				entity.OwnsMany(x => x.Automatic);
-				entity.OwnsMany(x => x.MessageReactions);
-				entity.OwnsMany(x => x.UniqueRoleSets);
-			});
 		}
 	}
 }

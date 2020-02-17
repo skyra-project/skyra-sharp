@@ -9,7 +9,8 @@ namespace Skyra.Database.Models
 		/// <summary>
 		///     The title for this giveaway entry.
 		/// </summary>
-		[Column("title"), MaxLength(256)]
+		[Column("title")]
+		[MaxLength(256)]
 		public string Title { get; set; }
 
 		/// <summary>

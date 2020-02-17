@@ -1,10 +1,9 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
-	[ComplexType]
-	public sealed class GuildCommandAutoDelete
+	public struct GuildCommandAutoDelete
 	{
 		public GuildCommandAutoDelete(string command, TimeSpan duration)
 		{
@@ -12,7 +11,16 @@ namespace Skyra.Database.Models
 			Duration = duration;
 		}
 
+		/// <summary>
+		///     The command to be automatically deleted when running.
+		/// </summary>
+		[JsonProperty("c")]
 		public string Command { get; set; }
+
+		/// <summary>
+		///     How long the command should stay until it's automatically deleted.
+		/// </summary>
+		[JsonProperty("d")]
 		public TimeSpan Duration { get; set; }
 	}
 }

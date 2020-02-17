@@ -45,34 +45,20 @@ namespace Skyra.Database
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Giveaway>(entity =>
-				entity.HasKey(e => new {e.GuildId, e.MessageId})
-					.HasName("giveaway_guild_message_idx"));
+				entity.HasKey(e => new {e.GuildId, e.MessageId}));
 
 			modelBuilder.Entity<Member>(entity =>
 			{
-				entity.HasKey(e => new {e.GuildId, e.UserId})
-					.HasName("members_guild_user_idx");
-
+				entity.HasKey(e => new {e.GuildId, e.UserId});
 				entity.HasIndex(e => e.PointCount)
 					.HasSortOrder(SortOrder.Descending);
 			});
 
 			modelBuilder.Entity<Moderation>(entity =>
-				entity.HasKey(e => new {e.GuildId, e.CaseId})
-					.HasName("moderation_guild_case_idx"));
+				entity.HasKey(e => new {e.GuildId, e.CaseId}));
 
 			modelBuilder.Entity<Starboard>(entity =>
-				entity.HasKey(e => new {e.GuildId, e.MessageId})
-					.HasName("starboard_guild_message_idx"));
-
-			modelBuilder.Entity<Guild>(entity =>
-			{
-				entity.OwnsMany(x => x.Actions);
-				entity.OwnsMany(x => x.Tags);
-				entity.OwnsMany(x => x.CommandAutoDelete);
-				entity.OwnsMany(x => x.DisabledCommandChannels);
-				entity.OwnsMany(x => x.StickyRoles);
-			});
+				entity.HasKey(e => new {e.GuildId, e.MessageId}));
 		}
 	}
 }

@@ -1,17 +1,25 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
-	[ComplexType]
-	public sealed class GuildStickyRole
+	public struct GuildStickyRole
 	{
-		public GuildStickyRole(ulong user, ulong[] roles)
+		public GuildStickyRole(ulong userId, ulong[] roles)
 		{
-			User = user;
+			UserId = userId;
 			Roles = roles;
 		}
 
-		public ulong User { get; set; }
+		/// <summary>
+		///     The <see cref="Spectacles.NET.Types.User" />'s ID this entry refers to.
+		/// </summary>
+		[JsonProperty("u")]
+		public ulong UserId { get; set; }
+
+		/// <summary>
+		///     The roles to be stuck with this entry's user.
+		/// </summary>
+		[JsonProperty("r")]
 		public ulong[] Roles { get; set; }
 	}
 }

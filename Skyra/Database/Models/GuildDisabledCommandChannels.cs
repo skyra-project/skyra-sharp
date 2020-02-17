@@ -1,17 +1,25 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
-	[ComplexType]
-	public sealed class GuildDisabledCommandChannels
+	public struct GuildDisabledCommandChannels
 	{
-		public GuildDisabledCommandChannels(ulong channel, string[] commands)
+		public GuildDisabledCommandChannels(ulong channelId, string[] commands)
 		{
-			Channel = channel;
+			ChannelId = channelId;
 			Commands = commands;
 		}
 
-		public ulong Channel { get; set; }
+		/// <summary>
+		///     The <see cref="Spectacles.NET.Types.Channel" />
+		/// </summary>
+		[JsonProperty("c")]
+		public ulong ChannelId { get; set; }
+
+		/// <summary>
+		///     The commands that are disabled for this entry's <see cref="ChannelId" />
+		/// </summary>
+		[JsonProperty("c")]
 		public string[] Commands { get; set; }
 	}
 }

@@ -1,9 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
-	[ComplexType]
-	public sealed class GuildTag
+	public struct GuildTag
 	{
 		public GuildTag(string name, string content)
 		{
@@ -11,7 +10,16 @@ namespace Skyra.Database.Models
 			Content = content;
 		}
 
+		/// <summary>
+		///     The tag's name.
+		/// </summary>
+		[JsonProperty("n")]
 		public string Name { get; set; }
+
+		/// <summary>
+		///     The tag's content
+		/// </summary>
+		[JsonProperty("c")]
 		public string Content { get; set; }
 	}
 }

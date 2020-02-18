@@ -1,46 +1,54 @@
+using System;
+
 namespace Skyra.Database.Models
 {
-	public struct GuildModerationSoftAction
+	[Flags]
+	public enum GuildModerationSoftAction : byte
 	{
 		/// <summary>
-		///     The raw bitfield number
+		///     No action taken, this represents a disabled moderation action.
 		/// </summary>
-		public byte Bitfield { get; private set; }
+		None = 0,
 
 		/// <summary>
-		///     Whether or not the soft action should issue a warning on the channel.
+		///     Whether or not the soft action should issue a warning on the channel
 		/// </summary>
-		public bool Alert
-		{
-			get => (Bitfield & 0b001) == 0b001;
-			set => Bitfield = (byte) (value ? Bitfield | 0b001 : Bitfield & 0b110);
-		}
+		Alert = 1,
 
 		/// <summary>
 		///     Whether or not the infraction should be logged in <see cref="GuildChannel.ModerationLogs" />.
 		/// </summary>
-		public bool Log
+		Log = 1 << 1,
+
+		/// <summary>
+		///     Whether or not the message should be deleted
+		/// </summary>
+		Delete = 1 << 2
+	}
+
+	public static class GuildModerationSoftActionExtensions
+	{
+		/// <summary>
+		///     Gets the value for a flag in this instance.
+		/// </summary>
+		/// <param name="value">The enum instance.</param>
+		/// <param name="flag">The flag to check.</param>
+		/// <returns>Whether or not the flag has been set.</returns>
+		public static bool HasFlagFast(this GuildModerationSoftAction value, GuildModerationSoftAction flag)
 		{
-			get => (Bitfield & 0b010) == 0b010;
-			set => Bitfield = (byte) (value ? Bitfield | 0b010 : Bitfield & 0b101);
+			return (value & flag) != 0;
 		}
 
 		/// <summary>
-		///     Whether or not the message should be deleted.
+		///     Sets the value for a flag in this instance.
 		/// </summary>
-		public bool Delete
+		/// <param name="value">The enum instance.</param>
+		/// <param name="flag">The flag to mutate.</param>
+		/// <param name="enable">Whether to set the values as 0 or as 1.</param>
+		public static void SetFlag(ref this GuildModerationSoftAction value, GuildModerationSoftAction flag,
+			bool enable)
 		{
-			get => (Bitfield & 0b100) == 0b100;
-			set => Bitfield = (byte) (value ? Bitfield | 0b100 : Bitfield & 0b011);
-		}
-
-		/// <summary>
-		///     Construct this instance from a bitfield.
-		/// </summary>
-		/// <param name="bitfield">The bitfield to use.</param>
-		public GuildModerationSoftAction(byte bitfield)
-		{
-			Bitfield = bitfield;
+			value = enable ? value | flag : value & ~flag;
 		}
 	}
 }

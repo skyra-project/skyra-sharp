@@ -25,20 +25,10 @@ namespace Skyra.Database.Models
 		public ulong[] IgnoredChannels { get; set; } = new ulong[0];
 
 		/// <summary>
-		///     The raw value, please use <see cref="SoftActionType" /> instead.
-		/// </summary>
-		[Column("soft_action_type")]
-		public byte SoftActionTypeRaw
-		{
-			get => SoftActionType.Bitfield;
-			set => SoftActionType = new GuildModerationSoftAction(value);
-		}
-
-		/// <summary>
 		///     The bitfield for the actions to take on every infraction.
 		/// </summary>
-		[NotMapped]
-		public GuildModerationSoftAction SoftActionType { get; set; } = new GuildModerationSoftAction(0x000);
+		[Column("soft_action_type", TypeName = "NUMERIC(1)")]
+		public GuildModerationSoftAction SoftActionType { get; set; } = GuildModerationSoftAction.None;
 
 		/// <summary>
 		///     The maximum accumulative infractions a user can have before a soft action is issued.

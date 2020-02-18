@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Skyra.Database.Models
 {
+	[Table("guild_moderation_reactions")]
 	public sealed class GuildModerationReaction : GuildModerationBase
 	{
 		public ushort Maximum { get; set; } = 10;

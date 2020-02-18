@@ -1,5 +1,8 @@
-﻿namespace Skyra.Database.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Skyra.Database.Models
 {
+	[Table("starboards")]
 	public sealed class Starboard
 	{
 		public bool Enabled { get; set; } = true;

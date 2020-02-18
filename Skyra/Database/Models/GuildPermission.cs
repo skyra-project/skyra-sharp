@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Database.Models
 {
+	[Table("guild_permissions")]
 	public sealed class GuildPermission
 	{
 		/// <summary>

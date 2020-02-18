@@ -39,7 +39,7 @@ namespace Skyra.Database.Models
 		public GuildStickyRole[] StickyRoles { get; set; } = new GuildStickyRole[0];
 
 		/// <summary>
-		///     The actions for this guild.
+		///     The raw value from and for the database. Use <see cref="Actions" />
 		/// </summary>
 		[Column("actions", TypeName = "JSON[]")]
 		public string[] ActionsString
@@ -48,11 +48,14 @@ namespace Skyra.Database.Models
 			set => Actions = value.Select(JsonConvert.DeserializeObject<GuildAction>).ToArray();
 		}
 
+		/// <summary>
+		///     The actions for this guild.
+		/// </summary>
 		[NotMapped]
 		public GuildAction[] Actions { get; set; } = new GuildAction[0];
 
 		/// <summary>
-		///     The per-channel command auto delete overrides.
+		///     The raw value from and for the database. Use <see cref="CommandAutoDelete" />
 		/// </summary>
 		[Column("command_auto_delete", TypeName = "JSON[]")]
 		public string[] CommandAutoDeleteString
@@ -61,11 +64,14 @@ namespace Skyra.Database.Models
 			set => CommandAutoDelete = value.Select(JsonConvert.DeserializeObject<GuildCommandAutoDelete>).ToArray();
 		}
 
+		/// <summary>
+		///     The per-channel command auto delete overrides.
+		/// </summary>
 		[NotMapped]
 		public GuildCommandAutoDelete[] CommandAutoDelete { get; set; } = new GuildCommandAutoDelete[0];
 
 		/// <summary>
-		///     The per-channel command blacklist overrides.
+		///     The raw value from and for the database. Use <see cref="DisabledCommandChannels" />
 		/// </summary>
 		[Column("disabled_command_channels", TypeName = "JSON[]")]
 		public string[] DisabledCommandChannelsString
@@ -75,12 +81,16 @@ namespace Skyra.Database.Models
 				value.Select(JsonConvert.DeserializeObject<GuildDisabledCommandChannels>).ToArray();
 		}
 
+		/// <summary>
+		///     The per-channel command blacklist overrides.
+		/// </summary>
 		[NotMapped]
 		public GuildDisabledCommandChannels[] DisabledCommandChannels { get; set; } =
 			new GuildDisabledCommandChannels[0];
 
+
 		/// <summary>
-		///     The guild's tags.
+		///     The raw value from and for the database. Use <see cref="Tags" />
 		/// </summary>
 		[Column("tags", TypeName = "JSON[]")]
 		public string[] TagsString
@@ -89,6 +99,9 @@ namespace Skyra.Database.Models
 			set => Tags = value.Select(JsonConvert.DeserializeObject<GuildTag>).ToArray();
 		}
 
+		/// <summary>
+		///     The guild's tags.
+		/// </summary>
 		[NotMapped]
 		public GuildTag[] Tags { get; set; } = new GuildTag[0];
 

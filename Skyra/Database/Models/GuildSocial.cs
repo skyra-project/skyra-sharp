@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Database.Models
 {
+	[Table("guild_social")]
 	public sealed class GuildSocial
 	{
 		public bool Enabled { get; set; } = true;

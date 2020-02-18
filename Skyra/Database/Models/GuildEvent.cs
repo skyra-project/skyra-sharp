@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Database.Models
 {
+	[Table("guild_events")]
 	public sealed class GuildEvent
 	{
 		public bool BanAdd { get; set; } = false;

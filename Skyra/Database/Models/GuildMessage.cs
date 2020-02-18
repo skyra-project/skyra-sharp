@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Database.Models
 {
+	[Table("guild_messages")]
 	public sealed class GuildMessage
 	{
 		public string? Farewell { get; set; } = null;

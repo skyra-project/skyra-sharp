@@ -2,6 +2,11 @@ namespace Skyra.Database.Models
 {
 	public enum GuildModerationHardAction
 	{
-		None
+		None,
+		Warning,
+		Mute,
+		Kick,
+		SoftBan,
+		Ban
 	}
 }

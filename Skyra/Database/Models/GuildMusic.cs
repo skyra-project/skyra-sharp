@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Database.Models
 {
+	[Table("guild_music")]
 	public sealed class GuildMusic
 	{
 		public uint DefaultVolume { get; set; } = 100;

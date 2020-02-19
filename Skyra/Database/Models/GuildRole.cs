@@ -89,41 +89,50 @@ namespace Skyra.Database.Models
 		public bool RemoveInitial { get; set; } = false;
 
 		/// <summary>
-		///     The level roles which are granted automatically when reaching a certain amount of points.
+		///     The raw value from and for the database. Use <see cref="LevelRoles" />
 		/// </summary>
 		[Column("level_roles", TypeName = "JSON[]")]
-		public string[] LevelRolesString
+		public string[] LevelRolesRaw
 		{
 			get => LevelRoles.Select(e => JsonConvert.SerializeObject(e)).ToArray();
 			set => LevelRoles = value.Select(JsonConvert.DeserializeObject<LevelRole>).ToArray();
 		}
 
+		/// <summary>
+		///     The level roles which are granted automatically when reaching a certain amount of points.
+		/// </summary>
 		[NotMapped]
 		public LevelRole[] LevelRoles { get; set; } = new LevelRole[0];
 
 		/// <summary>
-		///     The message reactions assigned for this guild.
+		///     The raw value from and for the database. Use <see cref="MessageReactions" />
 		/// </summary>
 		[Column("message_reactions", TypeName = "JSON[]")]
-		public string[] MessageReactionsString
+		public string[] MessageReactionsRaw
 		{
 			get => MessageReactions.Select(e => JsonConvert.SerializeObject(e)).ToArray();
 			set => MessageReactions = value.Select(JsonConvert.DeserializeObject<ReactionRole>).ToArray();
 		}
 
+		/// <summary>
+		///     The message reactions assigned for this guild.
+		/// </summary>
 		[NotMapped]
 		public ReactionRole[] MessageReactions { get; set; } = new ReactionRole[0];
 
 		/// <summary>
-		///     The unique role sets assigned for this guild.
+		///     The raw value from and for the database. Use <see cref="UniqueRoleSets" />
 		/// </summary>
 		[Column("unique_role_sets", TypeName = "JSON[]")]
-		public string[] UniqueRoleSetsString
+		public string[] UniqueRoleSetsRaw
 		{
 			get => UniqueRoleSets.Select(e => JsonConvert.SerializeObject(e)).ToArray();
 			set => UniqueRoleSets = value.Select(JsonConvert.DeserializeObject<RoleSet>).ToArray();
 		}
 
+		/// <summary>
+		///     The unique role sets assigned for this guild.
+		/// </summary>
 		[NotMapped]
 		public RoleSet[] UniqueRoleSets { get; set; } = new RoleSet[0];
 

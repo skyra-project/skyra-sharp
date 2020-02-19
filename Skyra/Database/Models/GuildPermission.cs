@@ -9,28 +9,34 @@ namespace Skyra.Database.Models
 	public sealed class GuildPermission
 	{
 		/// <summary>
-		///     The <see cref="GuildPermissionNode" />s for <see cref="Spectacles.NET.Types.User" />s.
+		///     The raw value from and for the database. Use <see cref="Users" />
 		/// </summary>
 		[Column("users", TypeName = "JSON[]")]
-		public string[] UsersString
+		public string[] UsersRaw
 		{
 			get => Users.Select(e => JsonConvert.SerializeObject(e)).ToArray();
 			set => Users = value.Select(JsonConvert.DeserializeObject<GuildPermissionNode>).ToArray();
 		}
 
+		/// <summary>
+		///     The <see cref="GuildPermissionNode" />s for <see cref="Spectacles.NET.Types.User" />s.
+		/// </summary>
 		[NotMapped]
 		public GuildPermissionNode[] Users { get; set; } = new GuildPermissionNode[0];
 
 		/// <summary>
-		///     The <see cref="GuildPermissionNode" />s for <see cref="Spectacles.NET.Types.User" />s.
+		///     The raw value from and for the database. Use <see cref="Roles" />
 		/// </summary>
 		[Column("roles", TypeName = "JSON[]")]
-		public string[] RolesString
+		public string[] RolesRaw
 		{
 			get => Roles.Select(e => JsonConvert.SerializeObject(e)).ToArray();
 			set => Roles = value.Select(JsonConvert.DeserializeObject<GuildPermissionNode>).ToArray();
 		}
 
+		/// <summary>
+		///     The <see cref="GuildPermissionNode" />s for <see cref="Spectacles.NET.Types.User" />s.
+		/// </summary>
 		[NotMapped]
 		public GuildPermissionNode[] Roles { get; set; } = new GuildPermissionNode[0];
 

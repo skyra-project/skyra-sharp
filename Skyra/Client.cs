@@ -5,9 +5,9 @@ using Skyra.Models;
 using Skyra.Structures;
 using Skyra.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
-using Spectacles.NET.Types;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
+using Spectacles.NET.Types;
 
 namespace Skyra
 {

@@ -4,15 +4,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Commands.Arguments;
-using Skyra.Structures;
 using Spectacles.NET.Types;
 
 namespace Skyra.Commands
 {
 	public class CommandHandler
 	{
-		private Dictionary<Type, MethodInfo> _resolvers;
 		private Dictionary<string, CommandInfo> _commands;
+		private Dictionary<Type, MethodInfo> _resolvers;
 
 		public void Load(Client client)
 		{
@@ -37,13 +36,9 @@ namespace Skyra.Commands
 			string commandName;
 
 			if (prefixLess.Contains(" "))
-			{
 				commandName = prefixLess.Substring(0, prefixLess.IndexOf(" "));
-			}
 			else
-			{
 				commandName = prefixLess;
-			}
 
 			var command = _commands[commandName.ToLower()];
 			// TODO(Tylertron1998): add argument resolving

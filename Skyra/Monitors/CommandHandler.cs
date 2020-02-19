@@ -6,7 +6,8 @@ namespace Skyra.Monitors
 {
 	public class CommandHandler : Monitor
 	{
-		private Commands.CommandHandler _handler = new Commands.CommandHandler();
+		private readonly Commands.CommandHandler _handler = new Commands.CommandHandler();
+
 		public CommandHandler(Client client) : base(client,
 			new MonitorOptions(nameof(CommandHandler), ignoreOthers: false, ignoreSelf: false))
 		{

@@ -18,6 +18,19 @@ namespace Skyra.Cache.Models
 			EditedTimestamp = message.EditedTimestamp;
 		}
 
+		[JsonConstructor]
+		public CachedMessage(string id, string channelId, string guildId, string content, List<Embed> embeds,
+			DateTime timestamp, DateTime? editedTimestamp)
+		{
+			Id = id;
+			ChannelId = channelId;
+			GuildId = guildId;
+			Content = content;
+			Embeds = embeds;
+			Timestamp = timestamp;
+			EditedTimestamp = editedTimestamp;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 

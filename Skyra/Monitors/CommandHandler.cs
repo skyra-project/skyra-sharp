@@ -9,7 +9,7 @@ namespace Skyra.Monitors
 		private readonly Commands.CommandHandler _handler = new Commands.CommandHandler();
 
 		public CommandHandler(Client client) : base(client,
-			new MonitorOptions(nameof(CommandHandler), ignoreOthers: false, ignoreSelf: false))
+			new MonitorOptions(nameof(CommandHandler), ignoreOthers: false, ignoreEdits: false))
 		{
 			_handler.Load(client);
 		}

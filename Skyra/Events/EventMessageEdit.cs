@@ -20,12 +20,18 @@ namespace Skyra.Events
 
 		private async Task RunAsync(MessageUpdatePayload messageUpdate)
 		{
-			// TODO: Use this for logging and stuff when more core stuff is done
-			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
-			var message = GenerateMessage(messageUpdate, previousMessage);
+			try
+			{
+				var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
+				var message = GenerateMessage(messageUpdate, previousMessage);
 
-			await Task.WhenAll(Client.Cache.Messages.SetAsync(message),
-				Client.Monitors.Run(message));
+				await Task.WhenAll(Client.Cache.Messages.SetAsync(new CachedMessage(message)),
+					Client.Monitors.Run(message));
+			}
+			catch (Exception exception)
+			{
+				Console.Error.WriteLine($"Error! {exception.Message}: ${exception.StackTrace}");
+			}
 		}
 
 		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CachedMessage? previousMessage)
@@ -33,13 +39,15 @@ namespace Skyra.Events
 			return new Message
 			{
 				Id = messageUpdate.Id,
+				Author = messageUpdate.Author,
+				Member = messageUpdate.Member,
 				Content = messageUpdate.Content,
 				Embeds = messageUpdate.Embeds,
 				Type = messageUpdate.Type ?? MessageType.DEFAULT,
 				Timestamp = messageUpdate.Timestamp ?? previousMessage?.Timestamp ?? DateTime.MinValue,
 				ChannelId = messageUpdate.ChannelId,
-				EditedTimestamp = messageUpdate.EditedTimestamp,
 				GuildId = messageUpdate.GuildId,
+				EditedTimestamp = messageUpdate.EditedTimestamp,
 				WebhookId = messageUpdate.WebhookId
 			};
 		}

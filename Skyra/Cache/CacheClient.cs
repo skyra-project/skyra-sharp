@@ -12,6 +12,7 @@ namespace Skyra.Cache
 		{
 			Prefix = prefix;
 			Channels = new ChannelStore(this);
+			EditableMessages = new EditableMessagesStore(this);
 			Emojis = new EmojiStore(this);
 			Guilds = new GuildStore(this);
 			Members = new MemberStore(this);
@@ -32,6 +33,8 @@ namespace Skyra.Cache
 			.FirstOrDefault(server => !server.IsSlave);
 
 		public ChannelStore Channels { get; }
+
+		public EditableMessagesStore EditableMessages { get; }
 
 		public EmojiStore Emojis { get; }
 

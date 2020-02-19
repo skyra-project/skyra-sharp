@@ -16,6 +16,19 @@ namespace Skyra.Cache.Models
 			OwnerId = guild.OwnerId;
 		}
 
+		[JsonConstructor]
+		public CachedGuild(string id, string name, string region, string? icon, Permission? permissions,
+			int? memberCount, string ownerId)
+		{
+			Id = id;
+			Name = name;
+			Region = region;
+			Icon = icon;
+			Permissions = permissions;
+			MemberCount = memberCount;
+			OwnerId = ownerId;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 

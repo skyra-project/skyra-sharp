@@ -14,7 +14,7 @@ namespace Skyra.Cache.Stores
 
 		public override async Task SetAsync(Channel entry, string? parent = null)
 		{
-			if (parent != null) await Database.SetAddAsync(FormatKeyName(parent), RedisValue.Unbox(entry.Id));
+			if (parent != null) await Database.StringSetAsync(FormatKeyName(parent), RedisValue.Unbox(entry.Id));
 			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});
 		}
 

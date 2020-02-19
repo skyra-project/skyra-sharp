@@ -14,10 +14,14 @@ namespace Skyra.Cache.Stores
 		}
 
 		public Task SetAsync(GuildMember entry, string? parent = null)
-			=> Task.WhenAll(Client.Users.SetAsync(entry.User), SetAsync(new CachedGuildMember(entry), parent));
+		{
+			return Task.WhenAll(Client.Users.SetAsync(entry.User), SetAsync(new CachedGuildMember(entry), parent));
+		}
 
 		public override Task SetAsync(CachedGuildMember entry, string? parent = null)
-			=> Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+		{
+			return Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+		}
 
 		public Task SetAsync(IEnumerable<GuildMember> entries, string? parent = null)
 		{
@@ -33,7 +37,9 @@ namespace Skyra.Cache.Stores
 		}
 
 		public override Task SetAsync(IEnumerable<CachedGuildMember> entries, string? parent = null)
-			=> Database.HashSetAsync(FormatKeyName(parent),
+		{
+			return Database.HashSetAsync(FormatKeyName(parent),
 				entries.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
+		}
 	}
 }

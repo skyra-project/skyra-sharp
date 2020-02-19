@@ -14,7 +14,7 @@ namespace Skyra.Events
 		private static void Run(ReadyDispatch args)
 		{
 			Console.WriteLine(
-				$"Skyra VI ready! [{args.User.Username}#{args.User.Discriminator}] [{args.Guilds.Length} [G]]");
+				$"Skyra VI ready! [{args.User.Username}#{args.User.Discriminator}] [{args.Guilds.Length.ToString()} [G]]");
 		}
 	}
 }

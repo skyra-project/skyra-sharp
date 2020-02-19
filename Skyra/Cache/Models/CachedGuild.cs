@@ -5,6 +5,17 @@ namespace Skyra.Cache.Models
 {
 	public class CachedGuild
 	{
+		public CachedGuild(Guild guild)
+		{
+			Id = guild.Id;
+			Name = guild.Name;
+			Region = guild.Region;
+			Icon = guild.Icon;
+			Permissions = guild.Permissions;
+			MemberCount = guild.MemberCount;
+			OwnerId = guild.OwnerId;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 
@@ -25,16 +36,5 @@ namespace Skyra.Cache.Models
 
 		[JsonProperty("o")]
 		public string OwnerId { get; set; }
-
-		public CachedGuild(Guild guild)
-		{
-			Id = guild.Id;
-			Name = guild.Name;
-			Region = guild.Region;
-			Icon = guild.Icon;
-			Permissions = guild.Permissions;
-			MemberCount = guild.MemberCount;
-			OwnerId = guild.OwnerId;
-		}
 	}
 }

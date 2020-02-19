@@ -8,15 +8,15 @@ namespace Skyra.Cache.Stores
 {
 	public abstract class CacheStore<T> where T : class
 	{
-		protected CacheClient Client { get; }
-		protected IDatabase Database => Client.Database;
-		protected string Prefix { get; }
-
 		protected CacheStore(CacheClient client, string prefix)
 		{
 			Client = client;
 			Prefix = $"{Client.Prefix}:{prefix}";
 		}
+
+		protected CacheClient Client { get; }
+		protected IDatabase Database => Client.Database;
+		protected string Prefix { get; }
 
 		public async Task<T?> GetAsync(string id, string? parent = null)
 		{
@@ -25,7 +25,9 @@ namespace Skyra.Cache.Stores
 		}
 
 		public Task<T?[]> GetAsync(IEnumerable<string> ids, string? parent = null)
-			=> Task.WhenAll(ids.Select(id => GetAsync(id, parent)));
+		{
+			return Task.WhenAll(ids.Select(id => GetAsync(id, parent)));
+		}
 
 		public async Task<T[]> GetAllAsync(string? parent = null)
 		{
@@ -44,11 +46,19 @@ namespace Skyra.Cache.Stores
 		}
 
 		public Task DeleteAsync(IEnumerable<string> ids, string? parent = null)
-			=> Task.WhenAll(ids.Select(id => DeleteAsync(id, parent)));
+		{
+			return Task.WhenAll(ids.Select(id => DeleteAsync(id, parent)));
+		}
 
-		protected string FormatKeyName(string? parent) => parent == null ? Prefix : $"{Prefix}:{parent}";
+		protected string FormatKeyName(string? parent)
+		{
+			return parent == null ? Prefix : $"{Prefix}:{parent}";
+		}
 
-		protected string SerializeValue(T value) => JsonConvert.SerializeObject(value, Formatting.None,
-			new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+		protected string SerializeValue(T value)
+		{
+			return JsonConvert.SerializeObject(value, Formatting.None,
+				new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+		}
 	}
 }

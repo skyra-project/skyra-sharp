@@ -10,9 +10,8 @@ namespace Skyra.Structures
 		public async Task Run(Message message)
 		{
 			foreach (var monitor in Values.Where(monitor => monitor.ShouldRun(message)))
-			{
-				if (!await monitor.Run(message)) break;
-			}
+				if (!await monitor.Run(message))
+					break;
 		}
 	}
 }

@@ -5,6 +5,14 @@ namespace Skyra.Cache.Models
 {
 	public class CachedUser
 	{
+		public CachedUser(User user)
+		{
+			Id = user.Id;
+			Username = user.Username;
+			Discriminator = user.Discriminator;
+			Avatar = user.Avatar;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 
@@ -16,13 +24,5 @@ namespace Skyra.Cache.Models
 
 		[JsonProperty("a")]
 		public string? Avatar { get; set; }
-
-		public CachedUser(User user)
-		{
-			Id = user.Id;
-			Username = user.Username;
-			Discriminator = user.Discriminator;
-			Avatar = user.Avatar;
-		}
 	}
 }

@@ -11,16 +11,6 @@ namespace Skyra
 {
 	public class Client
 	{
-		private string BrokerUri { get; }
-		private string RedisUri { get; }
-		private AmqpBroker Broker { get; }
-
-		public EventHandler EventHandler { get; }
-		public CacheClient Cache { get; }
-
-		public Store<Event> Events { get; } = new Store<Event>();
-		public MonitorStore Monitors { get; } = new MonitorStore();
-
 		public Client(ClientOptions clientOptions)
 		{
 			EventHandler = new EventHandler(this);
@@ -35,6 +25,16 @@ namespace Skyra
 				Broker.Ack(args.Event, args.DeliveryTag);
 			};
 		}
+
+		private string BrokerUri { get; }
+		private string RedisUri { get; }
+		private AmqpBroker Broker { get; }
+
+		public EventHandler EventHandler { get; }
+		public CacheClient Cache { get; }
+
+		public Store<Event> Events { get; } = new Store<Event>();
+		public MonitorStore Monitors { get; } = new MonitorStore();
 
 		public async Task ConnectAsync()
 		{

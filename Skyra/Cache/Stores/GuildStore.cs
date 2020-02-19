@@ -14,15 +14,19 @@ namespace Skyra.Cache.Stores
 		}
 
 		public Task SetAsync(Guild entry, string? parent = null)
-			=> Task.WhenAll(Client.Members.SetAsync(entry.Members, entry.Id),
+		{
+			return Task.WhenAll(Client.Members.SetAsync(entry.Members, entry.Id),
 				Client.Roles.SetAsync(entry.Roles, entry.Id),
 				Client.Channels.SetAsync(entry.Channels, entry.Id),
 				Client.VoiceStates.SetAsync(entry.VoiceStates, entry.Id),
 				Client.Emojis.SetAsync(entry.Emojis, entry.Id),
 				SetAsync(new CachedGuild(entry), parent));
+		}
 
 		public override Task SetAsync(CachedGuild entry, string? parent = null)
-			=> Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+		{
+			return Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+		}
 
 		public override async Task SetAsync(IEnumerable<CachedGuild> entries, string? parent = null)
 		{

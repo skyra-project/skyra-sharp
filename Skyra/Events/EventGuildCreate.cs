@@ -12,6 +12,8 @@ namespace Skyra.Events
 		}
 
 		private void Run(Guild guild)
-			=> Task.Run(() => Client.Cache.Guilds.SetAsync(guild));
+		{
+			Task.Run(() => Client.Cache.Guilds.SetAsync(guild));
+		}
 	}
 }

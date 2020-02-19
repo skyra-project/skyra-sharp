@@ -13,10 +13,14 @@ namespace Skyra.Cache.Stores
 		}
 
 		public override Task SetAsync(Emoji entry, string? parent = null)
-			=> Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+		{
+			return Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
+		}
 
 		public override Task SetAsync(IEnumerable<Emoji> entries, string? parent = null)
-			=> Database.HashSetAsync(FormatKeyName(parent),
+		{
+			return Database.HashSetAsync(FormatKeyName(parent),
 				entries.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
+		}
 	}
 }

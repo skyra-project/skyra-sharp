@@ -7,6 +7,17 @@ namespace Skyra.Cache.Models
 {
 	public class CachedMessage
 	{
+		public CachedMessage(Message message)
+		{
+			Id = message.Id;
+			ChannelId = message.ChannelId;
+			GuildId = message.GuildId;
+			Content = message.Content;
+			Embeds = message.Embeds;
+			Timestamp = message.Timestamp;
+			EditedTimestamp = message.EditedTimestamp;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 
@@ -27,16 +38,5 @@ namespace Skyra.Cache.Models
 
 		[JsonProperty("et")]
 		public DateTime? EditedTimestamp { get; set; }
-
-		public CachedMessage(Message message)
-		{
-			Id = message.Id;
-			ChannelId = message.ChannelId;
-			GuildId = message.GuildId;
-			Content = message.Content;
-			Embeds = message.Embeds;
-			Timestamp = message.Timestamp;
-			EditedTimestamp = message.EditedTimestamp;
-		}
 	}
 }

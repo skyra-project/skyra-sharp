@@ -8,21 +8,20 @@ namespace Skyra
 {
 	public class EventHandler
 	{
-		public event Action<ReadyDispatch> OnReady = dispatch => {};
-		public event Action<Guild> OnGuildCreate = dispatch => {};
-		public event Action<Guild> OnGuildUpdate = dispatch => {};
-		public event Action<GuildBanAddPayload> OnGuildBanAdd = dispatch => {};
-		public event Action<GuildBanRemovePayload> OnGuildBanRemove = dispatch => {};
-		public event Action<Message> OnMessageCreate = dispatch => {};
-		public event Action<MessageUpdatePayload> OnMessageUpdate = dispatch => {};
-		public event Action<MessageDeletePayload> OnMessageDelete = dispatch => {};
-
-		private Client Client { get; }
-
 		public EventHandler(Client client)
 		{
 			Client = client;
 		}
+
+		private Client Client { get; }
+		public event Action<ReadyDispatch> OnReady = dispatch => { };
+		public event Action<Guild> OnGuildCreate = dispatch => { };
+		public event Action<Guild> OnGuildUpdate = dispatch => { };
+		public event Action<GuildBanAddPayload> OnGuildBanAdd = dispatch => { };
+		public event Action<GuildBanRemovePayload> OnGuildBanRemove = dispatch => { };
+		public event Action<Message> OnMessageCreate = dispatch => { };
+		public event Action<MessageUpdatePayload> OnMessageUpdate = dispatch => { };
+		public event Action<MessageDeletePayload> OnMessageDelete = dispatch => { };
 
 		public void HandleEvent(GatewayEvent @event, AmqpReceiveEventArgs args)
 		{
@@ -112,7 +111,7 @@ namespace Skyra
 				case GatewayEvent.WEBHOOKS_UPDATE:
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(nameof(@event), @event, null);
+					throw new ArgumentOutOfRangeException(nameof(@event), @event.ToString(), null);
 			}
 		}
 	}

@@ -9,7 +9,7 @@ namespace Skyra.Cache.Models
 	{
 		public CachedGuildMember(GuildMember guildMember)
 		{
-			Id = guildMember.User?.Id;
+			Id = guildMember.User.Id;
 			Roles = guildMember.Roles;
 			Nickname = guildMember.Nickname;
 			Deaf = guildMember.Deaf;

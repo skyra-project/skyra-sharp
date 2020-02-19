@@ -25,7 +25,7 @@ namespace Skyra.Commands
 				.ExportedTypes
 				.Where(type => type.IsAssignableFrom(typeof(IArgumentResolver<>)))
 				.Select(x => x.GetMethod("Resolve"))
-				.ToDictionary(x => x.ReturnType, x => x);
+				.ToDictionary(x => x?.ReturnType, x => x);
 		}
 
 		public async Task Run(Message message)
@@ -35,10 +35,9 @@ namespace Skyra.Commands
 
 			string commandName;
 
-			if (prefixLess.Contains(" "))
-				commandName = prefixLess.Substring(0, prefixLess.IndexOf(" "));
-			else
-				commandName = prefixLess;
+			commandName = prefixLess.Contains(" ")
+				? prefixLess.Substring(0, prefixLess.IndexOf(" ", StringComparison.Ordinal))
+				: prefixLess;
 
 			var command = _commands[commandName.ToLower()];
 			// TODO(Tylertron1998): add argument resolving
@@ -64,7 +63,7 @@ namespace Skyra.Commands
 				Delimiter = commandInfo.Delimiter,
 				Instance = command,
 				Method = methodInfo,
-				Arguments = methodInfo.GetParameters().Select(x => x.ParameterType).Skip(1).ToArray(),
+				Arguments = methodInfo?.GetParameters().Select(x => x.ParameterType).Skip(1).ToArray(),
 				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower()
 			};
 		}

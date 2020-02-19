@@ -6,6 +6,8 @@ using Skyra.Structures;
 using Skyra.Structures.Base;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Types;
+using Spectacles.NET.Rest;
+using Spectacles.NET.Rest.Bucket;
 
 namespace Skyra
 {
@@ -16,6 +18,7 @@ namespace Skyra
 			EventHandler = new EventHandler(this);
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
+			Token = clientOptions.Token;
 			BrokerUri = clientOptions.BrokerUri;
 			RedisUri = clientOptions.RedisUri;
 			Broker = new AmqpBroker(clientOptions.BrokerName);
@@ -26,10 +29,12 @@ namespace Skyra
 			};
 		}
 
+		private string Token { get; }
 		private string BrokerUri { get; }
 		private string RedisUri { get; }
 		private AmqpBroker Broker { get; }
 
+		public RestClient Rest { get; private set; }
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
 
@@ -39,6 +44,7 @@ namespace Skyra
 		public async Task ConnectAsync()
 		{
 			await Cache.ConnectAsync(RedisUri);
+			Rest = new RestClient(Token, new RedisBucketFactory(Cache.Pool));
 			await Broker.ConnectAsync(new Uri(BrokerUri));
 			await Broker.SubscribeAsync(new[]
 			{

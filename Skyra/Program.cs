@@ -16,6 +16,8 @@ namespace Skyra
 		private static async Task StartAsync()
 		{
 			var client = new Client(new ClientOptions(
+				// ReSharper disable once NotResolvedInText
+				Environment.GetEnvironmentVariable("DISCORD_TOKEN") ?? throw new ArgumentNullException("DISCORD_TOKEN"),
 				Environment.GetEnvironmentVariable("BROKER_NAME") ?? "skyra",
 				Environment.GetEnvironmentVariable("BROKER_URL") ?? "amqp://localhost:5672",
 				Environment.GetEnvironmentVariable("REDIS_PREFIX") ?? "skyra",

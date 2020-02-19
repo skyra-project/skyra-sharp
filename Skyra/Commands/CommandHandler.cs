@@ -55,15 +55,15 @@ namespace Skyra.Commands
 			var t = command.GetType();
 			var methodInfo = t.GetMethod("RunAsync", BindingFlags.Public | BindingFlags.Instance);
 
-			var actualCommand = (ICommand) command;
+			var commandInfo = t.GetCustomAttribute<CommandAttribute>();
 
 			return new CommandInfo
 			{
-				Delimiter = actualCommand.Delimeter,
+				Delimiter = commandInfo.Delimiter,
 				Instance = command,
 				Method = methodInfo,
 				Arguments = methodInfo.GetParameters().Select(x => x.ParameterType).Skip(1).ToArray(),
-				Name = command.GetType().Name.Replace("Command", "").ToLower()
+				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower()
 			};
 		}
 	}

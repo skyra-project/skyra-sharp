@@ -8,11 +8,9 @@ using Spectacles.NET.Types;
 namespace Skyra.Commands
 {
 	[Command]
-	public class DingCommand : ICommand
+	public class DingCommand
 	{
 		private Client _client;
-
-		public string Delimiter => "";
 
 		public DingCommand(Client client)
 		{

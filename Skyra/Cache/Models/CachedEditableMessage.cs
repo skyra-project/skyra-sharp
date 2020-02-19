@@ -4,11 +4,10 @@ namespace Skyra.Cache.Models
 {
 	public class CachedEditableMessage
 	{
-		public CachedEditableMessage(string id, string ownMessageId, bool editable)
+		public CachedEditableMessage(string id, string ownMessageId)
 		{
 			Id = id;
 			OwnMessageId = ownMessageId;
-			Editable = editable;
 		}
 
 		[JsonProperty("id")]
@@ -16,8 +15,5 @@ namespace Skyra.Cache.Models
 
 		[JsonProperty("o")]
 		public string OwnMessageId { get; }
-
-		[JsonProperty("e")]
-		public bool Editable { get; }
 	}
 }

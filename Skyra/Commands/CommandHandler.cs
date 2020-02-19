@@ -42,7 +42,14 @@ namespace Skyra.Commands
 
 			var command = _commands[commandName.ToLower()];
 			// TODO(Tylertron1998): add argument resolving
-			await (Task) command.Method.Invoke(command.Instance, new[] {message});
+			try
+			{
+				await (Task) command.Method.Invoke(command.Instance, new[] {message});
+			}
+			catch (Exception exception)
+			{
+				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
+			}
 		}
 
 		public CommandInfo ToCommandInfo(object command)

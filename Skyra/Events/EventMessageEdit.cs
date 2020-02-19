@@ -43,6 +43,7 @@ namespace Skyra.Events
 				Member = messageUpdate.Member,
 				Content = messageUpdate.Content,
 				Embeds = messageUpdate.Embeds,
+				Attachments = messageUpdate.Attachments,
 				Type = messageUpdate.Type ?? MessageType.DEFAULT,
 				Timestamp = messageUpdate.Timestamp ?? previousMessage?.Timestamp ?? DateTime.MinValue,
 				ChannelId = messageUpdate.ChannelId,

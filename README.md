@@ -17,12 +17,21 @@
 
 ## Set-Up
 
-Install a .NET IDE of your choice. We recommend in decending order:
+Install a .NET IDE of your choice. We recommend in descending order:
 - JetBrains Rider
 - Microsoft Visual Studio
 - Visual Studio Code
 
 Once you have your IDE of choice installed, open Skyra solution.
+
+### Database Migration
+
+To update the database's tables and columns so they match those needed for Skyra to function properly, run the following
+command in the terminal of your choice from this project's folder:
+
+```bash
+$ dotnet ef database update
+```
 
 ## Story - as written by owner [`Kyra`]
 
@@ -34,7 +43,7 @@ renamed to "Skyra". Originally, it was going to be renamed as "Shiny" (name take
 name from the lore) however I decided "Skyra" would be a better name.
 
 Skyra does not only feature almost every feature that is needed in the majority of guilds (discord servers) while being
-completely configurable, she also has a backstory, inherited from the lore I have been creating since I was a child.
+completely configurable, she also has a back-story, inherited from the lore I have been creating since I was a child.
 
 There have been over 13 rewrites with an active development of over two years, I have met many developers and friends in
 Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for

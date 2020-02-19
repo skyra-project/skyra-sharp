@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Skyra.Structures;
+using Spectacles.NET.Rest.APIError;
 using Spectacles.NET.Types;
 
 namespace Skyra.Commands
@@ -21,21 +23,11 @@ namespace Skyra.Commands
 		{
 			//TODO(KyraNET): find what the hell is the problem here and why it's throwing
 			Console.WriteLine("IM RUNNING");
-			try
-			{
-				await _client.Rest.Guilds[message.GuildId].Channels[message.ChannelId].PostAsync(new Message
-				{
-					Content = "ding your ass hoe"
-				});
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine("!!!!!");
-				Console.WriteLine(e.ToString());
-				Console.WriteLine("!!!!!");
-			}
 
-
+			await _client.Rest.Channels[message.ChannelId].Messages.PostAsync<SendableMessage>(new SendableMessage
+			{
+				Content = "Ding to you",
+			});
 		}
 	}
 }

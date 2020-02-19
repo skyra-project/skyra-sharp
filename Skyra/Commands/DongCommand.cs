@@ -18,9 +18,9 @@ namespace Skyra.Commands
 
 		public async Task RunAsync(Message message)
 		{
-			await _client.Rest.Guilds[message.GuildId].Channels[message.ChannelId].PostAsync(new Message
+			await _client.Rest.Channels[message.ChannelId].Messages.PostAsync<SendableMessage>(new SendableMessage
 			{
-				Content = "Dong your ass hoe"
+				Content = "Dong to you"
 			});
 		}
 	}

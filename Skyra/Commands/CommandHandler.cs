@@ -11,7 +11,7 @@ namespace Skyra.Commands
 	public class CommandHandler
 	{
 		private Dictionary<string, CommandInfo> _commands;
-		private Dictionary<Type, MethodInfo> _resolvers;
+		private Dictionary<Type, ArgumentInfo> _resolvers;
 
 		public void Load(Client client)
 		{
@@ -23,9 +23,10 @@ namespace Skyra.Commands
 
 			_resolvers = Assembly.GetExecutingAssembly()
 				.ExportedTypes
-				.Where(type => type.IsAssignableFrom(typeof(IArgumentResolver<>)))
-				.Select(x => x.GetMethod("Resolve"))
-				.ToDictionary(x => x?.ReturnType, x => x);
+				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
+				.Select(type => Activator.CreateInstance(type))
+				.Select(ToArgumentInfo)
+				.ToDictionary(x => x.Type, x => x);
 		}
 
 		public async Task Run(Message message)
@@ -36,19 +37,47 @@ namespace Skyra.Commands
 			string commandName;
 
 			commandName = prefixLess.Contains(" ")
-				? prefixLess.Substring(0, prefixLess.IndexOf(" ", StringComparison.Ordinal))
+				? prefixLess.Substring(0, prefixLess.IndexOf(" "))
 				: prefixLess;
 
 			var command = _commands[commandName.ToLower()];
-			// TODO(Tylertron1998): add argument resolving
+			var args = new object[command.Arguments.Length + 1];
+			args[0] = message;
+			if (command.Arguments.Count() > 0)
+			{
+				var replaced = prefixLess.Replace(commandName, "");
+				var trimmed = replaced.Trim();
+				var split = trimmed.Split(command.Delimiter);
+
+				for (var i = 0; i < command.Arguments.Count(); i++)
+				{
+					var resolver = _resolvers[command.Arguments[i]];
+					var resolved =
+						(object) ((dynamic) resolver.Method.Invoke(resolver.Instance, new object[] {message, split[i]}))
+						.Result;
+					args[i + 1] = resolved;
+				}
+			}
 			try
 			{
-				await (Task) command.Method.Invoke(command.Instance, new[] {message});
+				await (Task) command.Method.Invoke(command.Instance, args);
 			}
 			catch (Exception exception)
 			{
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
 			}
+		}
+
+		public ArgumentInfo ToArgumentInfo(object argument)
+		{
+			var attribute = argument.GetType().GetCustomAttribute<ResolverAttribute>();
+
+			return new ArgumentInfo
+			{
+				Instance = argument,
+				Method = argument.GetType().GetMethod("ResolveAsync"),
+				Type = attribute.Type
+			};
 		}
 
 		public CommandInfo ToCommandInfo(object command)

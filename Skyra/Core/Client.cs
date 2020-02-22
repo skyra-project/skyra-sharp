@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core.Cache;
-using Skyra.Core.Database.Models;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
@@ -19,11 +18,6 @@ namespace Skyra.Core
 {
 	public class Client
 	{
-		public Dictionary<string, CommandInfo> Commands { get; private set; }
-		public Dictionary<string, EventInfo> Events { get; private set; }
-		public Dictionary<string, MonitorInfo> Monitors { get; private set; }
-		public Dictionary<Type, ArgumentInfo> Resolvers { get; private set; }
-
 		public Client(ClientOptions clientOptions)
 		{
 			EventHandler = new EventHandler(this);
@@ -40,6 +34,11 @@ namespace Skyra.Core
 				Broker.Ack(args.Event, args.DeliveryTag);
 			};
 		}
+
+		public Dictionary<string, CommandInfo> Commands { get; private set; }
+		public Dictionary<string, EventInfo> Events { get; private set; }
+		public Dictionary<string, MonitorInfo> Monitors { get; private set; }
+		public Dictionary<Type, ArgumentInfo> Resolvers { get; private set; }
 
 		private string Token { get; }
 		private string BrokerUri { get; }

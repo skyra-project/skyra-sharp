@@ -6,14 +6,14 @@ namespace Skyra.Core.Structures.Usage
 {
 	public class CommandUsage
 	{
-		private Client Client { get; }
-		public CommandUsageOverload[] Overloads { get; }
-
 		public CommandUsage(Client client, object instance)
 		{
 			Client = client;
 			Overloads = GetOverloads(Client, instance.GetType());
 		}
+
+		private Client Client { get; }
+		public CommandUsageOverload[] Overloads { get; }
 
 		private static CommandUsageOverload[] GetOverloads(Client client, Type instanceType)
 		{

@@ -9,14 +9,6 @@ namespace Skyra.Core.Structures.Usage
 {
 	public class TextPrompt
 	{
-		public Dictionary<string, string> Flags { get; }
-		public string[] Arguments { get; }
-		public object[] Parameters { get; private set; }
-		public CommandUsageOverload Overload { get; private set; }
-		private Message Message { get; }
-		private CommandInfo Command { get; }
-
-		private CommandUsage Usage { get; }
 		// private bool QuotedStringSupport { get; }
 		// private bool FlagSupport { get; }
 		// private static readonly Regex FlagRegExp = new Regex(@"(?:--|—)(\w[\w-]+)(?:=(?:[""]((?:[^""\\]|\.)*)[""]|[']((?:[^'\\]|\.)*)[']|[“”]((?:[^“”\\]|\.)*)[“”]|[‘’]((?:[^‘’\\]|\.)*)[‘’]|([\w<>@​#&!-]+)))?", RegexOptions.Compiled);
@@ -29,6 +21,15 @@ namespace Skyra.Core.Structures.Usage
 			Arguments = GetArguments(content, command.Delimiter);
 		}
 
+		public Dictionary<string, string> Flags { get; }
+		public string[] Arguments { get; }
+		public object[] Parameters { get; private set; }
+		public CommandUsageOverload Overload { get; private set; }
+		private Message Message { get; }
+		private CommandInfo Command { get; }
+
+		private CommandUsage Usage { get; }
+
 		public async Task Run()
 		{
 			foreach (var overload in Usage.Overloads)
@@ -39,6 +40,7 @@ namespace Skyra.Core.Structures.Usage
 					Overload = overload;
 					return;
 				}
+
 				if (overload.Equals(Usage.Overloads.Last())) throw new ArgumentException(error);
 			}
 		}

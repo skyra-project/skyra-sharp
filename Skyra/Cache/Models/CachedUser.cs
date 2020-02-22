@@ -13,6 +13,15 @@ namespace Skyra.Cache.Models
 			Avatar = user.Avatar;
 		}
 
+		[JsonConstructor]
+		public CachedUser(string id, string username, string discriminator, string? avatar)
+		{
+			Id = id;
+			Username = username;
+			Discriminator = discriminator;
+			Avatar = avatar;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 

@@ -19,6 +19,18 @@ namespace Skyra.Cache.Models
 			else JoinedAt = null;
 		}
 
+		[JsonConstructor]
+		public CachedGuildMember(string id, List<string> roles, string? nickname, DateTime? joinedAt, bool deaf,
+			bool mute)
+		{
+			Id = id;
+			Roles = roles;
+			Nickname = nickname;
+			JoinedAt = joinedAt;
+			Deaf = deaf;
+			Mute = mute;
+		}
+
 		[JsonProperty("id")]
 		public string Id { get; set; }
 

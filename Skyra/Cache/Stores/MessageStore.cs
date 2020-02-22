@@ -17,7 +17,7 @@ namespace Skyra.Cache.Stores
 		public new async Task<CachedMessage?> GetAsync(string id, string? parent = null)
 		{
 			var result = await Database.StringGetAsync($"{FormatKeyName(parent)}:{id}");
-			return !result.IsNull ? JsonConvert.DeserializeObject<CachedMessage>(result) : null;
+			return !result.IsNull ? JsonConvert.DeserializeObject<CachedMessage>(result.ToString()) : null;
 		}
 
 		public async Task SetAsync(Message entry, string? parent = null)
@@ -32,7 +32,7 @@ namespace Skyra.Cache.Stores
 		public override async Task SetAsync(CachedMessage entry, string? parent = null)
 		{
 			var id = $"{FormatKeyName(parent)}:{entry.Id}";
-			await Database.SetAddAsync(id, SerializeValue(entry));
+			await Database.StringSetAsync(id, SerializeValue(entry));
 			await Database.KeyExpireAsync(id, TimeSpan.FromMinutes(20));
 		}
 

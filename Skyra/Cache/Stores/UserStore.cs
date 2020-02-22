@@ -26,7 +26,7 @@ namespace Skyra.Cache.Stores
 
 		public override Task SetAsync(CachedUser entry, string? parent = null)
 		{
-			return Database.SetAddAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
+			return Database.StringSetAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
 		}
 
 		public Task SetAsync(IEnumerable<User> entries, string? parent = null)

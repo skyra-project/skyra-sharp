@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using Skyra.Structures.Base;
 using Spectacles.NET.Types;

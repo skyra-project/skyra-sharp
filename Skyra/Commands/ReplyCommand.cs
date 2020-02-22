@@ -18,7 +18,13 @@ namespace Skyra.Commands
 
 		public async Task RunAsync(Message message, int number)
 		{
-			await message.SendAsync(_client, number.ToString());
+			await message.SendAsync(_client, $"A number! {number.ToString()}");
+		}
+
+		public async Task RunAsync(Message message, string content = default)
+		{
+			var m = string.IsNullOrEmpty(content) ? "I got absolutely nothing!" : content;
+			await message.SendAsync(_client, $"A string! {m}");
 		}
 	}
 }

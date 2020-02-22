@@ -7,6 +7,7 @@ using Skyra.Core.Cache;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
@@ -17,11 +18,6 @@ namespace Skyra.Core
 {
 	public class Client
 	{
-		public Dictionary<string, CommandInfo> Commands { get; private set; }
-		public Dictionary<string, EventInfo> Events { get; private set; }
-		public Dictionary<string, MonitorInfo> Monitors { get; private set; }
-		public Dictionary<Type, ArgumentInfo> Resolvers { get; private set; }
-
 		public Client(ClientOptions clientOptions)
 		{
 			EventHandler = new EventHandler(this);
@@ -38,6 +34,11 @@ namespace Skyra.Core
 				Broker.Ack(args.Event, args.DeliveryTag);
 			};
 		}
+
+		public Dictionary<string, CommandInfo> Commands { get; private set; }
+		public Dictionary<string, EventInfo> Events { get; private set; }
+		public Dictionary<string, MonitorInfo> Monitors { get; private set; }
+		public Dictionary<Type, ArgumentInfo> Resolvers { get; private set; }
 
 		private string Token { get; }
 		private string BrokerUri { get; }
@@ -104,18 +105,18 @@ namespace Skyra.Core
 				.Select(type => Activator.CreateInstance(type, this))
 				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
 
+			Resolvers = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
+				.Select(type => Activator.CreateInstance(type, this))
+				.Select(ToArgumentInfo)
+				.ToDictionary(x => x.Type, x => x);
+
 			Commands = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
 				.Select(type => Activator.CreateInstance(type, this))
 				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
-
-			Resolvers = Assembly.GetExecutingAssembly()
-				.ExportedTypes
-				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
-				.Select(Activator.CreateInstance)
-				.Select(ToArgumentInfo)
-				.ToDictionary(x => x.Type, x => x);
 		}
 
 		private static ArgumentInfo ToArgumentInfo(object argument)
@@ -126,7 +127,8 @@ namespace Skyra.Core
 			{
 				Instance = argument,
 				Method = argument.GetType().GetMethod("ResolveAsync"),
-				Type = attribute.Type
+				Type = attribute.Type,
+				Displayname = attribute.DisplayName
 			};
 		}
 
@@ -146,7 +148,9 @@ namespace Skyra.Core
 			var attribute = monitor.GetType().GetCustomAttribute<MonitorAttribute>();
 			var methodInfo = monitor.GetType().GetMethod("RunAsync");
 			if (methodInfo == null)
+			{
 				throw new NullReferenceException($"{nameof(monitor)} does not have a RunAsync method.");
+			}
 
 			return new MonitorInfo
 			{
@@ -162,22 +166,17 @@ namespace Skyra.Core
 			};
 		}
 
-		private static CommandInfo ToCommandInfo(object command)
+		private CommandInfo ToCommandInfo(object command)
 		{
 			var t = command.GetType();
-			var methodInfo = t.GetMethod("RunAsync", BindingFlags.Public | BindingFlags.Instance);
-			if (methodInfo == null)
-				throw new NullReferenceException($"{nameof(command)} does not have a RunAsync method.");
-
 			var commandInfo = t.GetCustomAttribute<CommandAttribute>();
 
 			return new CommandInfo
 			{
 				Delimiter = commandInfo.Delimiter,
 				Instance = command,
-				Method = methodInfo,
-				Arguments = methodInfo.GetParameters().Select(x => x.ParameterType).Skip(1).ToArray(),
-				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower()
+				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower(),
+				Usage = new CommandUsage(this, command)
 			};
 		}
 	}

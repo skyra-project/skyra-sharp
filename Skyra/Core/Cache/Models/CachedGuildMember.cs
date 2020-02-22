@@ -15,8 +15,14 @@ namespace Skyra.Core.Cache.Models
 			Deaf = guildMember.Deaf;
 			Mute = guildMember.Mute;
 
-			if (DateTime.TryParse(guildMember.JoinedAt, out var result)) JoinedAt = result;
-			else JoinedAt = null;
+			if (DateTime.TryParse(guildMember.JoinedAt, out var result))
+			{
+				JoinedAt = result;
+			}
+			else
+			{
+				JoinedAt = null;
+			}
 		}
 
 		[JsonConstructor]

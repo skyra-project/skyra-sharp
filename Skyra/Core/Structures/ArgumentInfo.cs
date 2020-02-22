@@ -8,5 +8,6 @@ namespace Skyra.Core.Structures
 		public object Instance { get; set; }
 		public MethodInfo Method { get; set; }
 		public Type Type { get; set; }
+		public string Displayname { get; set; }
 	}
 }

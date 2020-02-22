@@ -27,7 +27,9 @@ namespace Skyra.Events
 		private void RunMonitors(Message message)
 		{
 			foreach (var monitor in _client.Monitors.Values.Where(monitor => ShouldRunMonitor(message, monitor)))
+			{
 				monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+			}
 		}
 
 		private static bool ShouldRunMonitor(Message message, MonitorInfo monitor)

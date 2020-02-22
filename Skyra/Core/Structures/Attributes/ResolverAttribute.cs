@@ -4,11 +4,13 @@ namespace Skyra.Core.Structures.Attributes
 {
 	public class ResolverAttribute : Attribute
 	{
-		public ResolverAttribute(Type type)
+		public ResolverAttribute(Type type, string displayName)
 		{
 			Type = type;
+			DisplayName = displayName;
 		}
 
-		public Type Type { get; set; }
+		public string DisplayName { get; }
+		public Type Type { get; }
 	}
 }

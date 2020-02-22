@@ -25,8 +25,10 @@ namespace Skyra.Core.Utils
 				// Then we check whether or not it's editable (has no attachments), and we're not sending attachments
 				if (message.Attachments.Count == 0 && data.File == null)
 					// We update the message and return.
+				{
 					return await client.Rest.Channels[message.ChannelId].Messages[previous.OwnMessageId]
 						.PatchAsync<Message>(data);
+				}
 
 				// Otherwise we delete the previous message and do a fallback.
 				await client.Rest.Channels[message.ChannelId].Messages[previous.OwnMessageId].DeleteAsync();

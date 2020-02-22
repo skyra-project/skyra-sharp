@@ -18,7 +18,7 @@ namespace Skyra.Core.Structures.Usage
 			Client = client;
 			Name = parameterInfo.Name;
 			Type = underlyingType ?? parameterInfo.ParameterType;
-			Optional = parameterInfo.IsOptional;
+			Optional = underlyingType != null || parameterInfo.IsOptional;
 			Resolver = Client.Resolvers[Type];
 		}
 	}

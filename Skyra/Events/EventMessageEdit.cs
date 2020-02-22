@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Skyra.Cache.Models;
-using Skyra.Structures;
+using Skyra.Core;
+using Skyra.Core.Cache.Models;
+using Skyra.Core.Structures;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events

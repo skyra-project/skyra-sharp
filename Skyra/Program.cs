@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Skyra.Core;
+using Skyra.Core.Models;
 using Skyra.Events;
-using Skyra.Models;
 using Skyra.Monitors;
 
 namespace Skyra

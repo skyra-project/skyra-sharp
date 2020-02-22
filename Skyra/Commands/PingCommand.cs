@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Skyra.Utils;
+using Skyra.Core;
+using Skyra.Core.Structures;
+using Skyra.Core.Utils;
 using Spectacles.NET.Types;
 
 namespace Skyra.Commands

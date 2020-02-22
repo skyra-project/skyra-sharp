@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
-using Skyra.Structures;
+using Skyra.Core;
+using Skyra.Core.Structures;
 using Spectacles.NET.Types;
 
 namespace Skyra.Monitors
 {
 	public class CommandHandler : Monitor
 	{
-		private readonly Commands.CommandHandler _handler = new Commands.CommandHandler();
+		private readonly Core.Structures.CommandHandler _handler = new Core.Structures.CommandHandler();
 
 		public CommandHandler(Client client) : base(client,
 			new MonitorOptions(nameof(CommandHandler), ignoreOthers: false, ignoreEdits: false))

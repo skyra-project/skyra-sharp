@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Newtonsoft.Json;
+using Skyra.Core;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 

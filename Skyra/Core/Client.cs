@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core.Cache;
+using Skyra.Core.Database.Models;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
@@ -104,18 +106,18 @@ namespace Skyra.Core
 				.Select(type => Activator.CreateInstance(type, this))
 				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
 
-			Commands = Assembly.GetExecutingAssembly()
-				.ExportedTypes
-				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
-				.Select(type => Activator.CreateInstance(type, this))
-				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
-
 			Resolvers = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
 				.Select(Activator.CreateInstance)
 				.Select(ToArgumentInfo)
 				.ToDictionary(x => x.Type, x => x);
+
+			Commands = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
+				.Select(type => Activator.CreateInstance(type, this))
+				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
 		private static ArgumentInfo ToArgumentInfo(object argument)
@@ -162,22 +164,17 @@ namespace Skyra.Core
 			};
 		}
 
-		private static CommandInfo ToCommandInfo(object command)
+		private CommandInfo ToCommandInfo(object command)
 		{
 			var t = command.GetType();
-			var methodInfo = t.GetMethod("RunAsync", BindingFlags.Public | BindingFlags.Instance);
-			if (methodInfo == null)
-				throw new NullReferenceException($"{nameof(command)} does not have a RunAsync method.");
-
 			var commandInfo = t.GetCustomAttribute<CommandAttribute>();
 
 			return new CommandInfo
 			{
 				Delimiter = commandInfo.Delimiter,
 				Instance = command,
-				Method = methodInfo,
-				Arguments = methodInfo.GetParameters().Select(x => x.ParameterType).Skip(1).ToArray(),
-				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower()
+				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower(),
+				Usage = new CommandUsage(this, command)
 			};
 		}
 	}

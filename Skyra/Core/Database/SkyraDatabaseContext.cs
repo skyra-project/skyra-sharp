@@ -18,7 +18,7 @@ namespace Skyra.Core.Database
 
 		public DbSet<Banner> Banners { get; set; } = null!;
 		public DbSet<Models.Client> ClientStorage { get; set; } = null!;
-		public DbSet<CommandUsage> CommandCounter { get; set; } = null!;
+		public DbSet<CommandUses> CommandCounter { get; set; } = null!;
 		public DbSet<DashboardUser> DashboardUsers { get; set; } = null!;
 		public DbSet<Giveaway> Giveaway { get; set; } = null!;
 		public DbSet<Guild> Guilds { get; set; } = null!;

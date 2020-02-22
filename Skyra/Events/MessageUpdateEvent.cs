@@ -63,6 +63,7 @@ namespace Skyra.Events
 		private void RunMonitors(Message message)
 		{
 			foreach (var monitor in _client.Monitors.Values)
+			{
 				try
 				{
 					monitor.Method.Invoke(monitor.Instance, new object?[] {message});
@@ -73,6 +74,7 @@ namespace Skyra.Events
 					Console.Error.WriteLine($"ERROR: {exception.InnerException?.Message ?? exception.Message}");
 					Console.Error.WriteLine($"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
 				}
+			}
 		}
 	}
 }

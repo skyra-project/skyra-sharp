@@ -52,6 +52,47 @@ $HEADER$namespace $NAMESPACE$
 	}
 }
 </s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/CustomProperties/=FileName/@EntryIndexedValue">Monitor</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/CustomProperties/=ValidateFileName/@EntryIndexedValue">True</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Description/@EntryValue">&amp;Monitor</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=CLASS/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=CLASS/Expression/@EntryValue">getAlphaNumericFileNameWithoutExtension()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=CLASS/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=CLASS/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=HEADER/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=HEADER/Expression/@EntryValue">fileheader()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=HEADER/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=NAMESPACE/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=NAMESPACE/Expression/@EntryValue">fileDefaultNamespace()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=NAMESPACE/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Field/=NAMESPACE/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4B8E8DDE24387849B518B0CE8834ADB9/Text/@EntryValue">using System.Threading.Tasks;
+using Skyra.Core;
+using Skyra.Core.Structures.Attributes;
+using Spectacles.NET.Types;
+
+$HEADER$namespace $NAMESPACE$
+{
+	[Monitor]
+	public class $CLASS$Monitor
+	{
+		private readonly Client _client;
+
+		public $CLASS$Monitor(Client client) =&gt; _client = client;
+
+		public Task RunAsync(Message message)
+		{
+			return Task.FromResult(true);
+		}
+	}
+}</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>

@@ -7,9 +7,9 @@ using Spectacles.NET.Types;
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class SocialCounter
+	public class SocialCounterMonitor
 	{
-		public SocialCounter(Client _)
+		public SocialCounterMonitor(Client _)
 		{
 		}
 

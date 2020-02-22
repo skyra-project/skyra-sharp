@@ -8,11 +8,11 @@ using Spectacles.NET.Types;
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class CommandHandler
+	public class CommandHandlerMonitor
 	{
 		private readonly Client _client;
 
-		public CommandHandler(Client client)
+		public CommandHandlerMonitor(Client client)
 		{
 			_client = client;
 		}

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Arguments

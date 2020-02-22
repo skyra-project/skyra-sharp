@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Skyra.Arguments
+namespace Skyra.Core.Structures
 {
 	public struct ArgumentInfo
 	{

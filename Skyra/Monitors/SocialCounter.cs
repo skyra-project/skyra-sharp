@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Skyra.Core;
-using Skyra.Core.Structures;
+using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Monitors
 {
-	public class SocialCounter : Monitor
+	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
+	public class SocialCounter
 	{
-		public SocialCounter(Client client) : base(client,
-			new MonitorOptions(nameof(SocialCounter), ignoreOthers: false, ignoreEdits: false))
+		public SocialCounter(Client _)
 		{
 		}
 
-		public override Task<bool> Run(Message message)
+		public Task RunAsync(Message message)
 		{
 			Console.WriteLine(
 				$"Received Message [{message.Id}] from {message.Author.Username} with content '{message.Content}'.");

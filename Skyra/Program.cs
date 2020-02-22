@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Models;
-using Skyra.Events;
-using Skyra.Monitors;
 
 namespace Skyra
 {
@@ -25,22 +23,7 @@ namespace Skyra
 				Environment.GetEnvironmentVariable("REDIS_URL") ?? "localhost")
 			);
 
-			PopulateCache(client);
 			await client.ConnectAsync();
-		}
-
-		private static void PopulateCache(Client client)
-		{
-			client.Events
-				.Insert(new EventGuildCreate(client))
-				.Insert(new EventGuildUpdate(client))
-				.Insert(new EventMessageCreate(client))
-				.Insert(new EventMessageEdit(client))
-				.Insert(new EventReady(client));
-
-			client.Monitors
-				.Insert(new CommandHandler(client))
-				.Insert(new SocialCounter(client));
 		}
 	}
 }

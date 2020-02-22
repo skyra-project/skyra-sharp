@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Skyra.Core;
-using Skyra.Core.Structures;
+using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Utils;
 using Spectacles.NET.Types;
 

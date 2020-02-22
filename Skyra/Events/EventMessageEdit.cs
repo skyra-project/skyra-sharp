@@ -2,16 +2,20 @@ using System;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
-using Skyra.Core.Structures;
+using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
-	public class EventMessageEdit : Event
+	[Event]
+	public class EventMessageEdit
 	{
-		public EventMessageEdit(Client client) : base(client, new EventOptions(nameof(EventMessageEdit)))
+		private readonly Client _client;
+
+		public EventMessageEdit(Client client)
 		{
-			EventHandler.OnMessageUpdate += Run;
+			_client = client;
+			_client.EventHandler.OnMessageUpdate += Run;
 		}
 
 		private void Run(MessageUpdatePayload message)
@@ -23,11 +27,11 @@ namespace Skyra.Events
 		{
 			try
 			{
-				var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
+				var previousMessage = await _client.Cache.Messages.GetAsync(messageUpdate.Id);
 				var message = GenerateMessage(messageUpdate, previousMessage);
 
-				await Task.WhenAll(Client.Cache.Messages.SetAsync(new CachedMessage(message)),
-					Client.Monitors.Run(message));
+				await _client.Cache.Messages.SetAsync(new CachedMessage(message));
+				RunMonitors(message);
 			}
 			catch (Exception exception)
 			{
@@ -52,6 +56,12 @@ namespace Skyra.Events
 				EditedTimestamp = messageUpdate.EditedTimestamp,
 				WebhookId = messageUpdate.WebhookId
 			};
+		}
+
+		private void RunMonitors(Message message)
+		{
+			foreach (var monitor in _client.Monitors.Values)
+				monitor.Method.Invoke(monitor.Instance, new object?[] {message});
 		}
 	}
 }

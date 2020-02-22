@@ -1,6 +1,6 @@
 using System;
 
-namespace Skyra.Arguments
+namespace Skyra.Core.Structures.Attributes
 {
 	public class ResolverAttribute : Attribute
 	{

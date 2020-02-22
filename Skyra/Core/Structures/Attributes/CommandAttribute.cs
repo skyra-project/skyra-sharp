@@ -1,6 +1,6 @@
 using System;
 
-namespace Skyra.Core.Structures
+namespace Skyra.Core.Structures.Attributes
 {
 	public class CommandAttribute : Attribute
 	{

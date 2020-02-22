@@ -1,19 +1,21 @@
 using System;
 using Skyra.Core;
-using Skyra.Core.Structures;
+using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
-	public class EventReady : Event
+	[Event]
+	public class EventReady
 	{
-		public EventReady(Client client) : base(client, new EventOptions(nameof(EventReady)))
+		public EventReady(Client client)
 		{
-			EventHandler.OnReady += Run;
+			client.EventHandler.OnReady += Run;
 		}
 
 		private static void Run(ReadyDispatch args)
 		{
+			// TODO(kyranet): Store Skyra's ID from here
 			Console.WriteLine(
 				$"Skyra VI ready! [{args.User.Username}#{args.User.Discriminator}] [{args.Guilds.Length.ToString()} [G]]");
 		}

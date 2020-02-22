@@ -7,11 +7,11 @@ using Spectacles.NET.Types;
 namespace Skyra.Commands
 {
 	[Command(Delimiter = " ")]
-	public class ReplyCommandCommand
+	public class ReplyCommand
 	{
 		private readonly Client _client;
 
-		public ReplyCommandCommand(Client client)
+		public ReplyCommand(Client client)
 		{
 			_client = client;
 		}

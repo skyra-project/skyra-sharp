@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures.Attributes;
@@ -12,7 +11,10 @@ namespace Skyra.Commands
 	{
 		private readonly Client _client;
 
-		public ReplyCommand(Client client) => _client = client;
+		public ReplyCommand(Client client)
+		{
+			_client = client;
+		}
 
 		public async Task RunAsync(Message message, int number)
 		{

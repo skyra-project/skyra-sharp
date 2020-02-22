@@ -71,8 +71,14 @@ namespace Skyra.Core.Structures.Usage
 				}
 				catch (TargetInvocationException exception)
 				{
-					if (usageArgument.Optional) Parameters[i] = null;
-					else return exception.InnerException?.Message ?? exception.Message;
+					if (usageArgument.Optional)
+					{
+						Parameters[i] = null;
+					}
+					else
+					{
+						return exception.InnerException?.Message ?? exception.Message;
+					}
 				}
 			}
 

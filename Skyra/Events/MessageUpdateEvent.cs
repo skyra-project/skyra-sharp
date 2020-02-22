@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
@@ -27,6 +28,7 @@ namespace Skyra.Events
 		{
 			try
 			{
+				// TODO(kyranet): Pull message.Author from Redis or fetch, Discord sometimes doesn't give it.
 				var previousMessage = await _client.Cache.Messages.GetAsync(messageUpdate.Id);
 				var message = GenerateMessage(messageUpdate, previousMessage);
 
@@ -61,7 +63,16 @@ namespace Skyra.Events
 		private void RunMonitors(Message message)
 		{
 			foreach (var monitor in _client.Monitors.Values)
-				monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+				try
+				{
+					monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+				}
+				catch (TargetInvocationException exception)
+				{
+					Console.Error.WriteLine($"[MONITORS]: {monitor.Name}");
+					Console.Error.WriteLine($"ERROR: {exception.InnerException?.Message ?? exception.Message}");
+					Console.Error.WriteLine($"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
+				}
 		}
 	}
 }

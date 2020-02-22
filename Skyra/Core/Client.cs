@@ -108,7 +108,7 @@ namespace Skyra.Core
 			Resolvers = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
-				.Select(Activator.CreateInstance)
+				.Select(type => Activator.CreateInstance(type, this))
 				.Select(ToArgumentInfo)
 				.ToDictionary(x => x.Type, x => x);
 
@@ -127,7 +127,8 @@ namespace Skyra.Core
 			{
 				Instance = argument,
 				Method = argument.GetType().GetMethod("ResolveAsync"),
-				Type = attribute.Type
+				Type = attribute.Type,
+				Displayname = attribute.DisplayName
 			};
 		}
 
@@ -147,7 +148,9 @@ namespace Skyra.Core
 			var attribute = monitor.GetType().GetCustomAttribute<MonitorAttribute>();
 			var methodInfo = monitor.GetType().GetMethod("RunAsync");
 			if (methodInfo == null)
+			{
 				throw new NullReferenceException($"{nameof(monitor)} does not have a RunAsync method.");
+			}
 
 			return new MonitorInfo
 			{

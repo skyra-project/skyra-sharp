@@ -11,6 +11,13 @@ namespace Skyra.Core.Structures.Usage
 		public Type Type { get; }
 		public bool Optional { get; }
 
+		public override string ToString()
+		{
+			var formatted = Type.IsEnum
+				? string.Join("|", Type.GetEnumNames()).ToLower()
+				: $"{Name}:{Resolver.Displayname}";
+			return Optional ? $"[{formatted}]" : $"<{formatted}>";
+		}
 
 		internal CommandUsageOverloadArgument(Client client, ParameterInfo parameterInfo)
 		{

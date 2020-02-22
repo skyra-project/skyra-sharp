@@ -8,7 +8,11 @@ namespace Skyra.Core.Structures.Usage
 		private Client Client { get; }
 		public MethodBase Method { get; }
 		public CommandUsageOverloadArgument[] Arguments { get; }
-		public int RequiredArguments { get; }
+
+		public override string ToString()
+		{
+			return string.Join(" ", Arguments.Select(x => x.ToString()));
+		}
 
 		internal CommandUsageOverload(Client client, MethodBase methodInfo)
 		{
@@ -19,7 +23,6 @@ namespace Skyra.Core.Structures.Usage
 				.Skip(1)
 				.Select(parameter => new CommandUsageOverloadArgument(client, parameter))
 				.ToArray();
-			RequiredArguments = Arguments.Count(a => !a.Optional);
 		}
 	}
 }

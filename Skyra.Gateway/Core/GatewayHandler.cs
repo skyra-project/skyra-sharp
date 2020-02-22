@@ -83,7 +83,10 @@ namespace Skyra.Gateway.Core
 					{
 						var tasks = new Task[ShardCount];
 						for (var i = 0; i < ShardCount; i++)
+						{
 							tasks[i] = _broker.PublishAsync(i.ToString(), dataBytes);
+						}
+
 						await Task.WhenAll(tasks);
 					}
 					else

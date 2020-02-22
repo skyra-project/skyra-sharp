@@ -17,11 +17,10 @@ namespace Skyra.Core
 {
 	public class Client
 	{
-		public Dictionary<string, CommandInfo> Commands;
-
-		public Dictionary<string, EventInfo> Events;
-		public Dictionary<string, MonitorInfo> Monitors;
-		public Dictionary<Type, ArgumentInfo> Resolvers;
+		public Dictionary<string, CommandInfo> Commands { get; private set; }
+		public Dictionary<string, EventInfo> Events { get; private set; }
+		public Dictionary<string, MonitorInfo> Monitors { get; private set; }
+		public Dictionary<Type, ArgumentInfo> Resolvers { get; private set; }
 
 		public Client(ClientOptions clientOptions)
 		{

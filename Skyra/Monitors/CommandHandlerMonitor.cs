@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
@@ -30,10 +31,10 @@ namespace Skyra.Monitors
 			var command = _client.Commands[commandName.ToLower()];
 			if (command.Name == string.Empty) return;
 
-			var parser = new TextPrompt(command, message, prefixLess);
+			var parser = new TextPrompt(command, message, prefixLess.Substring(commandName.Length));
 			try
 			{
-				await parser.Run();
+				await parser.RunAsync();
 			}
 			catch (ArgumentException exception)
 			{

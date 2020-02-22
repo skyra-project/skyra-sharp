@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures.Attributes;
@@ -11,19 +12,17 @@ namespace Skyra.Commands
 	{
 		private readonly Client _client;
 
-		public ReplyCommand(Client client)
-		{
-			_client = client;
-		}
+		public ReplyCommand(Client client) => _client = client;
 
 		public async Task RunAsync(Message message, int number)
 		{
 			await message.SendAsync(_client, $"A number! {number.ToString()}");
 		}
 
-		public async Task RunAsync(Message message, string content)
+		public async Task RunAsync(Message message, string content = default)
 		{
-			await message.SendAsync(_client, $"A string! {content}");
+			var m = string.IsNullOrEmpty(content) ? "I got absolutely nothing!" : content;
+			await message.SendAsync(_client, $"A string! {m}");
 		}
 	}
 }

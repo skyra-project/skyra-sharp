@@ -30,31 +30,39 @@ namespace Skyra.Core.Structures.Usage
 
 		private CommandUsage Usage { get; }
 
-		public async Task Run()
+		public async Task RunAsync()
 		{
-			foreach (var overload in Usage.Overloads)
+			for (var i = 0; i < Usage.Overloads.Length; i++)
 			{
-				var error = await RunOverload(overload);
+				var overload = Usage.Overloads[i];
+				var error = await RunOverloadAsync(overload);
 				if (error == null)
 				{
 					Overload = overload;
 					return;
 				}
 
-				if (overload.Equals(Usage.Overloads.Last())) throw new ArgumentException(error);
+				if (i == Usage.Overloads.Length - 1) throw new ArgumentException(error);
 			}
 		}
 
-		private async Task<string?> RunOverload(CommandUsageOverload overload)
+		private async Task<string?> RunOverloadAsync(CommandUsageOverload overload)
 		{
 			Parameters = new object[overload.Arguments.Length + 1];
 			Parameters[0] = Message;
 
-			var inputIndex = 0;
-			for (var i = 0; i < overload.Arguments.Length; i++)
+			var inputIndex = 1;
+			for (var i = 0; i < overload.Arguments.Length; ++i)
 			{
 				var usageArgument = overload.Arguments[i];
-				var inputArgument = Arguments[++inputIndex];
+
+				if (inputIndex >= Arguments.Length)
+				{
+					if (usageArgument.Optional) continue;
+					return $"You must input a value for {usageArgument.Name}.";
+				}
+
+				var inputArgument = Arguments[inputIndex];
 				try
 				{
 					Parameters[i + 1] =
@@ -65,7 +73,7 @@ namespace Skyra.Core.Structures.Usage
 				catch (TargetInvocationException exception)
 				{
 					if (usageArgument.Optional) Parameters[i] = null;
-					return exception.InnerException?.Message ?? exception.Message;
+					else return exception.InnerException?.Message ?? exception.Message;
 				}
 			}
 

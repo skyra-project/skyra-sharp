@@ -8,11 +8,11 @@ using Spectacles.NET.Types;
 namespace Skyra.Events
 {
 	[Event]
-	public class EventMessageEdit
+	public class MessageUpdateEvent
 	{
 		private readonly Client _client;
 
-		public EventMessageEdit(Client client)
+		public MessageUpdateEvent(Client client)
 		{
 			_client = client;
 			_client.EventHandler.OnMessageUpdate += Run;

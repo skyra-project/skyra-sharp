@@ -4,11 +4,11 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
-	public class EventGuildUpdate
+	public class GuildUpdateEvent
 	{
 		private readonly Client _client;
 
-		public EventGuildUpdate(Client client)
+		public GuildUpdateEvent(Client client)
 		{
 			_client = client;
 			_client.EventHandler.OnGuildUpdate += Run;

@@ -6,11 +6,11 @@ using Spectacles.NET.Types;
 namespace Skyra.Events
 {
 	[Event]
-	public class EventGuildCreate
+	public class GuildCreateEvent
 	{
 		private readonly Client _client;
 
-		public EventGuildCreate(Client client)
+		public GuildCreateEvent(Client client)
 		{
 			_client = client;
 			_client.EventHandler.OnGuildCreate += Run;

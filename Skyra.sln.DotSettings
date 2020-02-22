@@ -31,23 +31,70 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/Text/@EntryValue">using System.Threading.Tasks;
-using Skyra.Utils;
+using Skyra.Core;
+using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Utils;
 using Spectacles.NET.Types;
 
 $HEADER$namespace $NAMESPACE$
 {
 	[Command]
-	public class $CLASS$Command 
+	public class $CLASS$Command
 	{
 		private Client _client;
-        
+
 		public $CLASS$Command(Client client) =&gt; _client = client;
 
 		public async Task RunAsync(Message message)
-    	{
+		{
 			$END$
-        }
-    }
+		}
+	}
+}
+</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/CustomProperties/=FileName/@EntryIndexedValue">Event</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/CustomProperties/=ValidateFileName/@EntryIndexedValue">True</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Description/@EntryValue">&amp;Event</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=CLASS/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=CLASS/Expression/@EntryValue">getAlphaNumericFileNameWithoutExtension()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=CLASS/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=CLASS/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=HEADER/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=HEADER/Expression/@EntryValue">fileheader()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=HEADER/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=NAMESPACE/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=NAMESPACE/Expression/@EntryValue">fileDefaultNamespace()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=NAMESPACE/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Field/=NAMESPACE/Order/@EntryValue">2</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=C92669A29C73B148B7B410AC29EDF6BB/Text/@EntryValue">using Skyra.Core;
+using Skyra.Core.Structures.Attributes;
+using Spectacles.NET.Types;
+
+$HEADER$namespace $NAMESPACE$
+{
+	[Event]
+	public class $CLASS$Event
+	{
+		private readonly Client _client;
+
+		public $CLASS$Event(Client client)
+		{
+			_client = client;
+			_client.EventHandler.On$CLASS$ += Run;
+		}
+
+		private void Run()
+		{
+			$END$
+		}
+	}
 }</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=bot_0027s/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Emoji/@EntryIndexedValue">True</s:Boolean>

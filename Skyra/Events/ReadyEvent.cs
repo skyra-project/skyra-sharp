@@ -6,9 +6,9 @@ using Spectacles.NET.Types;
 namespace Skyra.Events
 {
 	[Event]
-	public class EventReady
+	public class ReadyEvent
 	{
-		public EventReady(Client client)
+		public ReadyEvent(Client client)
 		{
 			client.EventHandler.OnReady += Run;
 		}

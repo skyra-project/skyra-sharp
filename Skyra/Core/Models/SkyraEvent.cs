@@ -103,12 +103,12 @@ namespace Skyra.Core.Models
 		GUILD_ROLE_DELETE,
 
 		/// <summary>
-		/// 	Invite to a channel was created.
+		///     Invite to a channel was created.
 		/// </summary>
 		INVITE_CREATE,
 
 		/// <summary>
-		/// 	Invite to a channel was deleted.
+		///     Invite to a channel was deleted.
 		/// </summary>
 		INVITE_DELETE,
 
@@ -148,7 +148,7 @@ namespace Skyra.Core.Models
 		MESSAGE_REACTION_REMOVE_ALL,
 
 		/// <summary>
-		/// 	All reactions for a given emoji were explicitly removed from a message.
+		///     All reactions for a given emoji were explicitly removed from a message.
 		/// </summary>
 		MESSAGE_REACTION_REMOVE_EMOJI,
 
@@ -189,15 +189,13 @@ namespace Skyra.Core.Models
 		WEBHOOKS_UPDATE,
 
 		/// <summary>
-		/// 	A twitch stream has started.
+		///     A twitch stream has started.
 		/// </summary>
-
 		NOTIFY_TWITCH_STREAM_START,
 
 		/// <summary>
-		/// 	A twitch stream has ended.
+		///     A twitch stream has ended.
 		/// </summary>
-
 		NOTIFY_TWITCH_STREAM_END
 	}
 }

@@ -12,7 +12,6 @@ using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
-using Spectacles.NET.Types;
 using EventInfo = Skyra.Core.Structures.EventInfo;
 
 namespace Skyra.Core

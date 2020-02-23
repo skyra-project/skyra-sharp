@@ -1,19 +1,17 @@
 using System;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Arguments
 {
 	[Resolver(typeof(DateTime), "date")]
-	public class DateTimeResolver
+	public class DateTimeResolver : StructureBase
 	{
-		private readonly Client _client;
-
-		public DateTimeResolver(Client client)
+		public DateTimeResolver(Client client) : base(client)
 		{
-			_client = client;
 		}
 
 		public Task<DateTime> ResolveAsync(Message message, string content)

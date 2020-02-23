@@ -3,20 +3,18 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
 	[Event]
-	public class MessageUpdateEvent
+	public class MessageUpdateEvent : StructureBase
 	{
-		private readonly Client _client;
-
-		public MessageUpdateEvent(Client client)
+		public MessageUpdateEvent(Client client) : base(client)
 		{
-			_client = client;
-			_client.EventHandler.OnMessageUpdate += Run;
+			Client.EventHandler.OnMessageUpdate += Run;
 		}
 
 		private void Run(MessageUpdatePayload message)
@@ -29,10 +27,10 @@ namespace Skyra.Events
 			try
 			{
 				// TODO(kyranet): Pull message.Author from Redis or fetch, Discord sometimes doesn't give it.
-				var previousMessage = await _client.Cache.Messages.GetAsync(messageUpdate.Id);
+				var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
 				var message = GenerateMessage(messageUpdate, previousMessage);
 
-				await _client.Cache.Messages.SetAsync(new CachedMessage(message));
+				await Client.Cache.Messages.SetAsync(new CachedMessage(message));
 				RunMonitors(message);
 			}
 			catch (Exception exception)
@@ -62,7 +60,7 @@ namespace Skyra.Events
 
 		private void RunMonitors(Message message)
 		{
-			foreach (var monitor in _client.Monitors.Values)
+			foreach (var monitor in Client.Monitors.Values)
 			{
 				try
 				{

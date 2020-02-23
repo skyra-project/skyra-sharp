@@ -1,19 +1,17 @@
 using System;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Arguments
 {
 	[Resolver(typeof(string), "string")]
-	public class StringResolver
+	public class StringResolver : StructureBase
 	{
-		private readonly Client _client;
-
-		public StringResolver(Client client)
+		public StringResolver(Client client) : base(client)
 		{
-			_client = client;
 		}
 
 		public Task<string> ResolveAsync(Message _, string content)

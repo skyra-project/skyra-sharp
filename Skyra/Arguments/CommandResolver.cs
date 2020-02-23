@@ -8,18 +8,15 @@ using Spectacles.NET.Types;
 namespace Skyra.Arguments
 {
 	[Resolver(typeof(CommandInfo), "command")]
-	public class CommandResolver
+	public class CommandResolver : StructureBase
 	{
-		private readonly Client _client;
-
-		public CommandResolver(Client client)
+		public CommandResolver(Client client) : base(client)
 		{
-			_client = client;
 		}
 
 		public Task<CommandInfo> ResolveAsync(Message _, string content)
 		{
-			var command = _client.Commands[content];
+			var command = Client.Commands[content];
 			if (string.IsNullOrEmpty(command.Name)) throw new Exception("Gimme a valid command!");
 			return Task.FromResult(command);
 		}

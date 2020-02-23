@@ -8,25 +8,22 @@ using Spectacles.NET.Types;
 namespace Skyra.Events
 {
 	[Event]
-	public class MessageCreateEvent
+	public class MessageCreateEvent : StructureBase
 	{
-		private readonly Client _client;
-
-		public MessageCreateEvent(Client client)
+		public MessageCreateEvent(Client client) : base(client)
 		{
-			_client = client;
-			_client.EventHandler.OnMessageCreate += Run;
+			Client.EventHandler.OnMessageCreate += Run;
 		}
 
 		private void Run(Message message)
 		{
 			RunMonitors(message);
-			Task.Run(() => _client.Cache.Messages.SetAsync(message));
+			Task.Run(() => Client.Cache.Messages.SetAsync(message));
 		}
 
 		private void RunMonitors(Message message)
 		{
-			foreach (var monitor in _client.Monitors.Values.Where(monitor => ShouldRunMonitor(message, monitor)))
+			foreach (var monitor in Client.Monitors.Values.Where(monitor => ShouldRunMonitor(message, monitor)))
 			{
 				monitor.Method.Invoke(monitor.Instance, new object?[] {message});
 			}

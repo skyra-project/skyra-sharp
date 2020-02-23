@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class SocialCounterMonitor
+	public class SocialCounterMonitor : StructureBase
 	{
-		public SocialCounterMonitor(Client _)
+		public SocialCounterMonitor(Client client) : base(client)
 		{
 		}
 

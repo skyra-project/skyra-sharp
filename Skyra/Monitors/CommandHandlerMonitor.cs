@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Usage;
 using Skyra.Core.Utils;
@@ -10,13 +11,10 @@ using Spectacles.NET.Types;
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class CommandHandlerMonitor
+	public class CommandHandlerMonitor : StructureBase
 	{
-		private readonly Client _client;
-
-		public CommandHandlerMonitor(Client client)
+		public CommandHandlerMonitor(Client client) : base(client)
 		{
-			_client = client;
 		}
 
 		public async Task RunAsync(Message message)
@@ -27,7 +25,7 @@ namespace Skyra.Monitors
 			var commandName = prefixLess.Contains(" ")
 				? prefixLess.Substring(0, prefixLess.IndexOf(" ", StringComparison.Ordinal))
 				: prefixLess;
-			var command = _client.Commands[commandName.ToLower()];
+			var command = Client.Commands[commandName.ToLower()];
 			if (command.Name == string.Empty) return;
 
 			var parser = new TextPrompt(command, message, prefixLess.Substring(commandName.Length));
@@ -37,14 +35,14 @@ namespace Skyra.Monitors
 			}
 			catch (ArgumentException exception)
 			{
-				await message.SendAsync(_client,
+				await message.SendAsync(Client,
 					$"Argument Error: {exception.InnerException?.Message ?? exception.Message}");
 				return;
 			}
 			catch (Exception exception)
 			{
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
-				await message.SendAsync(_client, "Whoops! Something happened!");
+				await message.SendAsync(Client, "Whoops! Something happened!");
 				return;
 			}
 
@@ -56,12 +54,12 @@ namespace Skyra.Monitors
 			{
 				if (exception.InnerException == null) throw;
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
-				await message.SendAsync(_client, "Whoops! Something happened!");
+				await message.SendAsync(Client, "Whoops! Something happened!");
 			}
 			catch (Exception exception)
 			{
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
-				await message.SendAsync(_client, "Whoops! Something happened!");
+				await message.SendAsync(Client, "Whoops! Something happened!");
 			}
 		}
 	}

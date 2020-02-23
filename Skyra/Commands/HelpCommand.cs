@@ -9,18 +9,15 @@ using Spectacles.NET.Types;
 namespace Skyra.Commands
 {
 	[Command(Delimiter = " ")]
-	public class HelpCommand
+	public class HelpCommand : StructureBase
 	{
-		private readonly Client _client;
-
-		public HelpCommand(Client client)
+		public HelpCommand(Client client) : base(client)
 		{
-			_client = client;
 		}
 
 		public async Task RunAsync(Message message, CommandInfo command)
 		{
-			await message.SendAsync(_client,
+			await message.SendAsync(Client,
 				$"The usage(s) for {command.Name} are: {GetUsage(command)}.");
 		}
 

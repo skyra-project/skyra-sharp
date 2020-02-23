@@ -1,16 +1,17 @@
 using System;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
 	[Event]
-	public class ReadyEvent
+	public class ReadyEvent : StructureBase
 	{
-		public ReadyEvent(Client client)
+		public ReadyEvent(Client client) : base(client)
 		{
-			client.EventHandler.OnReady += Run;
+			Client.EventHandler.OnReady += Run;
 		}
 
 		private static void Run(ReadyDispatch args)

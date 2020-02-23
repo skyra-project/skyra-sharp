@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Skyra.Core.Cache;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
@@ -93,29 +94,33 @@ namespace Skyra.Core
 
 		private void InitializeCaches()
 		{
+			var provider = new ServiceCollection()
+				.AddSingleton(this)
+				.BuildServiceProvider();
+
 			Events = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<EventAttribute>() != null)
-				.Select(type => Activator.CreateInstance(type, this))
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
 				.Select(ToEventInfo).ToDictionary(x => x.Name, x => x);
 
 			Monitors = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<MonitorAttribute>() != null)
-				.Select(type => Activator.CreateInstance(type, this))
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
 				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
 
 			Resolvers = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
-				.Select(type => Activator.CreateInstance(type, this))
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
 				.Select(ToArgumentInfo)
 				.ToDictionary(x => x.Type, x => x);
 
 			Commands = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
-				.Select(type => Activator.CreateInstance(type, this))
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
 				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 

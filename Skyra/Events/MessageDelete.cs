@@ -1,19 +1,17 @@
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
 	[Event]
-	public class MessageDeleteEvent
+	public class MessageDeleteEvent : StructureBase
 	{
-		private readonly Client _client;
-
-		public MessageDeleteEvent(Client client)
+		public MessageDeleteEvent(Client client) : base(client)
 		{
-			_client = client;
-			_client.EventHandler.OnMessageDelete += Run;
+			Client.EventHandler.OnMessageDelete += Run;
 		}
 
 		private void Run(MessageDeletePayload messageDeletePayload)
@@ -24,8 +22,8 @@ namespace Skyra.Events
 		private async Task RunAsync(MessageDeletePayload messageDeletePayload)
 		{
 			await Task.WhenAll(
-				_client.Cache.Messages.DeleteAsync(messageDeletePayload.Id, messageDeletePayload.ChannelId),
-				_client.Cache.EditableMessages.DeleteAsync(messageDeletePayload.Id, messageDeletePayload.ChannelId));
+				Client.Cache.Messages.DeleteAsync(messageDeletePayload.Id, messageDeletePayload.ChannelId),
+				Client.Cache.EditableMessages.DeleteAsync(messageDeletePayload.Id, messageDeletePayload.ChannelId));
 		}
 	}
 }

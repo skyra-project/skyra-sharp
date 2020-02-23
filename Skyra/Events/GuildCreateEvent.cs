@@ -1,24 +1,22 @@
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
 	[Event]
-	public class GuildCreateEvent
+	public class GuildCreateEvent : StructureBase
 	{
-		private readonly Client _client;
-
-		public GuildCreateEvent(Client client)
+		public GuildCreateEvent(Client client) : base(client)
 		{
-			_client = client;
-			_client.EventHandler.OnGuildCreate += Run;
+			Client.EventHandler.OnGuildCreate += Run;
 		}
 
 		private void Run(Guild guild)
 		{
-			Task.Run(() => _client.Cache.Guilds.SetAsync(guild));
+			Task.Run(() => Client.Cache.Guilds.SetAsync(guild));
 		}
 	}
 }

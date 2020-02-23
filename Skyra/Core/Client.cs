@@ -31,7 +31,7 @@ namespace Skyra.Core
 			Rest = null!;
 			Broker.Receive += (sender, args) =>
 			{
-				EventHandler.HandleEvent((GatewayEvent) Enum.Parse(typeof(GatewayEvent), args.Event), args);
+				EventHandler.HandleEvent((SkyraEvent) Enum.Parse(typeof(SkyraEvent), args.Event), args);
 				Broker.Ack(args.Event, args.DeliveryTag);
 			};
 

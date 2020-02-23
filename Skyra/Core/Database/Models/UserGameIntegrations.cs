@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
+	/// <summary>
+	/// 	The table containing all game integration savable data.
+	/// </summary>
 	[Table("user_game_integrations")]
 	public sealed class UserGameIntegrations
 	{

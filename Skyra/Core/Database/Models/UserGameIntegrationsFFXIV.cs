@@ -17,14 +17,14 @@ namespace Skyra.Core.Database.Models
 		[JsonProperty("n")]
 		public string Name { get; set; }
 
-		[JsonProperty("n_f")]
+		[JsonProperty("nf")]
 		public string FirstName
 			=> Name.Split(" ")[0];
-		[JsonProperty("n_l")]
+		[JsonProperty("nl")]
 		public string LastName
 			=> Name.Split(" ")[1];
 
-		[JsonProperty("ls_id")]
+		[JsonProperty("lsid")]
 		public string LodeStoneID { get; set; }
 
 		[JsonProperty("dc")]

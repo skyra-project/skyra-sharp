@@ -113,5 +113,10 @@ namespace Skyra.Core.Database.Models
 		///     The navigation property to the <see cref="Member" /> entity.
 		/// </summary>
 		public ICollection<Member> Member { get; set; } = null!;
+
+		/// <summary>
+		///     The navigation property to the <see cref="UserGameIntegrations" /> entity.
+		/// </summary>
+		public UserGameIntegrations UserGameIntegrations { get; set; } = null!;
 	}
 }

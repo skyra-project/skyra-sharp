@@ -17,10 +17,10 @@ namespace Skyra.Core.Database.Models
 		[JsonProperty("n")]
 		public string Name { get; set; }
 
-		[JsonProperty("nf")]
+		[JsonIgnore]
 		public string FirstName
 			=> Name.Split(" ")[0];
-		[JsonProperty("nl")]
+		[JsonIgnore]
 		public string LastName
 			=> Name.Split(" ")[1];
 

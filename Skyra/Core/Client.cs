@@ -23,7 +23,6 @@ namespace Skyra.Core
 		{
 			EventHandler = new EventHandler(this);
 			Cache = new CacheClient(clientOptions.RedisPrefix);
-			InitializeCaches();
 
 			Token = clientOptions.Token;
 			BrokerUri = clientOptions.BrokerUri;
@@ -34,6 +33,35 @@ namespace Skyra.Core
 				EventHandler.HandleEvent((GatewayEvent) Enum.Parse(typeof(GatewayEvent), args.Event), args);
 				Broker.Ack(args.Event, args.DeliveryTag);
 			};
+
+			var provider = new ServiceCollection()
+				.AddSingleton(this)
+				.BuildServiceProvider();
+
+			Events = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<EventAttribute>() != null)
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
+				.Select(ToEventInfo).ToDictionary(x => x.Name, x => x);
+
+			Monitors = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<MonitorAttribute>() != null)
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
+				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
+
+			Resolvers = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
+				.Select(ToArgumentInfo)
+				.ToDictionary(x => x.Type, x => x);
+
+			Commands = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
+				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
 		public Dictionary<string, CommandInfo> Commands { get; private set; }
@@ -90,38 +118,6 @@ namespace Skyra.Core
 				"VOICE_SERVER_UPDATE",
 				"WEBHOOKS_UPDATE"
 			});
-		}
-
-		private void InitializeCaches()
-		{
-			var provider = new ServiceCollection()
-				.AddSingleton(this)
-				.BuildServiceProvider();
-
-			Events = Assembly.GetExecutingAssembly()
-				.ExportedTypes
-				.Where(type => type.GetCustomAttribute<EventAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
-				.Select(ToEventInfo).ToDictionary(x => x.Name, x => x);
-
-			Monitors = Assembly.GetExecutingAssembly()
-				.ExportedTypes
-				.Where(type => type.GetCustomAttribute<MonitorAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
-				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
-
-			Resolvers = Assembly.GetExecutingAssembly()
-				.ExportedTypes
-				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
-				.Select(ToArgumentInfo)
-				.ToDictionary(x => x.Type, x => x);
-
-			Commands = Assembly.GetExecutingAssembly()
-				.ExportedTypes
-				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
-				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
 		private static ArgumentInfo ToArgumentInfo(object argument)

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Skyra.Core.Structures.Usage
 {
-	public struct CommandUsageOverload
+	public class CommandUsageOverload
 	{
 		private Client Client { get; }
 		public MethodBase Method { get; }

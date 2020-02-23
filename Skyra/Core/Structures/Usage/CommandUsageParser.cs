@@ -1,40 +1,41 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Threading.Tasks;
 using Spectacles.NET.Types;
 
 namespace Skyra.Core.Structures.Usage
 {
-	public class TextPrompt
+	public class CommandUsageParser
 	{
-		// private bool QuotedStringSupport { get; }
-		// private bool FlagSupport { get; }
-		// private static readonly Regex FlagRegExp = new Regex(@"(?:--|—)(\w[\w-]+)(?:=(?:[""]((?:[^""\\]|\.)*)[""]|[']((?:[^'\\]|\.)*)[']|[“”]((?:[^“”\\]|\.)*)[“”]|[‘’]((?:[^‘’\\]|\.)*)[‘’]|([\w<>@​#&!-]+)))?", RegexOptions.Compiled);
+		// private static readonly Regex FlagRegExp =
+		// 	new Regex(
+		// 		@"(?:--|—)(\w[\w-]+)(?:=(?:[""]((?:[^""\\]|\.)*)[""]|[']((?:[^'\\]|\.)*)[']|[“”]((?:[^“”\\]|\.)*)[“”]|[‘’]((?:[^‘’\\]|\.)*)[‘’]|([\w<>@​#&!-]+)))?",
+		// 		RegexOptions.Compiled);
 
-		public TextPrompt(CommandInfo command, Message message, string content)
+		public CommandUsageParser(CommandInfo command, Message message, string content)
 		{
 			Message = message;
-			Command = command;
 			Usage = command.Usage;
+			Overload = null;
+			Parameters = new object?[0];
 			Arguments = GetArguments(content, command.Delimiter);
 		}
 
-		public Dictionary<string, string> Flags { get; }
+		// public Dictionary<string, string> Flags { get; }
 		public string[] Arguments { get; }
-		public object[] Parameters { get; private set; }
-		public CommandUsageOverload Overload { get; private set; }
+		public object?[] Parameters { get; private set; }
+		public CommandUsageOverload? Overload { get; private set; }
+		// private bool QuotedStringSupport { get; }
+		// private bool FlagSupport { get; }
 		private Message Message { get; }
-		private CommandInfo Command { get; }
 
 		private CommandUsage Usage { get; }
 
-		public async Task RunAsync()
+		public void Run()
 		{
 			for (var i = 0; i < Usage.Overloads.Length; i++)
 			{
 				var overload = Usage.Overloads[i];
-				var error = await RunOverloadAsync(overload);
+				var error = RunOverloadAsync(overload);
 				if (error == null)
 				{
 					Overload = overload;
@@ -45,9 +46,9 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
-		private async Task<string?> RunOverloadAsync(CommandUsageOverload overload)
+		private string? RunOverloadAsync(CommandUsageOverload overload)
 		{
-			Parameters = new object[overload.Arguments.Length + 1];
+			Parameters = new object?[overload.Arguments.Length + 1];
 			Parameters[0] = Message;
 
 			var inputIndex = 1;
@@ -65,16 +66,18 @@ namespace Skyra.Core.Structures.Usage
 				var inputArgument = Arguments[inputIndex];
 				try
 				{
+#pragma warning disable CS8600, CS8602
 					Parameters[i + 1] =
 						(usageArgument.Resolver.Method.Invoke(usageArgument.Resolver.Instance,
-							new object?[] {Message, inputArgument}) as dynamic).Result as object;
+							new object[] {Message, inputArgument}) as dynamic).Result as object;
 					++inputIndex;
+#pragma warning restore CS8600, CS8602
 				}
 				catch (TargetInvocationException exception)
 				{
 					if (usageArgument.Optional)
 					{
-						Parameters[i] = null;
+						Parameters[i] = usageArgument.Default;
 					}
 					else
 					{

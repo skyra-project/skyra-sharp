@@ -28,6 +28,7 @@ namespace Skyra.Core
 			BrokerUri = clientOptions.BrokerUri;
 			RedisUri = clientOptions.RedisUri;
 			Broker = new AmqpBroker(clientOptions.BrokerName);
+			Rest = null!;
 			Broker.Receive += (sender, args) =>
 			{
 				EventHandler.HandleEvent((GatewayEvent) Enum.Parse(typeof(GatewayEvent), args.Event), args);
@@ -64,10 +65,10 @@ namespace Skyra.Core
 				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
-		public Dictionary<string, CommandInfo> Commands { get; private set; }
-		public Dictionary<string, EventInfo> Events { get; private set; }
-		public Dictionary<string, MonitorInfo> Monitors { get; private set; }
-		public Dictionary<Type, ArgumentInfo> Resolvers { get; private set; }
+		public Dictionary<string, CommandInfo> Commands { get; }
+		public Dictionary<string, EventInfo> Events { get; }
+		public Dictionary<string, MonitorInfo> Monitors { get; }
+		public Dictionary<Type, ArgumentInfo> Resolvers { get; }
 
 		private string Token { get; }
 		private string BrokerUri { get; }
@@ -122,12 +123,12 @@ namespace Skyra.Core
 
 		private static ArgumentInfo ToArgumentInfo(object argument)
 		{
-			var attribute = argument.GetType().GetCustomAttribute<ResolverAttribute>();
+			var attribute = argument.GetType().GetCustomAttribute<ResolverAttribute>()!;
 
 			return new ArgumentInfo
 			{
 				Instance = argument,
-				Method = argument.GetType().GetMethod("ResolveAsync"),
+				Method = argument.GetType().GetMethod("ResolveAsync")!,
 				Type = attribute.Type,
 				Displayname = attribute.DisplayName
 			};
@@ -135,7 +136,7 @@ namespace Skyra.Core
 
 		private static EventInfo ToEventInfo(object @event)
 		{
-			var attribute = @event.GetType().GetCustomAttribute<EventAttribute>();
+			var attribute = @event.GetType().GetCustomAttribute<EventAttribute>()!;
 
 			return new EventInfo
 			{
@@ -146,7 +147,7 @@ namespace Skyra.Core
 
 		private static MonitorInfo ToMonitorInfo(object monitor)
 		{
-			var attribute = monitor.GetType().GetCustomAttribute<MonitorAttribute>();
+			var attribute = monitor.GetType().GetCustomAttribute<MonitorAttribute>()!;
 			var methodInfo = monitor.GetType().GetMethod("RunAsync");
 			if (methodInfo == null)
 			{
@@ -170,7 +171,7 @@ namespace Skyra.Core
 		private CommandInfo ToCommandInfo(object command)
 		{
 			var t = command.GetType();
-			var commandInfo = t.GetCustomAttribute<CommandAttribute>();
+			var commandInfo = t.GetCustomAttribute<CommandAttribute>()!;
 
 			return new CommandInfo
 			{

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Skyra.Core.Structures.Usage
 {
-	public struct CommandUsageOverloadArgument
+	public class CommandUsageOverloadArgument
 	{
 		private Client Client { get; }
 		public ArgumentInfo Resolver { get; }
@@ -24,7 +24,7 @@ namespace Skyra.Core.Structures.Usage
 		{
 			var underlyingType = Nullable.GetUnderlyingType(parameterInfo.GetType());
 			Client = client;
-			Name = parameterInfo.Name;
+			Name = parameterInfo.Name!;
 			Type = underlyingType ?? parameterInfo.ParameterType;
 			Optional = underlyingType != null || parameterInfo.HasDefaultValue;
 			Resolver = Client.Resolvers[Type];

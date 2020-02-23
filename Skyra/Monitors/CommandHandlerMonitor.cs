@@ -28,27 +28,36 @@ namespace Skyra.Monitors
 			var command = Client.Commands[commandName.ToLower()];
 			if (command.Name == string.Empty) return;
 
-			var parser = new TextPrompt(command, message, prefixLess.Substring(commandName.Length));
+			await RunArgumentsAsync(message, command, prefixLess.Substring(commandName.Length));
+		}
+
+		private async Task RunArgumentsAsync(Message message, CommandInfo command, string content)
+		{
+			var parser = new CommandUsageParser(command, message, content);
 			try
 			{
-				await parser.RunAsync();
+				parser.Run();
+				await RunCommandAsync(message, command, parser);
 			}
 			catch (ArgumentException exception)
 			{
 				await message.SendAsync(Client,
 					$"Argument Error: {exception.InnerException?.Message ?? exception.Message}");
-				return;
 			}
 			catch (Exception exception)
 			{
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
 				await message.SendAsync(Client, "Whoops! Something happened!");
-				return;
 			}
+		}
 
+		private async Task RunCommandAsync(Message message, CommandInfo command, CommandUsageParser parser)
+		{
 			try
 			{
-				await (Task) parser.Overload.Method.Invoke(command.Instance, parser.Parameters);
+#pragma warning disable CS8600, CS8602
+				await (Task) parser.Overload!.Method.Invoke(command.Instance, parser.Parameters);
+#pragma warning restore CS8600, CS8602
 			}
 			catch (TargetInvocationException exception)
 			{

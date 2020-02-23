@@ -149,10 +149,10 @@ namespace Skyra.Core.Structures.Usage
 			if (string.IsNullOrEmpty(content)) return new[] {content};
 
 			var args = new List<string>();
+			var current = new StringBuilder();
 
 			for (var i = 0; i < content.Length; ++i)
 			{
-				var current = new StringBuilder();
 				if (content.Substring(i, delimiter.Length) == delimiter)
 				{
 					i += delimiter.Length - 1;
@@ -167,8 +167,6 @@ namespace Skyra.Core.Structures.Usage
 					{
 						current.Append(content[++i]);
 					}
-
-					args.Add(current.ToString());
 				}
 				else
 				{
@@ -179,8 +177,10 @@ namespace Skyra.Core.Structures.Usage
 					}
 
 					++i;
-					args.Add(current.ToString());
 				}
+
+				args.Add(current.ToString());
+				current.Clear();
 			}
 
 			return args.Count == 1 && string.IsNullOrEmpty(args[0]) ? new string[0] : args.ToArray();

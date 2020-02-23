@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures.Attributes;
@@ -19,6 +20,12 @@ namespace Skyra.Commands
 		public async Task RunAsync(Message message, int number)
 		{
 			await message.SendAsync(_client, $"A number! {number.ToString()}");
+		}
+
+		public async Task RunAsync(Message message, DateTime time, string content = default)
+		{
+			var m = string.IsNullOrEmpty(content) ? "Something, you did not specify what" : content;
+			await message.SendAsync(_client, $"Alright! Reminder added. I'll remember you \"{m}\" at {time.ToShortDateString()}");
 		}
 
 		public async Task RunAsync(Message message, string content = default)

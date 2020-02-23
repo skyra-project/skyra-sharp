@@ -8,7 +8,7 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		/// 	An array of saved FFXIV characters a user has.
 		/// </summary>
-		[Column("ffxiv")]
-		public UserGameIntegrationsFFXIV[] FFXIV { get; set; }
+		[Column("ffxiv_characters")]
+		public UserGameIntegrationsFFXIV[] FFXIVCharacters { get; set; }
 	}
 }

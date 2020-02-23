@@ -11,7 +11,8 @@ services:
     container_name: redis
     image: redis:alpine
     restart: always
-    mem_limit: 256M
+    volumes:
+     - redis-data:/var/lib/redis/data
     ports:
       - "6379:6379"
   pokedex:
@@ -37,4 +38,6 @@ services:
 
 volumes:
   postgres-data:
+    external: true
+  redis-data:
     external: true

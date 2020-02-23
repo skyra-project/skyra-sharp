@@ -8,5 +8,7 @@ namespace Skyra.Core.Structures
 		public object Instance { get; set; }
 		public string Name { get; set; }
 		public CommandUsage Usage { get; set; }
+		public bool FlagSupport { get; set; }
+		public bool QuotedStringSupport { get; set; }
 	}
 }

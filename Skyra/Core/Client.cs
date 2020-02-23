@@ -178,7 +178,9 @@ namespace Skyra.Core
 				Delimiter = commandInfo.Delimiter,
 				Instance = command,
 				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower(),
-				Usage = new CommandUsage(this, command)
+				Usage = new CommandUsage(this, command),
+				FlagSupport = commandInfo.FlagSupport,
+				QuotedStringSupport = commandInfo.QuotedStringSupport
 			};
 		}
 	}

@@ -47,7 +47,7 @@ namespace Skyra.Monitors
 			catch (Exception exception)
 			{
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
-				await message.SendAsync(Client, "Whoops! Something happened!");
+				await message.SendAsync(Client, "Whoops! Something while processing arguments!");
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace Skyra.Monitors
 			catch (Exception exception)
 			{
 				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
-				await message.SendAsync(Client, "Whoops! Something happened!");
+				await message.SendAsync(Client, "Whoops! Something happened while processing the command!");
 			}
 		}
 	}

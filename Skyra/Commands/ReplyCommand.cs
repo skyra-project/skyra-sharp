@@ -8,7 +8,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Commands
 {
-	[Command(Delimiter = " ")]
+	[Command(Delimiter = " ", FlagSupport = true)]
 	public class ReplyCommand : StructureBase
 	{
 		public ReplyCommand(Client client) : base(client)

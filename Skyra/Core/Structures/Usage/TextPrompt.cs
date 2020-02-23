@@ -57,8 +57,9 @@ namespace Skyra.Core.Structures.Usage
 
 				if (inputIndex >= Arguments.Length)
 				{
-					if (usageArgument.Optional) continue;
-					return $"You must input a value for {usageArgument.Name}.";
+					if (!usageArgument.Optional) return $"You must input a value for {usageArgument.Name}.";
+					Parameters[i + 1] = usageArgument.Default;
+					continue;
 				}
 
 				var inputArgument = Arguments[inputIndex];

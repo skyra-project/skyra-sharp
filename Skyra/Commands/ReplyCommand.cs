@@ -22,16 +22,14 @@ namespace Skyra.Commands
 			await message.SendAsync(_client, $"A number! {number.ToString()}");
 		}
 
-		public async Task RunAsync(Message message, DateTime time, string content = default)
+		public async Task RunAsync(Message message, DateTime time, string content = "Something, you did not specify what")
 		{
-			var m = string.IsNullOrEmpty(content) ? "Something, you did not specify what" : content;
-			await message.SendAsync(_client, $"Alright! Reminder added. I'll remember you \"{m}\" at {time.ToShortDateString()}");
+			await message.SendAsync(_client, $"Alright! Reminder added. I'll remember you \"{content}\" at {time.ToShortDateString()}");
 		}
 
-		public async Task RunAsync(Message message, string content = default)
+		public async Task RunAsync(Message message, string content = "I got absolutely nothing!")
 		{
-			var m = string.IsNullOrEmpty(content) ? "I got absolutely nothing!" : content;
-			await message.SendAsync(_client, $"A string! {m}");
+			await message.SendAsync(_client, $"A string! {content}");
 		}
 	}
 }

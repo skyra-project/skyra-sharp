@@ -10,6 +10,7 @@ namespace Skyra.Core.Structures.Usage
 		public string Name { get; }
 		public Type Type { get; }
 		public bool Optional { get; }
+		public object? Default { get; }
 
 		public override string ToString()
 		{
@@ -25,8 +26,9 @@ namespace Skyra.Core.Structures.Usage
 			Client = client;
 			Name = parameterInfo.Name;
 			Type = underlyingType ?? parameterInfo.ParameterType;
-			Optional = underlyingType != null || parameterInfo.IsOptional;
+			Optional = underlyingType != null || parameterInfo.HasDefaultValue;
 			Resolver = Client.Resolvers[Type];
+			Default = parameterInfo.DefaultValue;
 		}
 	}
 }

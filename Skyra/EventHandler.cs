@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Newtonsoft.Json;
 using Skyra.Core;
+using Skyra.Core.Models;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
@@ -24,92 +25,96 @@ namespace Skyra
 		public event Action<MessageUpdatePayload> OnMessageUpdate = dispatch => { };
 		public event Action<MessageDeletePayload> OnMessageDelete = dispatch => { };
 
-		public void HandleEvent(GatewayEvent @event, AmqpReceiveEventArgs args)
+		public void HandleEvent(SkyraEvent @event, AmqpReceiveEventArgs args)
 		{
 			var data = Encoding.UTF8.GetString(args.Data);
 			switch (@event)
 			{
-				case GatewayEvent.READY:
+				case SkyraEvent.READY:
 					OnReady(JsonConvert.DeserializeObject<ReadyDispatch>(data));
 					break;
-				case GatewayEvent.RESUMED:
+				case SkyraEvent.RESUMED:
 					break;
-				case GatewayEvent.CHANNEL_CREATE:
+				case SkyraEvent.CHANNEL_CREATE:
 					break;
-				case GatewayEvent.CHANNEL_UPDATE:
+				case SkyraEvent.CHANNEL_UPDATE:
 					break;
-				case GatewayEvent.CHANNEL_DELETE:
+				case SkyraEvent.CHANNEL_DELETE:
 					break;
-				case GatewayEvent.CHANNEL_PINS_UPDATE:
+				case SkyraEvent.CHANNEL_PINS_UPDATE:
 					break;
-				case GatewayEvent.GUILD_CREATE:
+				case SkyraEvent.GUILD_CREATE:
 					OnGuildCreate(JsonConvert.DeserializeObject<Guild>(data));
 					break;
-				case GatewayEvent.GUILD_UPDATE:
+				case SkyraEvent.GUILD_UPDATE:
 					OnGuildUpdate(JsonConvert.DeserializeObject<Guild>(data));
 					break;
-				case GatewayEvent.GUILD_DELETE:
+				case SkyraEvent.GUILD_DELETE:
 					break;
-				case GatewayEvent.GUILD_BAN_ADD:
+				case SkyraEvent.GUILD_BAN_ADD:
 					OnGuildBanAdd(JsonConvert.DeserializeObject<GuildBanAddPayload>(data));
 					break;
-				case GatewayEvent.GUILD_BAN_REMOVE:
+				case SkyraEvent.GUILD_BAN_REMOVE:
 					OnGuildBanRemove(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data));
 					break;
-				case GatewayEvent.GUILD_EMOJIS_UPDATE:
+				case SkyraEvent.GUILD_EMOJIS_UPDATE:
 					break;
-				case GatewayEvent.GUILD_INTEGRATIONS_UPDATE:
+				case SkyraEvent.GUILD_INTEGRATIONS_UPDATE:
 					break;
-				case GatewayEvent.GUILD_MEMBER_ADD:
+				case SkyraEvent.GUILD_MEMBER_ADD:
 					break;
-				case GatewayEvent.GUILD_MEMBER_REMOVE:
+				case SkyraEvent.GUILD_MEMBER_REMOVE:
 					break;
-				case GatewayEvent.GUILD_MEMBER_UPDATE:
+				case SkyraEvent.GUILD_MEMBER_UPDATE:
 					break;
-				case GatewayEvent.GUILD_MEMBERS_CHUNK:
+				case SkyraEvent.GUILD_MEMBERS_CHUNK:
 					break;
-				case GatewayEvent.GUILD_ROLE_CREATE:
+				case SkyraEvent.GUILD_ROLE_CREATE:
 					break;
-				case GatewayEvent.GUILD_ROLE_UPDATE:
+				case SkyraEvent.GUILD_ROLE_UPDATE:
 					break;
-				case GatewayEvent.GUILD_ROLE_DELETE:
+				case SkyraEvent.GUILD_ROLE_DELETE:
 					break;
-				case GatewayEvent.INVITE_CREATE:
+				case SkyraEvent.INVITE_CREATE:
 					break;
-				case GatewayEvent.INVITE_DELETE:
+				case SkyraEvent.INVITE_DELETE:
 					break;
-				case GatewayEvent.MESSAGE_CREATE:
+				case SkyraEvent.MESSAGE_CREATE:
 					OnMessageCreate(JsonConvert.DeserializeObject<Message>(data));
 					break;
-				case GatewayEvent.MESSAGE_UPDATE:
+				case SkyraEvent.MESSAGE_UPDATE:
 					OnMessageUpdate(JsonConvert.DeserializeObject<MessageUpdatePayload>(data));
 					break;
-				case GatewayEvent.MESSAGE_DELETE:
+				case SkyraEvent.MESSAGE_DELETE:
 					OnMessageDelete(JsonConvert.DeserializeObject<MessageDeletePayload>(data));
 					break;
-				case GatewayEvent.MESSAGE_DELETE_BULK:
+				case SkyraEvent.MESSAGE_DELETE_BULK:
 					break;
-				case GatewayEvent.MESSAGE_REACTION_ADD:
+				case SkyraEvent.MESSAGE_REACTION_ADD:
 					break;
-				case GatewayEvent.MESSAGE_REACTION_REMOVE:
+				case SkyraEvent.MESSAGE_REACTION_REMOVE:
 					break;
-				case GatewayEvent.MESSAGE_REACTION_REMOVE_ALL:
+				case SkyraEvent.MESSAGE_REACTION_REMOVE_ALL:
 					break;
-				case GatewayEvent.MESSAGE_REACTION_REMOVE_EMOJI:
+				case SkyraEvent.MESSAGE_REACTION_REMOVE_EMOJI:
 					break;
-				case GatewayEvent.PRESENCE_UPDATE:
+				case SkyraEvent.PRESENCE_UPDATE:
 					break;
-				case GatewayEvent.PRESENCES_REPLACE:
+				case SkyraEvent.PRESENCES_REPLACE:
 					break;
-				case GatewayEvent.TYPING_START:
+				case SkyraEvent.TYPING_START:
 					break;
-				case GatewayEvent.USER_UPDATE:
+				case SkyraEvent.USER_UPDATE:
 					break;
-				case GatewayEvent.VOICE_STATE_UPDATE:
+				case SkyraEvent.VOICE_STATE_UPDATE:
 					break;
-				case GatewayEvent.VOICE_SERVER_UPDATE:
+				case SkyraEvent.VOICE_SERVER_UPDATE:
 					break;
-				case GatewayEvent.WEBHOOKS_UPDATE:
+				case SkyraEvent.WEBHOOKS_UPDATE:
+					break;
+				case SkyraEvent.NOTIFY_TWITCH_STREAM_START:
+					break;
+				case SkyraEvent.NOTIFY_TWITCH_STREAM_END:
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(@event), @event.ToString(), null);

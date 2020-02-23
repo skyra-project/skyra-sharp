@@ -23,7 +23,9 @@ namespace Skyra.Core.Structures.Usage
 		// public Dictionary<string, string> Flags { get; }
 		public string[] Arguments { get; }
 		public object?[] Parameters { get; private set; }
+
 		public CommandUsageOverload? Overload { get; private set; }
+
 		// private bool QuotedStringSupport { get; }
 		// private bool FlagSupport { get; }
 		private Message Message { get; }
@@ -69,7 +71,7 @@ namespace Skyra.Core.Structures.Usage
 #pragma warning disable CS8600, CS8602
 					Parameters[i + 1] =
 						(usageArgument.Resolver.Method.Invoke(usageArgument.Resolver.Instance,
-							new object[] {Message, inputArgument}) as dynamic).Result as object;
+							new object[] {Message, usageArgument, inputArgument}) as dynamic).Result as object;
 					++inputIndex;
 #pragma warning restore CS8600, CS8602
 				}

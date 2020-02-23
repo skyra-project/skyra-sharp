@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
 namespace Skyra.Arguments
@@ -14,7 +15,7 @@ namespace Skyra.Arguments
 		{
 		}
 
-		public Task<DateTime> ResolveAsync(Message message, string content)
+		public Task<DateTime> ResolveAsync(Message message, CommandUsageOverloadArgument argument, string content)
 		{
 			var resolved = DateTime.Parse(content);
 			return Task.FromResult(resolved);

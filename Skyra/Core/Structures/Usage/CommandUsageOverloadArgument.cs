@@ -5,6 +5,17 @@ namespace Skyra.Core.Structures.Usage
 {
 	public class CommandUsageOverloadArgument
 	{
+		internal CommandUsageOverloadArgument(Client client, ParameterInfo parameterInfo)
+		{
+			var underlyingType = Nullable.GetUnderlyingType(parameterInfo.GetType());
+			Client = client;
+			Name = parameterInfo.Name!;
+			Type = underlyingType ?? parameterInfo.ParameterType;
+			Optional = underlyingType != null || parameterInfo.HasDefaultValue;
+			Resolver = Client.Resolvers[Type];
+			Default = parameterInfo.DefaultValue;
+		}
+
 		private Client Client { get; }
 		public ArgumentInfo Resolver { get; }
 		public string Name { get; }
@@ -18,17 +29,6 @@ namespace Skyra.Core.Structures.Usage
 				? string.Join("|", Type.GetEnumNames()).ToLower()
 				: $"{Name}:{Resolver.Displayname}";
 			return Optional ? $"[{formatted}]" : $"<{formatted}>";
-		}
-
-		internal CommandUsageOverloadArgument(Client client, ParameterInfo parameterInfo)
-		{
-			var underlyingType = Nullable.GetUnderlyingType(parameterInfo.GetType());
-			Client = client;
-			Name = parameterInfo.Name!;
-			Type = underlyingType ?? parameterInfo.ParameterType;
-			Optional = underlyingType != null || parameterInfo.HasDefaultValue;
-			Resolver = Client.Resolvers[Type];
-			Default = parameterInfo.DefaultValue;
 		}
 	}
 }

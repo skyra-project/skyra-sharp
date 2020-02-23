@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
 namespace Skyra.Arguments
@@ -14,7 +15,7 @@ namespace Skyra.Arguments
 		{
 		}
 
-		public Task<string> ResolveAsync(Message _, string content)
+		public Task<string> ResolveAsync(Message message, CommandUsageOverloadArgument argument, string content)
 		{
 			if (string.IsNullOrEmpty(content)) throw new Exception("Gimme a string!");
 			return Task.FromResult(content);

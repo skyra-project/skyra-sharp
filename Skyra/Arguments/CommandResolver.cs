@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
 namespace Skyra.Arguments
@@ -14,7 +15,7 @@ namespace Skyra.Arguments
 		{
 		}
 
-		public Task<CommandInfo> ResolveAsync(Message _, string content)
+		public Task<CommandInfo> ResolveAsync(Message message, CommandUsageOverloadArgument argument, string content)
 		{
 			var command = Client.Commands[content];
 			if (string.IsNullOrEmpty(command.Name)) throw new Exception("Gimme a valid command!");

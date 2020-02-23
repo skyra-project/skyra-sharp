@@ -5,15 +5,6 @@ namespace Skyra.Core.Structures.Usage
 {
 	public class CommandUsageOverload
 	{
-		private Client Client { get; }
-		public MethodBase Method { get; }
-		public CommandUsageOverloadArgument[] Arguments { get; }
-
-		public override string ToString()
-		{
-			return string.Join(" ", Arguments.Select(x => x.ToString()));
-		}
-
 		internal CommandUsageOverload(Client client, MethodBase methodInfo)
 		{
 			Client = client;
@@ -23,6 +14,15 @@ namespace Skyra.Core.Structures.Usage
 				.Skip(1)
 				.Select(parameter => new CommandUsageOverloadArgument(client, parameter))
 				.ToArray();
+		}
+
+		private Client Client { get; }
+		public MethodBase Method { get; }
+		public CommandUsageOverloadArgument[] Arguments { get; }
+
+		public override string ToString()
+		{
+			return string.Join(" ", Arguments.Select(x => x.ToString()));
 		}
 	}
 }

@@ -8,6 +8,8 @@ namespace Skyra.Core.Utils
 {
 	public static class StringUtils
 	{
+		private static readonly Regex EscapeRegex = new Regex(@"[-/\\^$*+?.()|[\]{}]");
+
 		public static string Replace(this string value, Regex pattern, Func<Group[], string> callback)
 		{
 			var source = value;
@@ -28,6 +30,11 @@ namespace Skyra.Core.Utils
 
 			if (lastIndex < length) builder.Append(source.Substring(lastIndex, length - lastIndex));
 			return builder.ToString();
+		}
+
+		public static string EscapeRegexPatterns(this string value)
+		{
+			return value.Replace(EscapeRegex, groups => $"\\{groups[0]}");
 		}
 	}
 }

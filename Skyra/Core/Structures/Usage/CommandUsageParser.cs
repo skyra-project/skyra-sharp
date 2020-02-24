@@ -134,8 +134,8 @@ namespace Skyra.Core.Structures.Usage
 
 			if (!Delimiters.TryGetValue(delimiter, out var reg))
 			{
-				// TODO(kyranet): Add RegExpEsc.
-				reg = new Regex($"({delimiter})(?:{delimiter})+", RegexOptions.Compiled);
+				var escaped = delimiter.EscapeRegexPatterns();
+				reg = new Regex($"({escaped})(?:{escaped})+", RegexOptions.Compiled);
 				Delimiters.Add(delimiter, reg);
 			}
 

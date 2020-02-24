@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace Skyra.Core.Models
 {
 	public enum SkyraEvent

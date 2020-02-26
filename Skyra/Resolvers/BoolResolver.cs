@@ -7,7 +7,7 @@ using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
-namespace Skyra.Arguments
+namespace Skyra.Resolvers
 {
 	[Resolver(typeof(bool), "boolean")]
 	public class BoolResolver : StructureBase

@@ -3,6 +3,7 @@
 // https://github.com/dirigeants/klasa/blob/master/src/lib/usage/TextPrompt.js
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -37,7 +38,7 @@ namespace Skyra.Core.Structures.Usage
 				: GetArguments(c.Trim(), command.Delimiter);
 
 			Overload = null;
-			Argument = null!;
+			Argument = null;
 			Parameters = new object?[0];
 			ParameterPosition = 0;
 			ArgumentPosition = 0;
@@ -49,7 +50,7 @@ namespace Skyra.Core.Structures.Usage
 		public CommandInfo Command { get; }
 		public CommandUsage Usage { get; }
 		public CommandUsageOverload? Overload { get; private set; }
-		public CommandUsageOverloadArgument Argument { get; private set; }
+		public CommandUsageOverloadArgument? Argument { get; private set; }
 		private Message Message { get; }
 		private uint ParameterPosition { get; set; }
 		private uint ArgumentPosition { get; set; }
@@ -78,8 +79,10 @@ namespace Skyra.Core.Structures.Usage
 		{
 			try
 			{
-				return (Argument.Resolver.Method.Invoke(Argument.Resolver.Instance,
-					new object[] {Message, Argument, value}) as dynamic).Result! as object;
+#nullable disable
+				return (Argument!.Resolver.Method.Invoke(Argument!.Resolver.Instance,
+					new object[] {Message, Argument, value}) as dynamic).Result as object;
+#nullable restore
 			}
 			catch (TargetInvocationException exception)
 			{
@@ -89,7 +92,7 @@ namespace Skyra.Core.Structures.Usage
 
 		private object ResolveNextArgument()
 		{
-			if (Flags.TryGetValue(Argument.Name, out var argument))
+			if (Flags.TryGetValue(Argument!.Name, out var argument))
 			{
 				try
 				{
@@ -97,13 +100,15 @@ namespace Skyra.Core.Structures.Usage
 				}
 				catch
 				{
-					if (Argument.Optional) return Argument.Default!;
+					if (Argument!.Optional) return Argument!.Default!;
 					throw;
 				}
 			}
 
 			if (ParameterPosition == Arguments.Length)
-				throw new ArgumentException($"You must input a value for {Argument.Name}");
+			{
+				throw new ArgumentException($"You must input a value for {Argument!.Name}");
+			}
 
 			try
 			{
@@ -118,17 +123,28 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
-		private object[] ResolveNextArgumentsFromFlags(string argument)
+		private IEnumerable ResolveNextArgumentsFromFlags(string argument)
 		{
-			return string.IsNullOrEmpty(Command.Delimiter)
-				? new[] {Resolve(argument)}
-				: argument.Split(Command.Delimiter).Select(Resolve).ToArray();
+			if (!string.IsNullOrEmpty(Command.Delimiter))
+			{
+				return Cast(Argument!.Type, argument.Split(Command.Delimiter).Select(Resolve).ToArray());
+			}
+
+			var value = Convert.ChangeType(Resolve(argument), Argument!.Type);
+			return new[] {value};
 		}
 
-		private object[] ResolveNextArgumentsFromArguments()
+		private static IEnumerable Cast(Type type, object[] values)
+		{
+			var array = Array.CreateInstance(type, values.Length);
+			Array.Copy(values, array, values.Length);
+			return array;
+		}
+
+		private IEnumerable ResolveNextArgumentsFromArguments()
 		{
 			var values = new List<object>();
-			for (var i = 0; i < Argument.MaximumValues; ++i)
+			for (var i = 0; i < Argument!.MaximumValues; ++i)
 			{
 				try
 				{
@@ -144,9 +160,11 @@ namespace Skyra.Core.Structures.Usage
 				}
 				catch
 				{
-					if (values.Count == 0 && Argument.Optional)
+					if (values.Count == 0 && Argument!.Optional)
 					{
-						return Argument.Default! as object[];
+#nullable disable
+						return Argument!.Default as IEnumerable;
+#nullable restore
 					}
 
 					if (values.Count < Argument.MinimumValues)
@@ -158,12 +176,12 @@ namespace Skyra.Core.Structures.Usage
 				}
 			}
 
-			return values.ToArray();
+			return Cast(Argument.Type, values.ToArray());
 		}
 
-		private object[] ResolveNextArguments()
+		private IEnumerable ResolveNextArguments()
 		{
-			return Flags.TryGetValue(Argument.Name, out var argument)
+			return Flags.TryGetValue(Argument!.Name, out var argument)
 				? ResolveNextArgumentsFromFlags(argument)
 				: ResolveNextArgumentsFromArguments();
 		}
@@ -172,11 +190,14 @@ namespace Skyra.Core.Structures.Usage
 		{
 			Parameters = new object?[overload.Arguments.Length + 1];
 			Parameters[0] = Message;
+			ParameterPosition = 0;
 
 			for (ArgumentPosition = 0; ArgumentPosition < overload.Arguments.Length; ++ArgumentPosition)
 			{
 				Argument = overload.Arguments[ArgumentPosition];
-				Parameters[ArgumentPosition + 1] = Argument.Repeating ? ResolveNextArguments() : ResolveNextArgument();
+				Parameters[ArgumentPosition + 1] = Argument.Repeating
+					? ResolveNextArguments()
+					: ResolveNextArgument();
 			}
 		}
 

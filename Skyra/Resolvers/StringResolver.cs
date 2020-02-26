@@ -6,7 +6,7 @@ using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
-namespace Skyra.Arguments
+namespace Skyra.Resolvers
 {
 	[Resolver(typeof(string), "string")]
 	public class StringResolver : StructureBase

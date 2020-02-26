@@ -6,7 +6,7 @@ using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
-namespace Skyra.Arguments
+namespace Skyra.Resolvers
 {
 	[Resolver(typeof(int), "integer")]
 	public class Int32Resolver : StructureBase
@@ -19,7 +19,7 @@ namespace Skyra.Arguments
 		{
 			if (!int.TryParse(content, out var resolved))
 			{
-				throw new ArgumentException($"I could not resolve a number from {resolved}");
+				throw new ArgumentException($"I could not resolve a number from {content}");
 			}
 
 			if (resolved < argument.Minimum)

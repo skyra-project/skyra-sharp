@@ -2,6 +2,7 @@ using System;
 
 namespace Skyra.Core.Structures.Attributes
 {
+	[AttributeUsage(AttributeTargets.Class)]
 	public class CommandAttribute : Attribute
 	{
 		public string Delimiter { get; set; } = "";

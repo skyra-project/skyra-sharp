@@ -3,6 +3,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Structures.Attributes
 {
+	[AttributeUsage(AttributeTargets.Class)]
 	public class MonitorAttribute : Attribute
 	{
 		public string? Name { get; set; } = null;

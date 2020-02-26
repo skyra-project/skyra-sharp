@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Skyra.Core.Database.Models
 {
 	/// <summary>
-	/// 	The table containing all game integration savable data.
+	///     The table containing all game integration savable data.
 	/// </summary>
 	[Table("user_game_integrations")]
 	public sealed class UserGameIntegrations
@@ -21,7 +21,7 @@ namespace Skyra.Core.Database.Models
 		}
 
 		/// <summary>
-		/// 	An array of saved FFXIV characters a user has.
+		///     An array of saved FFXIV characters a user has.
 		/// </summary>
 		[NotMapped]
 		public UserGameIntegrationsFFXIV[] FFXIVCharacters { get; set; } = new UserGameIntegrationsFFXIV[0];

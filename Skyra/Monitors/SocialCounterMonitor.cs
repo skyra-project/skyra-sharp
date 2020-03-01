@@ -17,7 +17,7 @@ namespace Skyra.Monitors
 		public Task RunAsync(Message message)
 		{
 			Console.WriteLine(
-				$"Received Message [{message.Id}] from {message.Author.Username} with content '{message.Content}'.");
+				$"Received Message [{message.Id}] from {message.Author?.Username ?? "??"} with content '{message.Content}'.");
 			return Task.FromResult(true);
 		}
 	}

@@ -25,7 +25,7 @@ namespace Skyra.Monitors
 			var (prefix, typeResult) = await GetPrefixAsync(message);
 			if (typeResult == PrefixTypeResult.None) return;
 
-			var prefixLess = message.Content.Substring(prefix.Length).TrimStart();
+			var prefixLess = message.Content.Substring(prefix!.Length).TrimStart();
 			if (prefixLess == "" && typeResult == PrefixTypeResult.MentionPrefix)
 			{
 				await message.SendAsync(Client, message.GuildId == null
@@ -82,7 +82,7 @@ namespace Skyra.Monitors
 			}
 		}
 
-		private async Task<(string, PrefixTypeResult)> GetPrefixAsync(Message message)
+		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync(Message message)
 		{
 			var mentionPrefix = await GetMentionPrefixAsync(message);
 			return mentionPrefix.Item2 == PrefixTypeResult.None
@@ -92,7 +92,7 @@ namespace Skyra.Monitors
 				: mentionPrefix;
 		}
 
-		private async Task<(string, PrefixTypeResult)> GetMentionPrefixAsync(Message message)
+		private async Task<(string?, PrefixTypeResult)> GetMentionPrefixAsync(Message message)
 		{
 			// If the content is shorter than the minimum characters needed for a mention prefix, skip
 			if (message.Content.Length < 20)
@@ -120,7 +120,7 @@ namespace Skyra.Monitors
 				: (null, PrefixTypeResult.None);
 		}
 
-		private static async Task<(string, PrefixTypeResult)> GetGuildPrefixAsync(Message message)
+		private static async Task<(string?, PrefixTypeResult)> GetGuildPrefixAsync(Message message)
 		{
 			var prefix = await RetrieveGuildPrefixAsync(ulong.Parse(message.GuildId));
 			return message.Content.StartsWith(prefix)
@@ -128,7 +128,7 @@ namespace Skyra.Monitors
 				: (null, PrefixTypeResult.None);
 		}
 
-		private static (string, PrefixTypeResult) GetDefaultPrefix(Message message)
+		private static (string?, PrefixTypeResult) GetDefaultPrefix(Message message)
 		{
 			const string prefix = DefaultPrefix;
 			return message.Content.StartsWith(prefix)

@@ -34,7 +34,8 @@ namespace Skyra.Commands
 				$"With the content of {content}, you have given me {integers.Length} number(s), with a sum of {integers.Sum()}");
 		}
 
-		public async Task RunAsync(Message message, string content = "I got absolutely nothing!")
+		public async Task RunAsync(Message message,
+			[Argument(Rest = true)] string content = "I got absolutely nothing!")
 		{
 			await message.SendAsync(Client, $"A string! {content}");
 		}

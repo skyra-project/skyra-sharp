@@ -51,7 +51,8 @@ namespace Skyra.Core.Structures.Usage
 					? Repeating ? $"{ArrayRangeString}({string.Join("|", Type.GetEnumNames()).ToLower()})" :
 					$"{string.Join("|", Type.GetEnumNames()).ToLower()}"
 					: $"{Name}:{ArrayRangeString}{Resolver.Displayname}";
-				return $"{formatted}{RangeString}";
+				var rest = Rest ? " [...]" : "";
+				return $"{formatted}{RangeString}{rest}";
 			}
 		}
 

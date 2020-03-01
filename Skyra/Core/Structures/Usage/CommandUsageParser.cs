@@ -52,8 +52,8 @@ namespace Skyra.Core.Structures.Usage
 		public CommandUsageOverload? Overload { get; private set; }
 		public CommandUsageOverloadArgument? Argument { get; private set; }
 		private Message Message { get; }
-		private uint ParameterPosition { get; set; }
-		private uint ArgumentPosition { get; set; }
+		private int ParameterPosition { get; set; }
+		private int ArgumentPosition { get; set; }
 
 		private static Dictionary<string, Regex> Delimiters { get; } = new Dictionary<string, Regex>();
 
@@ -113,8 +113,18 @@ namespace Skyra.Core.Structures.Usage
 
 			try
 			{
-				var resolved = Resolve(Arguments[ParameterPosition]);
-				++ParameterPosition;
+				object resolved;
+				if (Argument.Rest)
+				{
+					resolved = Resolve(string.Join(Command.Delimiter, Arguments.Skip(ParameterPosition).ToArray()));
+					ParameterPosition = Arguments.Length - 1;
+				}
+				else
+				{
+					resolved = Resolve(Arguments[ParameterPosition]);
+					++ParameterPosition;
+				}
+
 				return resolved;
 			}
 			catch

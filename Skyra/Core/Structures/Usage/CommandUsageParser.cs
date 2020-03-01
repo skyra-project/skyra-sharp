@@ -107,6 +107,7 @@ namespace Skyra.Core.Structures.Usage
 
 			if (ParameterPosition == Arguments.Length)
 			{
+				if (Argument.Optional) return Argument.Default!;
 				throw new ArgumentException($"You must input a value for {Argument!.Name}");
 			}
 

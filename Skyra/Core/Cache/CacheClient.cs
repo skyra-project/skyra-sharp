@@ -55,5 +55,15 @@ namespace Skyra.Core.Cache
 			var options = ConfigurationOptions.Parse(url);
 			await Pool.ConnectAsync(options);
 		}
+
+		public async Task SetClientUser(string id)
+		{
+			await Database.StringSetAsync($"{Prefix}:CLIENT_ID", id);
+		}
+
+		public async Task<string> GetClientUser()
+		{
+			return await Database.StringGetAsync($"{Prefix}:CLIENT_ID");
+		}
 	}
 }

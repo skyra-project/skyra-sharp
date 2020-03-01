@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
@@ -14,9 +15,9 @@ namespace Skyra.Events
 			Client.EventHandler.OnReady += Run;
 		}
 
-		private static void Run(ReadyDispatch args)
+		private void Run(ReadyDispatch args)
 		{
-			// TODO(kyranet): Store Skyra's ID from here
+			Task.Run(() => Client.Cache.SetClientUser(args.User.Id));
 			Console.WriteLine(
 				$"Skyra VI ready! [{args.User.Username}#{args.User.Discriminator}] [{args.Guilds.Length.ToString()} [G]]");
 		}

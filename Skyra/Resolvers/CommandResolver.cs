@@ -6,7 +6,7 @@ using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Types;
 
-namespace Skyra.Arguments
+namespace Skyra.Resolvers
 {
 	[Resolver(typeof(CommandInfo), "command")]
 	public class CommandResolver : StructureBase
@@ -17,9 +17,8 @@ namespace Skyra.Arguments
 
 		public Task<CommandInfo> ResolveAsync(Message message, CommandUsageOverloadArgument argument, string content)
 		{
-			var command = Client.Commands[content];
-			if (string.IsNullOrEmpty(command.Name)) throw new Exception("Gimme a valid command!");
-			return Task.FromResult(command);
+			if (Client.Commands.TryGetValue(content, out var resolved)) return Task.FromResult(resolved);
+			throw new ArgumentException($"I could not resolve a command from {content}");
 		}
 	}
 }

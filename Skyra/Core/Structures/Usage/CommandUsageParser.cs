@@ -3,6 +3,7 @@
 // https://github.com/dirigeants/klasa/blob/master/src/lib/usage/TextPrompt.js
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -25,6 +26,7 @@ namespace Skyra.Core.Structures.Usage
 		public CommandUsageParser(CommandInfo command, Message message, string content)
 		{
 			Message = message;
+			Command = command;
 			Usage = command.Usage;
 
 			var (c, f) = command.FlagSupport
@@ -36,82 +38,168 @@ namespace Skyra.Core.Structures.Usage
 				: GetArguments(c.Trim(), command.Delimiter);
 
 			Overload = null;
+			Argument = null;
 			Parameters = new object?[0];
+			ParameterPosition = 0;
+			ArgumentPosition = 0;
 		}
 
 		public Dictionary<string, string> Flags { get; }
 		public string[] Arguments { get; }
 		public object?[] Parameters { get; private set; }
+		public CommandInfo Command { get; }
+		public CommandUsage Usage { get; }
 		public CommandUsageOverload? Overload { get; private set; }
+		public CommandUsageOverloadArgument? Argument { get; private set; }
 		private Message Message { get; }
-
-		private CommandUsage Usage { get; }
+		private uint ParameterPosition { get; set; }
+		private uint ArgumentPosition { get; set; }
 
 		private static Dictionary<string, Regex> Delimiters { get; } = new Dictionary<string, Regex>();
 
 		public void Run()
 		{
-			for (var i = 0; i < Usage.Overloads.Length; i++)
+			for (var i = 0; i < Usage.Overloads.Length; ++i)
 			{
 				var overload = Usage.Overloads[i];
-				var error = RunOverloadAsync(overload);
-				if (error == null)
+				try
 				{
+					RunOverloadAsync(overload);
 					Overload = overload;
 					return;
 				}
-
-				if (i == Usage.Overloads.Length - 1) throw new ArgumentException(error);
+				catch
+				{
+					if (i == Usage.Overloads.Length - 1) throw;
+				}
 			}
 		}
 
-		private string? RunOverloadAsync(CommandUsageOverload overload)
+		private object Resolve(string value)
 		{
-			Parameters = new object?[overload.Arguments.Length + 1];
-			Parameters[0] = Message;
-
-			var inputIndex = 0;
-			for (var i = 0; i < overload.Arguments.Length; ++i)
+			try
 			{
-				var skip = false;
-				var usageArgument = overload.Arguments[i];
+#nullable disable
+				return (Argument!.Resolver.Method.Invoke(Argument!.Resolver.Instance,
+					new object[] {Message, Argument, value}) as dynamic).Result as object;
+#nullable restore
+			}
+			catch (TargetInvocationException exception)
+			{
+				throw exception.InnerException ?? exception;
+			}
+		}
 
-				if (!Flags.TryGetValue(usageArgument.Name, out var inputArgument))
-				{
-					if (inputIndex >= Arguments.Length)
-					{
-						if (!usageArgument.Optional) return $"You must input a value for {usageArgument.Name}.";
-						Parameters[i + 1] = usageArgument.Default;
-						continue;
-					}
-
-					inputArgument = Arguments[inputIndex];
-					skip = true;
-				}
-
+		private object ResolveNextArgument()
+		{
+			if (Flags.TryGetValue(Argument!.Name, out var argument))
+			{
 				try
 				{
-#pragma warning disable CS8600, CS8602
-					Parameters[i + 1] =
-						(usageArgument.Resolver.Method.Invoke(usageArgument.Resolver.Instance,
-							new object[] {Message, usageArgument, inputArgument}) as dynamic).Result as object;
-					if (skip) ++inputIndex;
-#pragma warning restore CS8600, CS8602
+					return Resolve(argument);
 				}
-				catch (TargetInvocationException exception)
+				catch
 				{
-					if (usageArgument.Optional)
-					{
-						Parameters[i] = usageArgument.Default;
-					}
-					else
-					{
-						return exception.InnerException?.Message ?? exception.Message;
-					}
+					if (Argument!.Optional) return Argument!.Default!;
+					throw;
 				}
 			}
 
-			return null;
+			if (ParameterPosition == Arguments.Length)
+			{
+				if (Argument.Optional) return Argument.Default!;
+				throw new ArgumentException($"You must input a value for {Argument!.Name}");
+			}
+
+			try
+			{
+				var resolved = Resolve(Arguments[ParameterPosition]);
+				++ParameterPosition;
+				return resolved;
+			}
+			catch
+			{
+				if (Argument.Optional) return Argument.Default!;
+				throw;
+			}
+		}
+
+		private IEnumerable ResolveNextArgumentsFromFlags(string argument)
+		{
+			if (!string.IsNullOrEmpty(Command.Delimiter))
+			{
+				return Cast(Argument!.Type, argument.Split(Command.Delimiter).Select(Resolve).ToArray());
+			}
+
+			var value = Convert.ChangeType(Resolve(argument), Argument!.Type);
+			return new[] {value};
+		}
+
+		private static IEnumerable Cast(Type type, object[] values)
+		{
+			var array = Array.CreateInstance(type, values.Length);
+			Array.Copy(values, array, values.Length);
+			return array;
+		}
+
+		private IEnumerable ResolveNextArgumentsFromArguments()
+		{
+			var values = new List<object>();
+			for (var i = 0; i < Argument!.MaximumValues; ++i)
+			{
+				try
+				{
+					if (ParameterPosition == Arguments.Length && values.Count < Argument.MinimumValues)
+					{
+						throw new ArgumentException($"There are not enough values for {Argument.Name}");
+					}
+
+					var argument = Arguments[ParameterPosition];
+					var resolved = Resolve(argument);
+					values.Add(resolved);
+					++ParameterPosition;
+				}
+				catch
+				{
+					if (values.Count == 0 && Argument!.Optional)
+					{
+#nullable disable
+						return Argument!.Default as IEnumerable;
+#nullable restore
+					}
+
+					if (values.Count < Argument.MinimumValues)
+					{
+						throw new ArgumentException($"There are not enough values for {Argument.Name}");
+					}
+
+					break;
+				}
+			}
+
+			return Cast(Argument.Type, values.ToArray());
+		}
+
+		private IEnumerable ResolveNextArguments()
+		{
+			return Flags.TryGetValue(Argument!.Name, out var argument)
+				? ResolveNextArgumentsFromFlags(argument)
+				: ResolveNextArgumentsFromArguments();
+		}
+
+		private void RunOverloadAsync(CommandUsageOverload overload)
+		{
+			Parameters = new object?[overload.Arguments.Length + 1];
+			Parameters[0] = Message;
+			ParameterPosition = 0;
+
+			for (ArgumentPosition = 0; ArgumentPosition < overload.Arguments.Length; ++ArgumentPosition)
+			{
+				Argument = overload.Arguments[ArgumentPosition];
+				Parameters[ArgumentPosition + 1] = Argument.Repeating
+					? ResolveNextArguments()
+					: ResolveNextArgument();
+			}
 		}
 
 		private static string[] GetArguments(string content, string? delimiter)

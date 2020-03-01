@@ -18,12 +18,12 @@ namespace Skyra.Commands
 		public async Task RunAsync(Message message, CommandInfo command)
 		{
 			await message.SendAsync(Client,
-				$"The usage(s) for {command.Name} are: {GetUsage(command)}.");
+				$"The usage(s) for {command.Name} are:\n{GetUsage(command)}");
 		}
 
 		private static string GetUsage(CommandInfo command)
 		{
-			return string.Join(", ", command.Usage.Overloads.Select(o => $"`Skyra, {command.Name} {o}`"));
+			return string.Join("\n", command.Usage.Overloads.Select(o => $"- `Skyra, {command.Name} {o}`"));
 		}
 	}
 }

@@ -15,6 +15,7 @@ namespace Skyra.Core.Cache.Models
 			PermissionOverwrites = channel.PermissionOverwrites.Select(o => new CorePermissionOverwrite(o)).ToArray();
 		}
 
+		[JsonConstructor]
 		public CoreGuildChannel(ulong id, ChannelType type, ulong guildId, string name, int? rawPosition,
 			ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(id, type)
 		{

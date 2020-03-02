@@ -19,6 +19,7 @@ namespace Skyra.Core.Cache.Models
 			UserId = ulong.Parse(voiceState.UserId);
 		}
 
+		[JsonConstructor]
 		public CoreVoiceState(string sessionId, bool deaf, bool mute, bool suppress, ulong userId, ulong channelId,
 			ulong guildId, bool selfDeaf, bool selfMute)
 		{

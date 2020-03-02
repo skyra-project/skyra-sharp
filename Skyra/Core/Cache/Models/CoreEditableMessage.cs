@@ -11,6 +11,7 @@ namespace Skyra.Core.Cache.Models
 			OwnMessageId = ulong.Parse(ownMessageId);
 		}
 
+		[JsonConstructor]
 		public CoreEditableMessage(string id, ulong ownMessageId)
 		{
 			Id = id;

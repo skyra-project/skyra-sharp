@@ -26,12 +26,12 @@ namespace Skyra.Core.Utils
 				if (message.Attachments.Count == 0 && data.File == null)
 					// We update the message and return.
 				{
-					return await client.Rest.Channels[message.ChannelId].Messages[previous.OwnMessageId]
+					return await client.Rest.Channels[message.ChannelId].Messages[previous.OwnMessageId.ToString()]
 						.PatchAsync<Message>(data);
 				}
 
 				// Otherwise we delete the previous message and do a fallback.
-				await client.Rest.Channels[message.ChannelId].Messages[previous.OwnMessageId].DeleteAsync();
+				await client.Rest.Channels[message.ChannelId].Messages[previous.OwnMessageId.ToString()].DeleteAsync();
 			}
 
 			// Send a message to Discord, receive a Message back.
@@ -39,7 +39,7 @@ namespace Skyra.Core.Utils
 
 			// Store the message into Redis for later processing.
 			await client.Cache.EditableMessages.SetAsync(
-				new CachedEditableMessage(message.Id, response.Id), message.ChannelId);
+				new CoreEditableMessage(message.Id, response.Id), message.ChannelId);
 
 			// Return the response.
 			return response;

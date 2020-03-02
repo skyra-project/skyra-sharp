@@ -7,24 +7,24 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class UserStore : CacheStore<CachedUser>
+	public class UserStore : CacheStore<CoreUser>
 	{
 		public UserStore(CacheClient client) : base(client, "users")
 		{
 		}
 
-		public new async Task<CachedUser?> GetAsync(string id, string? parent = null)
+		public new async Task<CoreUser?> GetAsync(string id, string? parent = null)
 		{
 			var result = await Database.StringGetAsync($"{FormatKeyName(parent)}:{id}");
-			return !result.IsNull ? JsonConvert.DeserializeObject<CachedUser>(result) : null;
+			return !result.IsNull ? JsonConvert.DeserializeObject<CoreUser>(result) : null;
 		}
 
 		public Task SetAsync(User entry, string? parent = null)
 		{
-			return SetAsync(new CachedUser(entry), parent);
+			return SetAsync(new CoreUser(entry), parent);
 		}
 
-		public override Task SetAsync(CachedUser entry, string? parent = null)
+		public override Task SetAsync(CoreUser entry, string? parent = null)
 		{
 			return Database.StringSetAsync($"{FormatKeyName(parent)}:{entry.Id}", SerializeValue(entry));
 		}
@@ -34,7 +34,7 @@ namespace Skyra.Core.Cache.Stores
 			return Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
 		}
 
-		public override Task SetAsync(IEnumerable<CachedUser> entries, string? parent = null)
+		public override Task SetAsync(IEnumerable<CoreUser> entries, string? parent = null)
 		{
 			return Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
 		}

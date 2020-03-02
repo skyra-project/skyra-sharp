@@ -3,9 +3,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CachedUser
+	public class CoreUser : ICoreBaseStructure<CoreUser>
 	{
-		public CachedUser(User user)
+		public CoreUser(User user)
 		{
 			Id = user.Id;
 			Username = user.Username;
@@ -14,7 +14,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[JsonConstructor]
-		public CachedUser(string id, string username, string discriminator, string? avatar)
+		public CoreUser(string id, string username, string discriminator, string? avatar)
 		{
 			Id = id;
 			Username = username;
@@ -33,5 +33,20 @@ namespace Skyra.Core.Cache.Models
 
 		[JsonProperty("a")]
 		public string? Avatar { get; set; }
+
+		public void Patch(CoreUser value)
+		{
+			Username = value.Username;
+			Discriminator = value.Discriminator;
+			Avatar = value.Avatar;
+		}
+
+		public CoreUser Clone()
+		{
+			return new CoreUser(Id,
+				Username,
+				Discriminator,
+				Avatar);
+		}
 	}
 }

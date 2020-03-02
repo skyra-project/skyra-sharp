@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CachedGuildMember
+	public class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
 	{
-		public CachedGuildMember(GuildMember guildMember)
+		public CoreGuildMember(GuildMember guildMember)
 		{
 			Id = guildMember.User.Id;
 			Roles = guildMember.Roles;
@@ -26,7 +27,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[JsonConstructor]
-		public CachedGuildMember(string id, List<string> roles, string? nickname, DateTime? joinedAt, bool deaf,
+		public CoreGuildMember(string id, List<string> roles, string? nickname, DateTime? joinedAt, bool deaf,
 			bool mute)
 		{
 			Id = id;
@@ -54,5 +55,29 @@ namespace Skyra.Core.Cache.Models
 
 		[JsonProperty("m")]
 		public bool Mute { get; set; }
+
+		public void Patch(CoreGuildMember value)
+		{
+			Roles = value.Roles;
+			Nickname = value.Nickname;
+			JoinedAt = value.JoinedAt ?? JoinedAt;
+			Deaf = value.Deaf;
+			Mute = value.Mute;
+		}
+
+		public CoreGuildMember Clone()
+		{
+			return new CoreGuildMember(Id,
+				Roles,
+				Nickname,
+				JoinedAt,
+				Deaf,
+				Mute);
+		}
+
+		public async Task<CoreUser?> GetUserAsync(Client client)
+		{
+			return await client.Cache.Users.GetAsync(Id);
+		}
 	}
 }

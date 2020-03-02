@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Skyra.Core.Cache.Models;
 using StackExchange.Redis;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public abstract class CacheStore<T> where T : class
+	public abstract class CacheStore<T> where T : class, ICoreBaseStructure<T>
 	{
 		protected CacheStore(CacheClient client, string prefix)
 		{
@@ -24,9 +25,9 @@ namespace Skyra.Core.Cache.Stores
 			return !result.IsNull ? JsonConvert.DeserializeObject<T>(result.ToString()) : null;
 		}
 
-		public Task<T?[]> GetAsync(IEnumerable<string> ids, string? parent = null)
+		public async Task<T?[]> GetAsync(IEnumerable<string> ids, string? parent = null)
 		{
-			return Task.WhenAll(ids.Select(id => GetAsync(id, parent)));
+			return await Task.WhenAll(ids.Select(id => GetAsync(id, parent)));
 		}
 
 		public async Task<T[]> GetAllAsync(string? parent = null)
@@ -38,6 +39,21 @@ namespace Skyra.Core.Cache.Stores
 		public abstract Task SetAsync(T entry, string? parent = null);
 
 		public abstract Task SetAsync(IEnumerable<T> entries, string? parent = null);
+
+		public async Task<(T?, T)> PatchAsync(T next, string entry, string? parent = null)
+		{
+			var previous = await GetAsync(entry, parent);
+			if (previous == null)
+			{
+				await SetAsync(next, parent);
+				return (null, next);
+			}
+
+			var clone = previous.Clone();
+			clone.Patch(next);
+			await SetAsync(clone, parent);
+			return (previous, clone);
+		}
 
 		public async Task DeleteAsync(string id, string? parent = null)
 		{

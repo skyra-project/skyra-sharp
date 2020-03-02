@@ -30,7 +30,7 @@ namespace Skyra.Events
 				var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
 				var message = GenerateMessage(messageUpdate, previousMessage);
 
-				await Client.Cache.Messages.SetAsync(new CachedMessage(message));
+				await Client.Cache.Messages.SetAsync(new CoreMessage(message));
 				RunMonitors(message);
 			}
 			catch (Exception exception)
@@ -39,7 +39,7 @@ namespace Skyra.Events
 			}
 		}
 
-		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CachedMessage? previousMessage)
+		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CoreMessage? previousMessage)
 		{
 			return new Message
 			{

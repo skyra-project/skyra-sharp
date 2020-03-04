@@ -11,6 +11,7 @@ namespace Skyra.Core.Cache
 		public CacheClient(string prefix)
 		{
 			Prefix = prefix;
+			Channels = new ChannelStore(this);
 			GuildChannels = new GuildChannelStore(this);
 			EditableMessages = new EditableMessagesStore(this);
 			GuildEmojis = new GuildEmojiStore(this);
@@ -31,6 +32,8 @@ namespace Skyra.Core.Cache
 
 		public IServer Redis => BestConnection.GetEndPoints().Select(endPoint => BestConnection.GetServer(endPoint))
 			.FirstOrDefault(server => !server.IsSlave);
+
+		public ChannelStore Channels { get; }
 
 		public GuildChannelStore GuildChannels { get; }
 

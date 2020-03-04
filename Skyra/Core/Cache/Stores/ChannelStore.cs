@@ -7,13 +7,13 @@ using StackExchange.Redis;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class GuildChannelStore : CacheStore<CoreGuildChannel>
+	public class ChannelStore : CacheStore<CoreChannel>
 	{
-		public GuildChannelStore(CacheClient client) : base(client, "gchannels")
+		public ChannelStore(CacheClient client) : base(client, "channels")
 		{
 		}
 
-		public override async Task SetAsync(CoreGuildChannel entry, string? parent = null)
+		public override async Task SetAsync(CoreChannel entry, string? parent = null)
 		{
 			if (parent != null) await Database.StringSetAsync(FormatKeyName(parent), RedisValue.Unbox(entry.Id));
 			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});
@@ -21,18 +21,12 @@ namespace Skyra.Core.Cache.Stores
 
 		public async Task SetAsync(IEnumerable<Channel> entries, string? parent = null)
 		{
-			await SetAsync(entries.Select(c => new CoreGuildChannel(c)), parent);
+			await SetAsync(entries.Select(c => new CoreChannel(c)), parent);
 		}
 
-		public override async Task SetAsync(IEnumerable<CoreGuildChannel> entries, string? parent = null)
+		public override async Task SetAsync(IEnumerable<CoreChannel> entries, string? parent = null)
 		{
-			var channels = entries as CoreGuildChannel[] ?? entries.ToArray();
-			if (parent != null)
-			{
-				var unboxedIds = channels.Select(entry => RedisValue.Unbox(entry.Id));
-				await Database.SetAddAsync(FormatKeyName(parent), unboxedIds.ToArray());
-			}
-
+			var channels = entries as CoreChannel[] ?? entries.ToArray();
 			await Database.HashSetAsync(Prefix,
 				channels.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
 		}

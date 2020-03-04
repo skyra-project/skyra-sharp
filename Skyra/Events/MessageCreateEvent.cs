@@ -23,7 +23,7 @@ namespace Skyra.Events
 
 		private async Task RunMonitors(CoreMessage message)
 		{
-			await Client.Cache.Messages.SetAsync(message);
+			await message.CacheAsync(Client);
 			foreach (var monitor in Client.Monitors.Values.Where(monitor => ShouldRunMonitor(message, monitor)))
 			{
 				monitor.Method.Invoke(monitor.Instance, new object?[] {message});

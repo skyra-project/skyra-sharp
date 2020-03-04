@@ -38,21 +38,26 @@ namespace Skyra.Core.Cache.Stores
 
 		public abstract Task SetAsync(T entry, string? parent = null);
 
+		public async Task SetNullableAsync(T? entry, string? parent = null)
+		{
+			if (entry == null) return;
+			await SetAsync(entry, parent);
+		}
+
 		public abstract Task SetAsync(IEnumerable<T> entries, string? parent = null);
 
-		public async Task<(T?, T)> PatchAsync(T next, string entry, string? parent = null)
+		public async Task<(T?, T)> PatchAsync(T entry, string id, string? parent = null)
 		{
-			var previous = await GetAsync(entry, parent);
+			var previous = await GetAsync(id, parent);
 			if (previous == null)
 			{
-				await SetAsync(next, parent);
-				return (null, next);
+				await SetAsync(entry, parent);
+				return (null, entry);
 			}
 
-			var clone = previous.Clone();
-			clone.Patch(next);
-			await SetAsync(clone, parent);
-			return (previous, clone);
+			var next = previous.Clone().Patch(entry);
+			await SetAsync(next, parent);
+			return (previous, next);
 		}
 
 		public async Task DeleteAsync(string id, string? parent = null)
@@ -69,6 +74,11 @@ namespace Skyra.Core.Cache.Stores
 		protected string FormatKeyName(string? parent)
 		{
 			return parent == null ? Prefix : $"{Prefix}:{parent}";
+		}
+
+		protected string FormatKeyName(string? parent, string? id)
+		{
+			return id == null ? FormatKeyName(parent) : $"{FormatKeyName(parent)}:{parent}";
 		}
 
 		protected string SerializeValue(T value)

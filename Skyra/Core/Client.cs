@@ -20,7 +20,7 @@ namespace Skyra.Core
 	{
 		public Client(ClientOptions clientOptions)
 		{
-			EventHandler = new EventHandler(this);
+			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
 			Token = clientOptions.Token;

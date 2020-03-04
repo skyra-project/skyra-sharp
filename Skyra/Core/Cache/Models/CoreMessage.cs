@@ -240,5 +240,16 @@ namespace Skyra.Core.Cache.Models
 			await client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()].DeleteAsync(reason);
 			return this;
 		}
+
+		public async Task CacheAsync(Client client)
+		{
+			var channelTask = GuildId == null
+				? client.Cache.Channels.SetNullableAsync(Channel)
+				: client.Cache.GuildChannels.SetNullableAsync(Channel as CoreGuildChannel, GuildId.ToString());
+			var authorTask = client.Cache.Users.SetNullableAsync(Author);
+			var memberTask = client.Cache.GuildMembers.SetNullableAsync(Member, GuildId.ToString());
+			var messageTask = client.Cache.Messages.SetAsync(this, ChannelId.ToString());
+			await Task.WhenAll(channelTask, authorTask, memberTask, messageTask);
+		}
 	}
 }

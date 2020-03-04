@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Spectacles.NET.Types;
 
@@ -14,7 +15,7 @@ namespace Skyra.Events
 
 		private void Run(Guild guild)
 		{
-			Task.Run(() => Client.Cache.Guilds.SetAsync(guild));
+			Task.Run(() => Client.Cache.Guilds.PatchAsync(new CoreGuild(guild), guild.Id));
 		}
 	}
 }

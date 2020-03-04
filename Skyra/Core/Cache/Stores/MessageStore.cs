@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Stores
 {
@@ -18,19 +17,6 @@ namespace Skyra.Core.Cache.Stores
 		{
 			var result = await Database.StringGetAsync($"{FormatKeyName(parent)}:{id}");
 			return !result.IsNull ? JsonConvert.DeserializeObject<CoreMessage>(result.ToString()) : null;
-		}
-
-		public async Task SetAsync(Message entry, string? parent = null)
-		{
-			if (entry.Member == null)
-			{
-				await Task.WhenAll(Client.Users.SetAsync(entry.Author), SetAsync(new CoreMessage(entry), parent));
-			}
-			else
-			{
-				await Task.WhenAll(Client.Users.SetAsync(entry.Author), SetAsync(new CoreMessage(entry), parent),
-					Client.GuildMembers.SetAsync(new CoreGuildMember(entry.Member)));
-			}
 		}
 
 		public override async Task SetAsync(CoreMessage entry, string? parent = null)

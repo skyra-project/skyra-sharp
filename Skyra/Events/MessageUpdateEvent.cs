@@ -29,7 +29,7 @@ namespace Skyra.Events
 				? new CoreMessage(messageUpdate)
 				: previousMessage.Patch(messageUpdate);
 
-			await Client.Cache.Messages.SetAsync(message);
+			await message.CacheAsync(Client);
 			foreach (var monitor in Client.Monitors.Values)
 			{
 				try

@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Skyra.NotifI.Core.Models;
+using Skyra.Notifi.Core.Models;
 
 namespace Skyra.Notifi
 {

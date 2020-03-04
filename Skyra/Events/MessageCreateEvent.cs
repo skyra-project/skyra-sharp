@@ -1,10 +1,10 @@
+using System;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
@@ -16,17 +16,20 @@ namespace Skyra.Events
 			Client.EventHandler.OnMessageCreate += Run;
 		}
 
-		private void Run(Message message)
+		private void Run(CoreMessage message)
 		{
-			Task.Run(() => RunMonitors(new CoreMessage(message)));
-		}
-
-		private async Task RunMonitors(CoreMessage message)
-		{
-			await message.CacheAsync(Client);
-			foreach (var monitor in Client.Monitors.Values.Where(monitor => ShouldRunMonitor(message, monitor)))
+			foreach (var monitor in Client.Monitors.Values.Where(m => ShouldRunMonitor(message, m)))
 			{
-				monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+				try
+				{
+					monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+				}
+				catch (TargetInvocationException exception)
+				{
+					Console.Error.WriteLine($"[MONITORS]: {monitor.Name}");
+					Console.Error.WriteLine($"ERROR: {exception.InnerException?.Message ?? exception.Message}");
+					Console.Error.WriteLine($"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
+				}
 			}
 		}
 

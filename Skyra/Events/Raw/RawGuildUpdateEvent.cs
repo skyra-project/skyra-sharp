@@ -2,15 +2,17 @@ using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
+using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
-namespace Skyra.Events
+namespace Skyra.Events.Raw
 {
-	public class GuildUpdateEvent : StructureBase
+	[Event]
+	public class RawGuildUpdateEvent : StructureBase
 	{
-		public GuildUpdateEvent(Client client) : base(client)
+		public RawGuildUpdateEvent(Client client) : base(client)
 		{
-			Client.EventHandler.OnGuildUpdate += Run;
+			Client.EventHandler.OnRawGuildUpdate += Run;
 		}
 
 		private void Run(Guild guild)

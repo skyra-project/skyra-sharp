@@ -4,14 +4,14 @@ using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
-namespace Skyra.Events
+namespace Skyra.Events.Raw
 {
 	[Event]
-	public class GuildCreateEvent : StructureBase
+	public class RawGuildCreateEvent : StructureBase
 	{
-		public GuildCreateEvent(Client client) : base(client)
+		public RawGuildCreateEvent(Client client) : base(client)
 		{
-			Client.EventHandler.OnGuildCreate += Run;
+			Client.EventHandler.OnRawGuildCreate += Run;
 		}
 
 		private void Run(Guild guild)

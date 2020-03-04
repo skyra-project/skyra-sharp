@@ -1,11 +1,10 @@
 using System;
+using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
@@ -17,20 +16,9 @@ namespace Skyra.Events
 			Client.EventHandler.OnMessageUpdate += Run;
 		}
 
-		private void Run(MessageUpdatePayload message)
+		private void Run(CoreMessage? _, CoreMessage message)
 		{
-			Task.Run(() => RunMonitorsAsync(message));
-		}
-
-		private async Task RunMonitorsAsync(MessageUpdatePayload messageUpdate)
-		{
-			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
-			var message = previousMessage == null
-				? new CoreMessage(messageUpdate)
-				: previousMessage.Patch(messageUpdate);
-
-			await message.CacheAsync(Client);
-			foreach (var monitor in Client.Monitors.Values)
+			foreach (var monitor in Client.Monitors.Values.Where(m => ShouldRunMonitor(message, m)))
 			{
 				try
 				{
@@ -43,6 +31,16 @@ namespace Skyra.Events
 					Console.Error.WriteLine($"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
 				}
 			}
+		}
+
+		private static bool ShouldRunMonitor(CoreMessage message, MonitorInfo monitor)
+		{
+			return monitor.AllowedTypes.Contains(message.Type)
+			       && !(monitor.IgnoreBots && message.Author!.Bot)
+			       // && !(monitor.IgnoreSelf && message.Author.Id == Client.User.Id)
+			       // && !(monitor.IgnoreOthers && message.Author.Id != Client.User.Id)
+			       && !(monitor.IgnoreWebhooks && message.WebhookId != null)
+			       && !(monitor.IgnoreEdits && message.EditedTimestamp != null);
 		}
 	}
 }

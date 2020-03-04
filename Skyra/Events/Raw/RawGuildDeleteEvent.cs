@@ -4,14 +4,14 @@ using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
 
-namespace Skyra.Events
+namespace Skyra.Events.Raw
 {
 	[Event]
-	public class GuildDeleteEvent : StructureBase
+	public class RawGuildDeleteEvent : StructureBase
 	{
-		public GuildDeleteEvent(Client client) : base(client)
+		public RawGuildDeleteEvent(Client client) : base(client)
 		{
-			Client.EventHandler.OnGuildDelete += Run;
+			Client.EventHandler.OnRawGuildDelete += Run;
 		}
 
 		private void Run(UnavailableGuild guild)

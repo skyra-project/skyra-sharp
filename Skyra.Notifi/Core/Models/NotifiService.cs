@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Spectacles.NET.Broker.Amqp;
 
-namespace Skyra.NotifI.Core.Models
+namespace Skyra.Notifi.Core.Models
 {
 	public class NotifiService
 	{

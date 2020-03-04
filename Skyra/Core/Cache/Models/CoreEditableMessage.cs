@@ -24,9 +24,10 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("o")]
 		public ulong OwnMessageId { get; private set; }
 
-		public void Patch(CoreEditableMessage value)
+		public CoreEditableMessage Patch(CoreEditableMessage value)
 		{
 			OwnMessageId = value.OwnMessageId;
+			return this;
 		}
 
 		public CoreEditableMessage Clone()

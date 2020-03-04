@@ -30,8 +30,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("cid")]
 		public ulong ChannelId { get; set; }
 
-		public void Patch(CoreInvite value)
+		public CoreInvite Patch(CoreInvite value)
 		{
+			return this;
 		}
 
 		public CoreInvite Clone()

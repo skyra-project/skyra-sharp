@@ -8,9 +8,9 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
 	{
-		public CoreGuildMember(GuildMember guildMember)
+		public CoreGuildMember(GuildMember guildMember, User? user = null)
 		{
-			Id = guildMember.User.Id;
+			Id = (guildMember.User ?? user!).Id;
 			Roles = guildMember.Roles;
 			Nickname = guildMember.Nickname;
 			Deaf = guildMember.Deaf;
@@ -56,13 +56,14 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("m")]
 		public bool Mute { get; set; }
 
-		public void Patch(CoreGuildMember value)
+		public CoreGuildMember Patch(CoreGuildMember value)
 		{
 			Roles = value.Roles;
 			Nickname = value.Nickname;
 			JoinedAt = value.JoinedAt ?? JoinedAt;
 			Deaf = value.Deaf;
 			Mute = value.Mute;
+			return this;
 		}
 
 		public CoreGuildMember Clone()

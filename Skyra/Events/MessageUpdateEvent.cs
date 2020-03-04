@@ -19,47 +19,17 @@ namespace Skyra.Events
 
 		private void Run(MessageUpdatePayload message)
 		{
-			Task.Run(() => RunAsync(message));
+			Task.Run(() => RunMonitorsAsync(message));
 		}
 
-		private async Task RunAsync(MessageUpdatePayload messageUpdate)
+		private async Task RunMonitorsAsync(MessageUpdatePayload messageUpdate)
 		{
-			try
-			{
-				// TODO(kyranet): Pull message.Author from Redis or fetch, Discord sometimes doesn't give it.
-				var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
-				var message = GenerateMessage(messageUpdate, previousMessage);
+			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
+			var message = previousMessage == null
+				? new CoreMessage(messageUpdate)
+				: previousMessage.Patch(messageUpdate);
 
-				await Client.Cache.Messages.SetAsync(new CoreMessage(message));
-				RunMonitors(message);
-			}
-			catch (Exception exception)
-			{
-				Console.Error.WriteLine($"Error! {exception.Message}: ${exception.StackTrace}");
-			}
-		}
-
-		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CoreMessage? previousMessage)
-		{
-			return new Message
-			{
-				Id = messageUpdate.Id,
-				Author = messageUpdate.Author,
-				Member = messageUpdate.Member,
-				Content = messageUpdate.Content,
-				Embeds = messageUpdate.Embeds,
-				Attachments = messageUpdate.Attachments,
-				Type = messageUpdate.Type ?? MessageType.DEFAULT,
-				Timestamp = messageUpdate.Timestamp ?? previousMessage?.Timestamp ?? DateTime.MinValue,
-				ChannelId = messageUpdate.ChannelId,
-				GuildId = messageUpdate.GuildId,
-				EditedTimestamp = messageUpdate.EditedTimestamp,
-				WebhookId = messageUpdate.WebhookId
-			};
-		}
-
-		private void RunMonitors(Message message)
-		{
+			await Client.Cache.Messages.SetAsync(message);
 			foreach (var monitor in Client.Monitors.Values)
 			{
 				try

@@ -24,9 +24,10 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("t")]
 		public ChannelType Type { get; private set; }
 
-		public void Patch(CoreChannel value)
+		public CoreChannel Patch(CoreChannel value)
 		{
 			Type = value.Type;
+			return this;
 		}
 
 		public CoreChannel Clone()

@@ -41,13 +41,14 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("po")]
 		public CorePermissionOverwrite[] PermissionOverwrites { get; set; }
 
-		public void Patch(CoreGuildChannel value)
+		public CoreGuildChannel Patch(CoreGuildChannel value)
 		{
 			base.Patch(value);
 			Name = value.Name;
 			RawPosition = value.RawPosition;
 			ParentId = value.ParentId;
 			PermissionOverwrites = value.PermissionOverwrites;
+			return this;
 		}
 
 		public new CoreGuildChannel Clone()

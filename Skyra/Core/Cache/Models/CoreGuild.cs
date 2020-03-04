@@ -51,7 +51,7 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("o")]
 		public string OwnerId { get; set; }
 
-		public void Patch(CoreGuild value)
+		public CoreGuild Patch(CoreGuild value)
 		{
 			Name = value.Name;
 			Region = value.Region;
@@ -59,6 +59,7 @@ namespace Skyra.Core.Cache.Models
 			Permissions = value.Permissions;
 			MemberCount = value.MemberCount;
 			OwnerId = value.OwnerId;
+			return this;
 		}
 
 		public CoreGuild Clone()

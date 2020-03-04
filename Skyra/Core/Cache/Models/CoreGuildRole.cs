@@ -50,13 +50,14 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("pt")]
 		public uint Position { get; set; }
 
-		public void Patch(CoreGuildRole value)
+		public CoreGuildRole Patch(CoreGuildRole value)
 		{
 			Name = value.Name;
 			Color = value.Color;
 			Mentionable = value.Mentionable;
 			Permissions = value.Permissions;
 			Position = value.Position;
+			return this;
 		}
 
 		public CoreGuildRole Clone()

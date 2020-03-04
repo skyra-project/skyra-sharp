@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Spectacles.NET.Types;
 
 namespace Skyra.Monitors
 {
@@ -14,11 +14,10 @@ namespace Skyra.Monitors
 		{
 		}
 
-		public Task RunAsync(Message message)
+		public async Task RunAsync(CoreMessage message)
 		{
 			Console.WriteLine(
-				$"Received Message [{message.Id}] from {message.Author?.Username ?? "??"} with content '{message.Content}'.");
-			return Task.FromResult(true);
+				$"Received Message [{message.Id}] from {(await message.GetAuthorAsync(Client))?.Username ?? "??"} with content '{message.Content}'.");
 		}
 	}
 }

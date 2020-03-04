@@ -29,10 +29,11 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("a")]
 		public bool Animated { get; set; }
 
-		public void Patch(CoreGuildEmoji value)
+		public CoreGuildEmoji Patch(CoreGuildEmoji value)
 		{
 			Animated = value.Animated;
 			Name = value.Name;
+			return this;
 		}
 
 		public CoreGuildEmoji Clone()

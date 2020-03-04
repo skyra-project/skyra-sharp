@@ -61,7 +61,7 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("sm")]
 		public bool SelfMute { get; private set; }
 
-		public void Patch(CoreVoiceState value)
+		public CoreVoiceState Patch(CoreVoiceState value)
 		{
 			SessionId = value.SessionId;
 			Deaf = value.Deaf;
@@ -70,6 +70,7 @@ namespace Skyra.Core.Cache.Models
 			ChannelId = value.ChannelId;
 			SelfDeaf = value.SelfDeaf;
 			SelfMute = value.SelfMute;
+			return this;
 		}
 
 		public CoreVoiceState Clone()

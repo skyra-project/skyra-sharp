@@ -9,8 +9,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Utils;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Structures.Usage
 {
@@ -23,7 +23,7 @@ namespace Skyra.Core.Structures.Usage
 
 		private static readonly string[] Quotes = {"\"", "'", "“”", "‘’"};
 
-		public CommandUsageParser(CommandInfo command, Message message, string content)
+		public CommandUsageParser(CommandInfo command, CoreMessage message, string content)
 		{
 			Message = message;
 			Command = command;
@@ -51,7 +51,7 @@ namespace Skyra.Core.Structures.Usage
 		public CommandUsage Usage { get; }
 		public CommandUsageOverload? Overload { get; private set; }
 		public CommandUsageOverloadArgument? Argument { get; private set; }
-		private Message Message { get; }
+		private CoreMessage Message { get; }
 		private int ParameterPosition { get; set; }
 		private int ArgumentPosition { get; set; }
 

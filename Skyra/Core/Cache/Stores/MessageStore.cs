@@ -1,34 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
+using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class MessageStore : CacheStore<CoreMessage>
+	public class MessageStore : SetCacheStoreBase<CoreMessage>
 	{
 		public MessageStore(CacheClient client) : base(client, "messages")
 		{
 		}
 
-		public new async Task<CoreMessage?> GetAsync(string id, string? parent = null)
-		{
-			var result = await Database.StringGetAsync($"{FormatKeyName(parent)}:{id}");
-			return !result.IsNull ? JsonConvert.DeserializeObject<CoreMessage>(result.ToString()) : null;
-		}
-
 		public override async Task SetAsync(CoreMessage entry, string? parent = null)
 		{
-			var id = $"{FormatKeyName(parent)}:{entry.Id}";
+			var id = FormatKeyName(parent, entry.Id.ToString());
 			await Database.StringSetAsync(id, SerializeValue(entry));
 			await Database.KeyExpireAsync(id, TimeSpan.FromMinutes(20));
 		}
 
-		public override Task SetAsync(IEnumerable<CoreMessage> entries, string? parent = null)
+		public override string GetKey(CoreMessage value)
 		{
-			return Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+			return value.Id.ToString();
 		}
 	}
 }

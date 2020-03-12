@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
 using StackExchange.Redis;
 
-namespace Skyra.Core.Cache.Stores
+namespace Skyra.Core.Cache.Stores.Base
 {
-	public abstract class CacheStore<T> where T : class, ICoreBaseStructure<T>
+	public abstract class CacheStoreBase<T> where T : class, ICoreBaseStructure<T>
 	{
-		protected CacheStore(CacheClient client, string prefix)
+		protected CacheStoreBase(CacheClient client, string prefix)
 		{
 			Client = client;
 			Prefix = $"{Client.Prefix}:{prefix}";
@@ -19,11 +19,7 @@ namespace Skyra.Core.Cache.Stores
 		protected IDatabase Database => Client.Database;
 		protected string Prefix { get; }
 
-		public async Task<T?> GetAsync(string id, string? parent = null)
-		{
-			var result = await Database.HashGetAsync(FormatKeyName(parent), id);
-			return !result.IsNull ? JsonConvert.DeserializeObject<T>(result.ToString()) : null;
-		}
+		public abstract Task<T?> GetAsync(string id, string? parent = null);
 
 		public async Task<T?[]> GetAsync(IEnumerable<string> ids, string? parent = null)
 		{
@@ -45,6 +41,8 @@ namespace Skyra.Core.Cache.Stores
 		}
 
 		public abstract Task SetAsync(IEnumerable<T> entries, string? parent = null);
+
+		public abstract string GetKey(T value);
 
 		public async Task<(T?, T)> PatchAsync(T entry, string id, string? parent = null)
 		{

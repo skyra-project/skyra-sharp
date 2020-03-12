@@ -5,18 +5,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildRole : ICoreBaseStructure<CoreGuildRole>
 	{
-		public CoreGuildRole(Role role)
-		{
-			Id = ulong.Parse(role.Id);
-			Name = role.Name;
-			Color = (uint) role.Color;
-			Managed = role.Managed;
-			Mentionable = role.Mentionable;
-			Permissions = (Permission) role.Permissions;
-			Position = (uint) role.Position;
-		}
-
-		[JsonConstructor]
 		public CoreGuildRole(ulong id, string name, uint color, bool managed, bool mentionable, Permission permissions,
 			uint position)
 		{
@@ -69,6 +57,12 @@ namespace Skyra.Core.Cache.Models
 				Mentionable,
 				Permissions,
 				Position);
+		}
+
+		public static CoreGuildRole From(Role role)
+		{
+			return new CoreGuildRole(ulong.Parse(role.Id), role.Name, (uint) role.Color, role.Managed, role.Mentionable,
+				(Permission) role.Permissions, (uint) role.Position);
 		}
 	}
 }

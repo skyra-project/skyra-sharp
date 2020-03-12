@@ -5,14 +5,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildEmoji : ICoreBaseStructure<CoreGuildEmoji>
 	{
-		public CoreGuildEmoji(Emoji emoji)
-		{
-			Id = ulong.Parse(emoji.Id);
-			Animated = emoji.Animated ?? false;
-			Name = emoji.Name;
-		}
-
-		[JsonConstructor]
 		public CoreGuildEmoji(ulong id, string name, bool animated)
 		{
 			Id = id;
@@ -41,6 +33,11 @@ namespace Skyra.Core.Cache.Models
 			return new CoreGuildEmoji(Id,
 				Name,
 				Animated);
+		}
+
+		public static CoreGuildEmoji From(Emoji emoji)
+		{
+			return new CoreGuildEmoji(ulong.Parse(emoji.Id), emoji.Name, emoji.Animated ?? false);
 		}
 	}
 }

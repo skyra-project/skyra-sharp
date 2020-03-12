@@ -6,16 +6,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildChannel : CoreChannel, ICoreBaseStructure<CoreGuildChannel>
 	{
-		public CoreGuildChannel(Channel channel) : base(channel)
-		{
-			GuildId = ulong.Parse(channel.GuildId);
-			Name = channel.Name;
-			RawPosition = channel.Position;
-			ParentId = ulong.Parse(channel.ParentId);
-			PermissionOverwrites = channel.PermissionOverwrites.Select(o => new CorePermissionOverwrite(o)).ToArray();
-		}
-
-		[JsonConstructor]
 		public CoreGuildChannel(ulong id, ChannelType type, ulong guildId, string name, int? rawPosition,
 			ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(id, type)
 		{
@@ -60,6 +50,13 @@ namespace Skyra.Core.Cache.Models
 				RawPosition,
 				ParentId,
 				PermissionOverwrites);
+		}
+
+		public new static CoreGuildChannel From(Channel channel)
+		{
+			return new CoreGuildChannel(ulong.Parse(channel.Id), channel.Type, ulong.Parse(channel.GuildId),
+				channel.Name, channel.Position, ulong.Parse(channel.ParentId),
+				channel.PermissionOverwrites.Select(CorePermissionOverwrite.From).ToArray());
 		}
 	}
 }

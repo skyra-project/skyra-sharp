@@ -5,13 +5,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreChannel : ICoreBaseStructure<CoreChannel>
 	{
-		public CoreChannel(Channel channel)
-		{
-			Id = ulong.Parse(channel.Id);
-			Type = channel.Type;
-		}
-
-		[JsonConstructor]
 		public CoreChannel(ulong id, ChannelType type)
 		{
 			Id = id;
@@ -33,6 +26,11 @@ namespace Skyra.Core.Cache.Models
 		public CoreChannel Clone()
 		{
 			return new CoreChannel(Id, Type);
+		}
+
+		public static CoreChannel From(Channel channel)
+		{
+			return new CoreChannel(ulong.Parse(channel.Id), channel.Type);
 		}
 	}
 }

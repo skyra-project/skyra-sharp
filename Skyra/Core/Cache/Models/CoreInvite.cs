@@ -6,14 +6,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreInvite : ICoreBaseStructure<CoreInvite>
 	{
-		public CoreInvite(Invite invite)
-		{
-			Code = invite.Code;
-			GuildId = ulong.Parse(invite.Guild.Id);
-			ChannelId = ulong.Parse(invite.Channel.Id);
-		}
-
-		[JsonConstructor]
 		public CoreInvite(string code, ulong guildId, ulong channelId)
 		{
 			Code = code;
@@ -40,6 +32,11 @@ namespace Skyra.Core.Cache.Models
 			return new CoreInvite(Code,
 				GuildId,
 				ChannelId);
+		}
+
+		public static CoreInvite From(Invite invite)
+		{
+			return new CoreInvite(invite.Code, ulong.Parse(invite.Guild.Id), ulong.Parse(invite.Channel.Id));
 		}
 
 		public async Task<CoreGuild?> GetGuildAsync(Client client)

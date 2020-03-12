@@ -17,7 +17,7 @@ namespace Skyra.Events.Raw
 
 		private void Run(Message message)
 		{
-			Task.Run(() => RunMonitors(new CoreMessage(message)));
+			Task.Run(() => RunMonitors(CoreMessage.From(message)));
 		}
 
 		private async Task RunMonitors(CoreMessage message)

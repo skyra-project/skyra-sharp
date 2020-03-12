@@ -8,26 +8,7 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
 	{
-		public CoreGuildMember(GuildMember guildMember, User? user = null)
-		{
-			Id = (guildMember.User ?? user!).Id;
-			Roles = guildMember.Roles;
-			Nickname = guildMember.Nickname;
-			Deaf = guildMember.Deaf;
-			Mute = guildMember.Mute;
-
-			if (DateTime.TryParse(guildMember.JoinedAt, out var result))
-			{
-				JoinedAt = result;
-			}
-			else
-			{
-				JoinedAt = null;
-			}
-		}
-
-		[JsonConstructor]
-		public CoreGuildMember(string id, List<string> roles, string? nickname, DateTime? joinedAt, bool deaf,
+		public CoreGuildMember(ulong id, List<string> roles, string? nickname, DateTime? joinedAt, bool deaf,
 			bool mute)
 		{
 			Id = id;
@@ -39,7 +20,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[JsonProperty("id")]
-		public string Id { get; set; }
+		public ulong Id { get; set; }
 
 		[JsonProperty("r")]
 		public List<string> Roles { get; set; }
@@ -76,9 +57,26 @@ namespace Skyra.Core.Cache.Models
 				Mute);
 		}
 
+		public static CoreGuildMember From(GuildMember guildMember, User? user = null)
+		{
+			DateTime? joinedAt;
+			if (DateTime.TryParse(guildMember.JoinedAt, out var result))
+			{
+				joinedAt = result;
+			}
+			else
+			{
+				joinedAt = null;
+			}
+
+			return new CoreGuildMember(ulong.Parse((guildMember.User ?? user!).Id), guildMember.Roles,
+				guildMember.Nickname,
+				joinedAt, guildMember.Deaf, guildMember.Mute);
+		}
+
 		public async Task<CoreUser?> GetUserAsync(Client client)
 		{
-			return await client.Cache.Users.GetAsync(Id);
+			return await client.Cache.Users.GetAsync(Id.ToString());
 		}
 	}
 }

@@ -5,17 +5,7 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreUser : ICoreBaseStructure<CoreUser>
 	{
-		public CoreUser(User user)
-		{
-			Id = user.Id;
-			Bot = user.Bot;
-			Username = user.Username;
-			Discriminator = user.Discriminator;
-			Avatar = user.Avatar;
-		}
-
-		[JsonConstructor]
-		public CoreUser(string id, bool bot, string username, string discriminator, string? avatar)
+		public CoreUser(ulong id, bool bot, string username, string discriminator, string? avatar)
 		{
 			Id = id;
 			Username = username;
@@ -25,7 +15,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[JsonProperty("id")]
-		public string Id { get; private set; }
+		public ulong Id { get; private set; }
 
 		[JsonProperty("b")]
 		public bool Bot { get; private set; }
@@ -54,6 +44,11 @@ namespace Skyra.Core.Cache.Models
 				Username,
 				Discriminator,
 				Avatar);
+		}
+
+		public static CoreUser From(User user)
+		{
+			return new CoreUser(ulong.Parse(user.Id), user.Bot, user.Username, user.Discriminator, user.Avatar);
 		}
 	}
 }

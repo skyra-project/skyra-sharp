@@ -6,20 +6,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreVoiceState : ICoreBaseStructure<CoreVoiceState>
 	{
-		public CoreVoiceState(VoiceState voiceState)
-		{
-			Deaf = voiceState.Deaf;
-			Mute = voiceState.Mute;
-			Suppress = voiceState.Suppress;
-			ChannelId = ulong.Parse(voiceState.ChannelId);
-			GuildId = ulong.Parse(voiceState.GuildId);
-			SelfDeaf = voiceState.SelfDeaf;
-			SelfMute = voiceState.SelfMute;
-			SessionId = voiceState.SessionId;
-			UserId = ulong.Parse(voiceState.UserId);
-		}
-
-		[JsonConstructor]
 		public CoreVoiceState(string sessionId, bool deaf, bool mute, bool suppress, ulong userId, ulong channelId,
 			ulong guildId, bool selfDeaf, bool selfMute)
 		{
@@ -84,6 +70,13 @@ namespace Skyra.Core.Cache.Models
 				GuildId,
 				SelfDeaf,
 				SelfMute);
+		}
+
+		public static CoreVoiceState From(VoiceState voiceState)
+		{
+			return new CoreVoiceState(voiceState.SessionId, voiceState.Deaf, voiceState.Mute, voiceState.Suppress,
+				ulong.Parse(voiceState.UserId), ulong.Parse(voiceState.ChannelId), ulong.Parse(voiceState.UserId),
+				voiceState.SelfDeaf, voiceState.SelfMute);
 		}
 
 		public async Task<CoreGuild?> GetGuildAsync(Client client)

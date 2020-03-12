@@ -5,21 +5,14 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreEditableMessage : ICoreBaseStructure<CoreEditableMessage>
 	{
-		public CoreEditableMessage(string id, string ownMessageId)
-		{
-			Id = id;
-			OwnMessageId = ulong.Parse(ownMessageId);
-		}
-
-		[JsonConstructor]
-		public CoreEditableMessage(string id, ulong ownMessageId)
+		public CoreEditableMessage(ulong id, ulong ownMessageId)
 		{
 			Id = id;
 			OwnMessageId = ownMessageId;
 		}
 
 		[JsonProperty("id")]
-		public string Id { get; private set; }
+		public ulong Id { get; private set; }
 
 		[JsonProperty("o")]
 		public ulong OwnMessageId { get; private set; }

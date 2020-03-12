@@ -24,7 +24,7 @@ namespace Skyra.Events.Raw
 		{
 			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
 			var message = previousMessage == null
-				? new CoreMessage(messageUpdate)
+				? CoreMessage.From(messageUpdate)
 				: previousMessage.Clone().Patch(messageUpdate);
 
 			await message.CacheAsync(Client);

@@ -6,15 +6,13 @@ namespace Skyra.Core.Cache.Models
 {
 	public struct CorePermissionOverwrite
 	{
-		public CorePermissionOverwrite(PermissionOverwrite overwrite)
+		public static CorePermissionOverwrite From(PermissionOverwrite overwrite)
 		{
-			Id = ulong.Parse(overwrite.Id);
-			Type = overwrite.Type == "role" ? CorePermissionOverwriteType.Role : CorePermissionOverwriteType.Member;
-			Allow = overwrite.Allow;
-			Deny = overwrite.Deny;
+			return new CorePermissionOverwrite(ulong.Parse(overwrite.Id),
+				overwrite.Type == "role" ? CorePermissionOverwriteType.Role : CorePermissionOverwriteType.Member,
+				overwrite.Allow, overwrite.Deny);
 		}
 
-		[JsonConstructor]
 		public CorePermissionOverwrite(ulong id, CorePermissionOverwriteType type, Permission allow, Permission deny)
 		{
 			Id = id;

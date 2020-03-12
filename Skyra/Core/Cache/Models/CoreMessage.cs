@@ -8,47 +8,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreMessage : ICoreBaseStructure<CoreMessage>
 	{
-		public CoreMessage(Message message)
-		{
-			Id = ulong.Parse(message.Id);
-			Type = message.Type;
-			Channel = null;
-			ChannelId = ulong.Parse(message.ChannelId);
-			Guild = null;
-			GuildId = message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId);
-			Author = new CoreUser(message.Author);
-			AuthorId = ulong.Parse(message.Author.Id);
-			Member = message.Member == null ? null : new CoreGuildMember(message.Member, message.Author);
-			Webhook = null;
-			WebhookId = message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId);
-			Content = message.Content;
-			Embeds = message.Embeds.ToArray();
-			Timestamp = message.Timestamp;
-			Attachments = message.Attachments.ToArray();
-			EditedTimestamp = message.EditedTimestamp;
-		}
-
-		public CoreMessage(MessageUpdatePayload message)
-		{
-			Id = ulong.Parse(message.Id);
-			Type = MessageType.DEFAULT;
-			Channel = null;
-			ChannelId = ulong.Parse(message.ChannelId);
-			Guild = null;
-			GuildId = message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId);
-			Author = new CoreUser(message.Author);
-			AuthorId = ulong.Parse(message.Author.Id);
-			Member = message.Member == null ? null : new CoreGuildMember(message.Member, message.Author);
-			Webhook = null;
-			WebhookId = message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId);
-			Content = message.Content;
-			Embeds = message.Embeds.ToArray();
-			Timestamp = message.Timestamp ?? DateTime.MinValue;
-			Attachments = message.Attachments.ToArray();
-			EditedTimestamp = message.EditedTimestamp;
-		}
-
-		[JsonConstructor]
 		public CoreMessage(ulong id, MessageType type, CoreChannel? channel, ulong channelId, CoreGuild? guild,
 			ulong? guildId, CoreGuildMember? member, Webhook? webhook, ulong? webhookId, CoreUser? author,
 			ulong authorId, string content, Embed[] embeds,
@@ -149,6 +108,28 @@ namespace Skyra.Core.Cache.Models
 				EditedTimestamp);
 		}
 
+		public static CoreMessage From(Message message)
+		{
+			return new CoreMessage(ulong.Parse(message.Id), message.Type, null, ulong.Parse(message.ChannelId), null,
+				message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
+				message.Member == null ? null : CoreGuildMember.From(message.Member, message.Author), null,
+				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
+				CoreUser.From(message.Author), ulong.Parse(message.Author.Id), message.Content,
+				message.Embeds.ToArray(),
+				message.Attachments.ToArray(), message.Timestamp, message.EditedTimestamp);
+		}
+
+		public static CoreMessage From(MessageUpdatePayload message)
+		{
+			return new CoreMessage(ulong.Parse(message.Id), MessageType.DEFAULT, null, ulong.Parse(message.ChannelId),
+				null, message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
+				message.Member == null ? null : CoreGuildMember.From(message.Member, message.Author), null,
+				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
+				CoreUser.From(message.Author), ulong.Parse(message.Author.Id), message.Content,
+				message.Embeds.ToArray(),
+				message.Attachments.ToArray(), message.Timestamp ?? DateTime.MinValue, message.EditedTimestamp);
+		}
+
 		public CoreMessage Patch(MessageUpdatePayload value)
 		{
 			Content = value.Content;
@@ -201,7 +182,7 @@ namespace Skyra.Core.Cache.Models
 				if (Attachments.Length == 0 && data.File == null)
 					// We update the message and return.
 				{
-					return new CoreMessage(await client.Rest.Channels[channel]
+					return From(await client.Rest.Channels[channel]
 						.Messages[previous.OwnMessageId.ToString()]
 						.PatchAsync<Message>(data));
 				}
@@ -215,10 +196,10 @@ namespace Skyra.Core.Cache.Models
 
 			// Store the message into Redis for later processing.
 			await client.Cache.EditableMessages.SetAsync(
-				new CoreEditableMessage(id, response.Id), channel);
+				new CoreEditableMessage(Id, ulong.Parse(response.Id)), channel);
 
 			// Return the response.
-			return new CoreMessage(response);
+			return From(response);
 		}
 
 		public async Task<CoreMessage> EditAsync(Client client, string content)
@@ -231,7 +212,7 @@ namespace Skyra.Core.Cache.Models
 
 		public async Task<CoreMessage> EditAsync(Client client, SendableMessage data)
 		{
-			return new CoreMessage(await client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
+			return From(await client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
 				.PatchAsync<Message>(data));
 		}
 

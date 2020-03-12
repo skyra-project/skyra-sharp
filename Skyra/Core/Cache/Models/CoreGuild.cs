@@ -6,18 +6,6 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuild : ICoreBaseStructure<CoreGuild>
 	{
-		public CoreGuild(Guild guild)
-		{
-			Id = ulong.Parse(guild.Id);
-			Name = guild.Name;
-			Region = guild.Region;
-			Icon = guild.Icon;
-			Permissions = guild.Permissions;
-			MemberCount = guild.MemberCount;
-			OwnerId = guild.OwnerId;
-		}
-
-		[JsonConstructor]
 		public CoreGuild(ulong id, string name, string region, string? icon, Permission? permissions,
 			int? memberCount, string ownerId)
 		{
@@ -71,6 +59,12 @@ namespace Skyra.Core.Cache.Models
 				Permissions,
 				MemberCount,
 				OwnerId);
+		}
+
+		public static CoreGuild From(Guild guild)
+		{
+			return new CoreGuild(ulong.Parse(guild.Id), guild.Name, guild.Region, guild.Icon, guild.Permissions,
+				guild.MemberCount, guild.OwnerId);
 		}
 
 		public async Task<CoreGuildChannel[]> GetChannelsAsync(Client client)

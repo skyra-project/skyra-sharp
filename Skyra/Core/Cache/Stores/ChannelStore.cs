@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Skyra.Core.Cache.Models;
-using Spectacles.NET.Types;
+using Skyra.Core.Cache.Stores.Base;
 using StackExchange.Redis;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class ChannelStore : CacheStore<CoreChannel>
+	public class ChannelStore : HashMapCacheStoreBase<CoreChannel>
 	{
 		public ChannelStore(CacheClient client) : base(client, "channels")
 		{
@@ -19,16 +17,9 @@ namespace Skyra.Core.Cache.Stores
 			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});
 		}
 
-		public async Task SetAsync(IEnumerable<Channel> entries, string? parent = null)
+		public override string GetKey(CoreChannel value)
 		{
-			await SetAsync(entries.Select(c => new CoreChannel(c)), parent);
-		}
-
-		public override async Task SetAsync(IEnumerable<CoreChannel> entries, string? parent = null)
-		{
-			var channels = entries as CoreChannel[] ?? entries.ToArray();
-			await Database.HashSetAsync(Prefix,
-				channels.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
+			return value.Id.ToString();
 		}
 	}
 }

@@ -91,7 +91,7 @@ namespace Skyra.Core.Cache.Models
 
 		public async Task<CoreUser?> GetUserAsync(Client client)
 		{
-			return await client.Cache.Users.GetAsync(GuildId.ToString());
+			return await client.Cache.Users.GetAsync(UserId.ToString());
 		}
 	}
 }

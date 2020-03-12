@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
@@ -8,7 +9,7 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
 	{
-		public CoreGuildMember(ulong id, List<string> roles, string? nickname, DateTime? joinedAt, bool deaf,
+		public CoreGuildMember(ulong id, ulong[] roles, string? nickname, DateTime? joinedAt, bool deaf,
 			bool mute)
 		{
 			Id = id;
@@ -23,7 +24,7 @@ namespace Skyra.Core.Cache.Models
 		public ulong Id { get; set; }
 
 		[JsonProperty("r")]
-		public List<string> Roles { get; set; }
+		public ulong[] Roles { get; set; }
 
 		[JsonProperty("n")]
 		public string? Nickname { get; set; }
@@ -69,9 +70,9 @@ namespace Skyra.Core.Cache.Models
 				joinedAt = null;
 			}
 
-			return new CoreGuildMember(ulong.Parse((guildMember.User ?? user!).Id), guildMember.Roles,
-				guildMember.Nickname,
-				joinedAt, guildMember.Deaf, guildMember.Mute);
+			return new CoreGuildMember(ulong.Parse((guildMember.User ?? user!).Id),
+				guildMember.Roles.Select(ulong.Parse).ToArray(),
+				guildMember.Nickname, joinedAt, guildMember.Deaf, guildMember.Mute);
 		}
 
 		public async Task<CoreUser?> GetUserAsync(Client client)

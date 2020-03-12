@@ -150,12 +150,15 @@ namespace Skyra.Core.Cache.Models
 
 		public async Task<CoreChannel?> GetChannelAsync(Client client)
 		{
-			return Channel ??= await client.Cache.GuildChannels.GetAsync(AuthorId.ToString());
+			return Channel ??= GuildId == null
+				? await client.Cache.Channels.GetAsync(ChannelId.ToString())
+				: await client.Cache.GuildChannels.GetAsync(ChannelId.ToString(), GuildId.ToString());
 		}
 
 		public async Task<CoreGuild?> GetGuildAsync(Client client)
 		{
-			return Guild ??= await client.Cache.Guilds.GetAsync(AuthorId.ToString());
+			if (GuildId == null) return null;
+			return Guild ??= await client.Cache.Guilds.GetAsync(GuildId.ToString()!);
 		}
 
 		public async Task<CoreMessage> SendAsync(Client client, string content)

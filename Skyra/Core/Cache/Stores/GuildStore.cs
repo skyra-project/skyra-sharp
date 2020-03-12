@@ -22,7 +22,7 @@ namespace Skyra.Core.Cache.Stores
 				SetAsync(CoreGuild.From(entry), parent));
 		}
 
-		public override string GetKey(CoreGuild value)
+		protected override string GetKey(CoreGuild value)
 		{
 			return value.Id.ToString();
 		}

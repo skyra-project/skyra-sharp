@@ -9,7 +9,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public override string GetKey(CoreUser value)
+		protected override string GetKey(CoreUser value)
 		{
 			return value.Id.ToString();
 		}

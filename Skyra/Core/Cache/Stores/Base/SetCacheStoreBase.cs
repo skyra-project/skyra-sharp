@@ -25,7 +25,10 @@ namespace Skyra.Core.Cache.Stores.Base
 
 		public override async Task SetAsync(IEnumerable<T> entries, string? parent = null)
 		{
-			await Task.WhenAll(entries.Select(entry => SetAsync(entry, parent)));
+			var transaction = Database.CreateTransaction();
+			await Task.WhenAll(entries.Select(entry =>
+				transaction.StringSetAsync(FormatKeyName(parent, GetKey(entry)), SerializeValue(entry))));
+			await transaction.ExecuteAsync();
 		}
 	}
 }

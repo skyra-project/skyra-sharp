@@ -42,8 +42,6 @@ namespace Skyra.Core.Cache.Stores.Base
 
 		public abstract Task SetAsync(IEnumerable<T> entries, string? parent = null);
 
-		public abstract string GetKey(T value);
-
 		public async Task<(T?, T)> PatchAsync(T entry, string id, string? parent = null)
 		{
 			var previous = await GetAsync(id, parent);
@@ -68,6 +66,8 @@ namespace Skyra.Core.Cache.Stores.Base
 		{
 			return Task.WhenAll(ids.Select(id => DeleteAsync(id, parent)));
 		}
+
+		protected abstract string GetKey(T value);
 
 		protected string FormatKeyName(string? parent)
 		{

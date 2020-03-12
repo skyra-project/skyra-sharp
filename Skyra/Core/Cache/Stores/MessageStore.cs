@@ -18,7 +18,7 @@ namespace Skyra.Core.Cache.Stores
 			await Database.KeyExpireAsync(id, TimeSpan.FromMinutes(20));
 		}
 
-		public override string GetKey(CoreMessage value)
+		protected override string GetKey(CoreMessage value)
 		{
 			return value.Id.ToString();
 		}

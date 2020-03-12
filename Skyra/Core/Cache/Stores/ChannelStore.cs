@@ -17,7 +17,7 @@ namespace Skyra.Core.Cache.Stores
 			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});
 		}
 
-		public override string GetKey(CoreChannel value)
+		protected override string GetKey(CoreChannel value)
 		{
 			return value.Id.ToString();
 		}

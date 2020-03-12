@@ -9,7 +9,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public override string GetKey(CoreEditableMessage value)
+		protected override string GetKey(CoreEditableMessage value)
 		{
 			return value.Id.ToString();
 		}

@@ -9,7 +9,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public override string GetKey(CoreGuildChannel value)
+		protected override string GetKey(CoreGuildChannel value)
 		{
 			return value.Id.ToString();
 		}

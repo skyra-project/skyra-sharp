@@ -25,7 +25,7 @@ namespace Skyra.Core.Cache.Stores
 			await Task.WhenAll(Client.Users.SetAsync(users), SetAsync(members, parent));
 		}
 
-		public override string GetKey(CoreGuildMember value)
+		protected override string GetKey(CoreGuildMember value)
 		{
 			return value.Id.ToString();
 		}

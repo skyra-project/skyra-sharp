@@ -9,7 +9,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public override string GetKey(CoreGuildEmoji value)
+		protected override string GetKey(CoreGuildEmoji value)
 		{
 			return value.Id.ToString();
 		}

@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Skyra.Core.Database.Models
 {
@@ -49,11 +52,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="StickyRoles" />
 		/// </summary>
-		[Column("sticky_roles", TypeName = "JSON[]")]
-		public string[] StickyRolesRaw
+		[Column("sticky_roles", TypeName = "JSONB")]
+		public string StickyRolesRaw
 		{
-			get => StickyRoles.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => StickyRoles = value.Select(JsonConvert.DeserializeObject<GuildStickyRole>).ToArray();
+			get => JsonConvert.SerializeObject(StickyRoles);
+			set => StickyRoles = JsonConvert.DeserializeObject<GuildStickyRole[]>(value);
 		}
 
 		/// <summary>
@@ -65,11 +68,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="Actions" />
 		/// </summary>
-		[Column("actions", TypeName = "JSON[]")]
-		public string[] ActionsRaw
+		[Column("actions", TypeName = "JSONB")]
+		public string ActionsRaw
 		{
-			get => Actions.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => Actions = value.Select(JsonConvert.DeserializeObject<GuildAction>).ToArray();
+			get => JsonConvert.SerializeObject(Actions);
+			set => Actions = JsonConvert.DeserializeObject<GuildAction[]>(value);
 		}
 
 		/// <summary>
@@ -81,11 +84,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="CommandAutoDelete" />
 		/// </summary>
-		[Column("command_auto_delete", TypeName = "JSON[]")]
-		public string[] CommandAutoDeleteRaw
+		[Column("command_auto_delete", TypeName = "JSONB")]
+		public string CommandAutoDeleteRaw
 		{
-			get => CommandAutoDelete.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => CommandAutoDelete = value.Select(JsonConvert.DeserializeObject<GuildCommandAutoDelete>).ToArray();
+			get => JsonConvert.SerializeObject(CommandAutoDelete);
+			set => CommandAutoDelete = JsonConvert.DeserializeObject<GuildCommandAutoDelete[]>(value);
 		}
 
 		/// <summary>
@@ -97,12 +100,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="DisabledCommandChannels" />
 		/// </summary>
-		[Column("disabled_command_channels", TypeName = "JSON[]")]
-		public string[] DisabledCommandChannelsRaw
+		[Column("disabled_command_channels", TypeName = "JSONB")]
+		public string DisabledCommandChannelsRaw
 		{
-			get => DisabledCommandChannels.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => DisabledCommandChannels =
-				value.Select(JsonConvert.DeserializeObject<GuildDisabledCommandChannels>).ToArray();
+			get => JsonConvert.SerializeObject(DisabledCommandChannels);
+			set => DisabledCommandChannels = JsonConvert.DeserializeObject<GuildDisabledCommandChannels[]>(value);
 		}
 
 		/// <summary>
@@ -112,15 +114,14 @@ namespace Skyra.Core.Database.Models
 		public GuildDisabledCommandChannels[] DisabledCommandChannels { get; set; } =
 			new GuildDisabledCommandChannels[0];
 
-
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="Tags" />
 		/// </summary>
-		[Column("tags", TypeName = "JSON[]")]
-		public string[] TagsRaw
+		[Column("tags", TypeName = "JSONB")]
+		public string TagsRaw
 		{
-			get => Tags.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => Tags = value.Select(JsonConvert.DeserializeObject<GuildTag>).ToArray();
+			get => JsonConvert.SerializeObject(Tags);
+			set => Tags = JsonConvert.DeserializeObject<GuildTag[]>(value);
 		}
 
 		/// <summary>

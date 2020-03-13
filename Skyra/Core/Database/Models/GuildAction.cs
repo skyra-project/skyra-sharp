@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public struct GuildAction
+	public class GuildAction
 	{
 		public GuildAction(GuildActionTypes type, string input, string output)
 		{
@@ -29,4 +29,5 @@ namespace Skyra.Core.Database.Models
 		[JsonProperty("o")]
 		public string Output { get; set; }
 	}
+
 }

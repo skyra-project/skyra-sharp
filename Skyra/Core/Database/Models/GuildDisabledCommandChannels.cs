@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public struct GuildDisabledCommandChannels
+	public class GuildDisabledCommandChannels
 	{
 		public GuildDisabledCommandChannels(ulong channelId, string[] commands)
 		{
@@ -13,7 +13,7 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The <see cref="Spectacles.NET.Types.Channel" />
 		/// </summary>
-		[JsonProperty("c")]
+		[JsonProperty("cid")]
 		public ulong ChannelId { get; set; }
 
 		/// <summary>

@@ -1,11 +1,11 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
@@ -17,62 +17,44 @@ namespace Skyra.Events
 			Client.EventHandler.OnMessageUpdate += Run;
 		}
 
-		private void Run(MessageUpdatePayload message)
+		private void Run(CoreMessage? previousMessage, CoreMessage message)
 		{
-			Task.Run(() => RunAsync(message));
+			Task.Run(() => RunAsync(previousMessage, message));
 		}
 
-		private async Task RunAsync(MessageUpdatePayload messageUpdate)
+		private async Task RunAsync(CoreMessage? _, CoreMessage message)
 		{
-			try
-			{
-				// TODO(kyranet): Pull message.Author from Redis or fetch, Discord sometimes doesn't give it.
-				var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
-				var message = GenerateMessage(messageUpdate, previousMessage);
-
-				await Client.Cache.Messages.SetAsync(new CachedMessage(message));
-				RunMonitors(message);
-			}
-			catch (Exception exception)
-			{
-				Console.Error.WriteLine($"Error! {exception.Message}: ${exception.StackTrace}");
-			}
-		}
-
-		private static Message GenerateMessage(MessageUpdatePayload messageUpdate, CachedMessage? previousMessage)
-		{
-			return new Message
-			{
-				Id = messageUpdate.Id,
-				Author = messageUpdate.Author,
-				Member = messageUpdate.Member,
-				Content = messageUpdate.Content,
-				Embeds = messageUpdate.Embeds,
-				Attachments = messageUpdate.Attachments,
-				Type = messageUpdate.Type ?? MessageType.DEFAULT,
-				Timestamp = messageUpdate.Timestamp ?? previousMessage?.Timestamp ?? DateTime.MinValue,
-				ChannelId = messageUpdate.ChannelId,
-				GuildId = messageUpdate.GuildId,
-				EditedTimestamp = messageUpdate.EditedTimestamp,
-				WebhookId = messageUpdate.WebhookId
-			};
-		}
-
-		private void RunMonitors(Message message)
-		{
-			foreach (var monitor in Client.Monitors.Values)
+			foreach (var monitor in Client.Monitors.Values.Where(m => ShouldRunMonitor(message, m)))
 			{
 				try
 				{
-					monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+					await (Task) monitor.Method.Invoke(monitor.Instance, new object?[] {message})!;
 				}
 				catch (TargetInvocationException exception)
 				{
-					Console.Error.WriteLine($"[MONITORS]: {monitor.Name}");
-					Console.Error.WriteLine($"ERROR: {exception.InnerException?.Message ?? exception.Message}");
-					Console.Error.WriteLine($"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
+					await Console.Error.WriteLineAsync($"[MONITORS]: {monitor.Name}");
+					await Console.Error.WriteLineAsync(
+						$"ERROR: {exception.InnerException?.Message ?? exception.Message}");
+					await Console.Error.WriteLineAsync(
+						$"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
+				}
+				catch (Exception exception)
+				{
+					await Console.Error.WriteLineAsync($"[MONITORS]: {monitor.Name}");
+					await Console.Error.WriteLineAsync($"ERROR: {exception.Message}");
+					await Console.Error.WriteLineAsync($"ERROR: {exception.StackTrace}");
 				}
 			}
+		}
+
+		private static bool ShouldRunMonitor(CoreMessage message, MonitorInfo monitor)
+		{
+			return monitor.AllowedTypes.Contains(message.Type)
+			       && !(monitor.IgnoreBots && message.Author!.Bot)
+			       // && !(monitor.IgnoreSelf && message.Author.Id == Client.User.Id)
+			       // && !(monitor.IgnoreOthers && message.Author.Id != Client.User.Id)
+			       && !(monitor.IgnoreWebhooks && message.WebhookId != null)
+			       && !(monitor.IgnoreEdits && message.EditedTimestamp != null);
 		}
 	}
 }

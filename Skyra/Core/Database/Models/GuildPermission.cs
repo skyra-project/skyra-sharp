@@ -11,11 +11,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="Users" />
 		/// </summary>
-		[Column("users", TypeName = "JSON[]")]
-		public string[] UsersRaw
+		[Column("users", TypeName = "JSONB")]
+		public string UsersRaw
 		{
-			get => Users.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => Users = value.Select(JsonConvert.DeserializeObject<GuildPermissionNode>).ToArray();
+			get => JsonConvert.SerializeObject(Users);
+			set => Users = JsonConvert.DeserializeObject<GuildPermissionNode[]>(value);
 		}
 
 		/// <summary>
@@ -27,11 +27,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="Roles" />
 		/// </summary>
-		[Column("roles", TypeName = "JSON[]")]
-		public string[] RolesRaw
+		[Column("roles", TypeName = "JSONB")]
+		public string RolesRaw
 		{
-			get => Roles.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => Roles = value.Select(JsonConvert.DeserializeObject<GuildPermissionNode>).ToArray();
+			get => JsonConvert.SerializeObject(Roles);
+			set => Roles = JsonConvert.DeserializeObject<GuildPermissionNode[]>(value);
 		}
 
 		/// <summary>

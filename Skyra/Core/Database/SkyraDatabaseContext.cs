@@ -32,7 +32,7 @@ namespace Skyra.Core.Database
 			if (optionsBuilder.IsConfigured) return;
 
 			var user = Environment.GetEnvironmentVariable("POSTGRES_USER") ?? "postgres";
-			var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "";
+			var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD") ?? "postgres";
 			var host = Environment.GetEnvironmentVariable("POSTGRES_HOST") ?? "localhost";
 			var port = Environment.GetEnvironmentVariable("POSTGRES_PORT") ?? "5432";
 			var name = Environment.GetEnvironmentVariable("POSTGRES_NAME") ?? "skyra";

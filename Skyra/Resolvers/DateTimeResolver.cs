@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Usage;
-using Spectacles.NET.Types;
 
 namespace Skyra.Resolvers
 {
@@ -15,7 +15,7 @@ namespace Skyra.Resolvers
 		{
 		}
 
-		public Task<DateTime> ResolveAsync(Message message, CommandUsageOverloadArgument argument, string content)
+		public Task<DateTime> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument, string content)
 		{
 			var resolved = DateTime.Parse(content);
 			return Task.FromResult(resolved);

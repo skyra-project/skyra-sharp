@@ -1,26 +1,17 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Skyra.Core.Cache.Models;
-using StackExchange.Redis;
+using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class EditableMessagesStore : CacheStore<CachedEditableMessage>
+	public class EditableMessagesStore : HashMapCacheStoreBase<CoreEditableMessage>
 	{
 		public EditableMessagesStore(CacheClient client) : base(client, "editable_messages")
 		{
 		}
 
-		public override Task SetAsync(CachedEditableMessage entry, string? parent = null)
+		protected override string GetKey(CoreEditableMessage value)
 		{
-			return Database.HashSetAsync(FormatKeyName(parent), new[] {new HashEntry(entry.Id, SerializeValue(entry))});
-		}
-
-		public override Task SetAsync(IEnumerable<CachedEditableMessage> entries, string? parent = null)
-		{
-			return Database.HashSetAsync(FormatKeyName(parent),
-				entries.Select(entry => new HashEntry(entry.Id, SerializeValue(entry))).ToArray());
+			return value.Id.ToString();
 		}
 	}
 }

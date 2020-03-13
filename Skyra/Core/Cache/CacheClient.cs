@@ -12,12 +12,13 @@ namespace Skyra.Core.Cache
 		{
 			Prefix = prefix;
 			Channels = new ChannelStore(this);
+			GuildChannels = new GuildChannelStore(this);
 			EditableMessages = new EditableMessagesStore(this);
-			Emojis = new EmojiStore(this);
+			GuildEmojis = new GuildEmojiStore(this);
 			Guilds = new GuildStore(this);
-			Members = new MemberStore(this);
+			GuildMembers = new GuildMemberStore(this);
 			Messages = new MessageStore(this);
-			Roles = new RoleStore(this);
+			GuildRoles = new GuildRoleStore(this);
 			Users = new UserStore(this);
 			VoiceStates = new VoiceStateStore(this);
 		}
@@ -34,17 +35,19 @@ namespace Skyra.Core.Cache
 
 		public ChannelStore Channels { get; }
 
+		public GuildChannelStore GuildChannels { get; }
+
 		public EditableMessagesStore EditableMessages { get; }
 
-		public EmojiStore Emojis { get; }
+		public GuildEmojiStore GuildEmojis { get; }
 
 		public GuildStore Guilds { get; }
 
-		public MemberStore Members { get; }
+		public GuildMemberStore GuildMembers { get; }
 
 		public MessageStore Messages { get; }
 
-		public RoleStore Roles { get; }
+		public GuildRoleStore GuildRoles { get; }
 
 		public UserStore Users { get; }
 

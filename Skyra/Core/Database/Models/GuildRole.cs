@@ -91,11 +91,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="LevelRoles" />
 		/// </summary>
-		[Column("level_roles", TypeName = "JSON[]")]
-		public string[] LevelRolesRaw
+		[Column("level_roles", TypeName = "JSONB")]
+		public string LevelRolesRaw
 		{
-			get => LevelRoles.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => LevelRoles = value.Select(JsonConvert.DeserializeObject<LevelRole>).ToArray();
+			get => JsonConvert.SerializeObject(LevelRoles);
+			set => LevelRoles = JsonConvert.DeserializeObject<LevelRole[]>(value);
 		}
 
 		/// <summary>
@@ -107,11 +107,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="MessageReactions" />
 		/// </summary>
-		[Column("message_reactions", TypeName = "JSON[]")]
-		public string[] MessageReactionsRaw
+		[Column("message_reactions", TypeName = "JSONB")]
+		public string MessageReactionsRaw
 		{
-			get => MessageReactions.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => MessageReactions = value.Select(JsonConvert.DeserializeObject<ReactionRole>).ToArray();
+			get => JsonConvert.SerializeObject(MessageReactions);
+			set => MessageReactions = JsonConvert.DeserializeObject<ReactionRole[]>(value);
 		}
 
 		/// <summary>
@@ -123,11 +123,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="UniqueRoleSets" />
 		/// </summary>
-		[Column("unique_role_sets", TypeName = "JSON[]")]
-		public string[] UniqueRoleSetsRaw
+		[Column("unique_role_sets", TypeName = "JSONB")]
+		public string UniqueRoleSetsRaw
 		{
-			get => UniqueRoleSets.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => UniqueRoleSets = value.Select(JsonConvert.DeserializeObject<RoleSet>).ToArray();
+			get => JsonConvert.SerializeObject(UniqueRoleSets);
+			set => UniqueRoleSets = JsonConvert.DeserializeObject<RoleSet[]>(value);
 		}
 
 		/// <summary>

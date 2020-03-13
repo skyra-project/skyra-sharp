@@ -50,36 +50,84 @@ namespace Skyra.Core.Database.Models
 		public string[] DisabledCommands { get; set; } = new string[0];
 
 		/// <summary>
+		///     The raw value from and for the database. Use <see cref="StickyRoles" />
+		/// </summary>
+		[Column("sticky_roles", TypeName = "JSONB")]
+		public string StickyRolesRaw
+		{
+			get => JsonConvert.SerializeObject(StickyRoles);
+			set => StickyRoles = JsonConvert.DeserializeObject<GuildStickyRole[]>(value);
+		}
+
+		/// <summary>
 		///     The sticky roles for this guild.
 		/// </summary>
-		/// [NotMapped]
-		[Column("sticky_roles", TypeName = "JSONB")]
+		[NotMapped]
 		public GuildStickyRole[] StickyRoles { get; set; } = new GuildStickyRole[0];
+
+		/// <summary>
+		///     The raw value from and for the database. Use <see cref="Actions" />
+		/// </summary>
+		[Column("actions", TypeName = "JSONB")]
+		public string ActionsRaw
+		{
+			get => JsonConvert.SerializeObject(Actions);
+			set => Actions = JsonConvert.DeserializeObject<GuildAction[]>(value);
+		}
 
 		/// <summary>
 		///     The actions for this guild.
 		/// </summary>
-		/// [NotMapped]
-		[Column("actions", TypeName = "JSONB")]
+		[NotMapped]
 		public GuildAction[] Actions { get; set; } = new GuildAction[0];
+
+		/// <summary>
+		///     The raw value from and for the database. Use <see cref="CommandAutoDelete" />
+		/// </summary>
+		[Column("command_auto_delete", TypeName = "JSONB")]
+		public string CommandAutoDeleteRaw
+		{
+			get => JsonConvert.SerializeObject(CommandAutoDelete);
+			set => CommandAutoDelete = JsonConvert.DeserializeObject<GuildCommandAutoDelete[]>(value);
+		}
 
 		/// <summary>
 		///     The per-channel command auto delete overrides.
 		/// </summary>
-		[Column("command_auto_delete", TypeName = "JSONB")]
+		[NotMapped]
 		public GuildCommandAutoDelete[] CommandAutoDelete { get; set; } = new GuildCommandAutoDelete[0];
+
+		/// <summary>
+		///     The raw value from and for the database. Use <see cref="DisabledCommandChannels" />
+		/// </summary>
+		[Column("disabled_command_channels", TypeName = "JSONB")]
+		public string DisabledCommandChannelsRaw
+		{
+			get => JsonConvert.SerializeObject(DisabledCommandChannels);
+			set => DisabledCommandChannels = JsonConvert.DeserializeObject<GuildDisabledCommandChannels[]>(value);
+		}
 
 		/// <summary>
 		///     The per-channel command blacklist overrides.
 		/// </summary>
-		[Column("disabled_command_channels", TypeName = "JSONB")]
+		[NotMapped]
 		public GuildDisabledCommandChannels[] DisabledCommandChannels { get; set; } =
 			new GuildDisabledCommandChannels[0];
 
 		/// <summary>
-		///     The guild's tags.
+		///     The raw value from and for the database. Use <see cref="Tags" />
 		/// </summary>
 		[Column("tags", TypeName = "JSONB")]
+		public string TagsRaw
+		{
+			get => JsonConvert.SerializeObject(Tags);
+			set => Tags = JsonConvert.DeserializeObject<GuildTag[]>(value);
+		}
+
+		/// <summary>
+		///     The guild's tags.
+		/// </summary>
+		[NotMapped]
 		public GuildTag[] Tags { get; set; } = new GuildTag[0];
 
 		/// <summary>
@@ -121,35 +169,5 @@ namespace Skyra.Core.Database.Models
 		///     The navigation property to the <see cref="GuildMusic" /> entity.
 		/// </summary>
 		public GuildMusic Music { get; set; } = null!;
-
-		internal static void OnModelCreating(EntityTypeBuilder<Guild> entity)
-		{
-			entity.Property(e => e.Actions).HasColumnType("JSONB").HasDefaultValueSql("{}::JSONB").ValueGeneratedOnAdd()
-				.HasConversion(
-					x => x.Select(JsonConvert.SerializeObject).ToArray(),
-					x => x.Select(JsonConvert.DeserializeObject<GuildAction>).ToArray());
-			entity.Property(e => e.CommandAutoDelete).HasColumnType("JSONB").HasDefaultValueSql("{}::JSONB")
-				.ValueGeneratedOnAdd().HasConversion(
-					x => x.Select(JsonConvert.SerializeObject).ToArray(),
-					x => x.Select(JsonConvert.DeserializeObject<GuildCommandAutoDelete>).ToArray());
-			entity.Property(e => e.DisabledCommandChannels).HasColumnType("JSONB").HasDefaultValueSql("{}::JSONB")
-				.ValueGeneratedOnAdd().HasConversion(
-					x => x.Select(JsonConvert.SerializeObject).ToArray(),
-					x => x.Select(JsonConvert.DeserializeObject<GuildDisabledCommandChannels>).ToArray());
-			entity.Property(e => e.StickyRoles).HasColumnType("JSONB").HasDefaultValueSql("{}::JSONB")
-				.ValueGeneratedOnAdd().HasConversion(
-					x => x.Select(JsonConvert.SerializeObject).ToArray(),
-					x => x.Select(JsonConvert.DeserializeObject<GuildStickyRole>).ToArray());
-			entity.Property(e => e.Tags).HasColumnType("JSONB").HasDefaultValueSql("{}::JSONB").ValueGeneratedOnAdd()
-				.HasConversion(
-					x => x.Select(JsonConvert.SerializeObject).ToArray(),
-					x => x.Select(JsonConvert.DeserializeObject<GuildTag>).ToArray());
-			// entity
-			// 	.Ignore(e => e.Actions)
-			// 	.Ignore(e => e.CommandAutoDelete)
-			// 	.Ignore(e => e.DisabledCommandChannels)
-			// 	.Ignore(e => e.StickyRoles)
-			// 	.Ignore(e => e.Tags);
-		}
 	}
 }

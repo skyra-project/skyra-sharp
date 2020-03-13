@@ -14,11 +14,11 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The raw value from and for the database. Use <see cref="UserGameIntegrationsFFXIV" />
 		/// </summary>
-		[Column("ffxiv_characters", TypeName = "JSON[]")]
-		public string[] FFXIVCharactersRaw
+		[Column("ffxiv_characters", TypeName = "JSONB")]
+		public string FFXIVCharactersRaw
 		{
-			get => FFXIVCharacters.Select(e => JsonConvert.SerializeObject(e)).ToArray();
-			set => FFXIVCharacters = value.Select(JsonConvert.DeserializeObject<UserGameIntegrationsFFXIV>).ToArray();
+			get => JsonConvert.SerializeObject(FFXIVCharacters);
+			set => FFXIVCharacters = JsonConvert.DeserializeObject<UserGameIntegrationsFFXIV[]>(value);
 		}
 
 		/// <summary>

@@ -13,7 +13,7 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The <see cref="Spectacles.NET.Types.Channel" />
 		/// </summary>
-		[JsonProperty("c")]
+		[JsonProperty("cid")]
 		public ulong ChannelId { get; set; }
 
 		/// <summary>

@@ -26,6 +26,7 @@ namespace Skyra.Core
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
+			Id = null;
 			Token = clientOptions.Token;
 			BrokerUri = clientOptions.BrokerUri;
 			RedisUri = clientOptions.RedisUri;
@@ -82,6 +83,7 @@ namespace Skyra.Core
 		private string RedisUri { get; }
 		private AmqpBroker Broker { get; }
 
+		public ulong? Id { get; set; }
 		public RestClient Rest { get; private set; }
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
@@ -127,6 +129,7 @@ namespace Skyra.Core
 				"VOICE_SERVER_UPDATE",
 				"WEBHOOKS_UPDATE"
 			});
+			Id = await Cache.GetClientUserAsync();
 		}
 
 		private static ArgumentInfo ToArgumentInfo(object argument)

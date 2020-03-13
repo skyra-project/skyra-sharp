@@ -16,7 +16,8 @@ namespace Skyra.Events
 
 		private void Run(ReadyDispatch args)
 		{
-			Task.Run(() => Client.Cache.SetClientUser(args.User.Id));
+			Task.Run(() => Client.Cache.SetClientUserAsync(args.User.Id));
+			Client.Id = ulong.Parse(args.User.Id);
 			Client.Logger.Information(
 				"Skyra VI ready! [{Username}#{Discriminator}] [{Guilds} [G]]", args.User.Username,
 				args.User.Discriminator, args.Guilds.Length);

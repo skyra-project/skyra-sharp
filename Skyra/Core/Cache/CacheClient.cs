@@ -59,14 +59,15 @@ namespace Skyra.Core.Cache
 			await Pool.ConnectAsync(options);
 		}
 
-		public async Task SetClientUser(string id)
+		public async Task SetClientUserAsync(string id)
 		{
 			await Database.StringSetAsync($"{Prefix}:CLIENT_ID", id);
 		}
 
-		public async Task<string> GetClientUser()
+		public async Task<ulong?> GetClientUserAsync()
 		{
-			return await Database.StringGetAsync($"{Prefix}:CLIENT_ID");
+			var result = await Database.StringGetAsync($"{Prefix}:CLIENT_ID");
+			return string.IsNullOrEmpty(result) ? (ulong?) null : ulong.Parse(result);
 		}
 	}
 }

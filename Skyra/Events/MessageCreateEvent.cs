@@ -36,12 +36,12 @@ namespace Skyra.Events
 			}
 		}
 
-		private static bool ShouldRunMonitor(CoreMessage message, MonitorInfo monitor)
+		private bool ShouldRunMonitor(CoreMessage message, MonitorInfo monitor)
 		{
 			return monitor.AllowedTypes.Contains(message.Type)
 			       && !(monitor.IgnoreBots && message.Author!.Bot)
-			       // && !(monitor.IgnoreSelf && message.Author.Id == Client.User.Id)
-			       // && !(monitor.IgnoreOthers && message.Author.Id != Client.User.Id)
+			       && !(monitor.IgnoreSelf && message.Author!.Id == Client.Id)
+			       && !(monitor.IgnoreOthers && message.Author!.Id != Client.Id)
 			       && !(monitor.IgnoreWebhooks && message.WebhookId != null)
 			       && !(monitor.IgnoreEdits && message.EditedTimestamp != null);
 		}

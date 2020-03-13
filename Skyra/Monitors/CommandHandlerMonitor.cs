@@ -71,7 +71,6 @@ namespace Skyra.Monitors
 			}
 			catch (TargetInvocationException exception)
 			{
-				if (exception.InnerException == null) throw;
 				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
 				await message.SendAsync(Client, "Whoops! Something happened!");
 			}
@@ -84,7 +83,7 @@ namespace Skyra.Monitors
 
 		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync(CoreMessage message)
 		{
-			var mentionPrefix = await GetMentionPrefixAsync(message);
+			var mentionPrefix = GetMentionPrefix(message);
 			return mentionPrefix.Item2 == PrefixTypeResult.None
 				? message.GuildId == null
 					? GetDefaultPrefix(message)
@@ -92,7 +91,7 @@ namespace Skyra.Monitors
 				: mentionPrefix;
 		}
 
-		private async Task<(string?, PrefixTypeResult)> GetMentionPrefixAsync(CoreMessage message)
+		private (string?, PrefixTypeResult) GetMentionPrefix(CoreMessage message)
 		{
 			// If the content is shorter than the minimum characters needed for a mention prefix, skip
 			if (message.Content.Length < 20)
@@ -114,10 +113,10 @@ namespace Skyra.Monitors
 				return (null, PrefixTypeResult.None);
 			}
 
-			var clientId = await Client.Cache.GetClientUser();
-			return message.Content.Substring(prefixLength).StartsWith($"{clientId}>")
-				? (message.Content.Substring(0, prefixLength + clientId.Length + 1), PrefixTypeResult.MentionPrefix)
-				: (null, PrefixTypeResult.None);
+			return message.Content.Substring(prefixLength).StartsWith($"{Client.Id}>")
+				? (message.Content.Substring(0, prefixLength + Client.Id.ToString()!.Length + 1),
+					PrefixTypeResult.MentionPrefix)
+				: ((string?) null, PrefixTypeResult.None);
 		}
 
 		private static async Task<(string?, PrefixTypeResult)> GetGuildPrefixAsync(CoreMessage message)
@@ -126,7 +125,7 @@ namespace Skyra.Monitors
 			var prefix = await RetrieveGuildPrefixAsync((ulong) message.GuildId);
 			return message.Content.StartsWith(prefix)
 				? (prefix, PrefixTypeResult.RegularPrefix)
-				: (null, PrefixTypeResult.None);
+				: ((string?) null, PrefixTypeResult.None);
 		}
 
 		private static (string?, PrefixTypeResult) GetDefaultPrefix(CoreMessage message)
@@ -134,7 +133,7 @@ namespace Skyra.Monitors
 			const string prefix = DefaultPrefix;
 			return message.Content.StartsWith(prefix)
 				? (prefix, PrefixTypeResult.RegularPrefix)
-				: (null, PrefixTypeResult.None);
+				: ((string?) null, PrefixTypeResult.None);
 		}
 
 		private static async Task<string> RetrieveGuildPrefixAsync(ulong guildId)

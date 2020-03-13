@@ -9,7 +9,7 @@ using Client = Skyra.Core.Client;
 
 namespace Skyra.Commands
 {
-	[Command]
+	[Command(Inhibitors = new[] {"Developer"})]
 	public class SetPrefixCommand : StructureBase
 	{
 		public SetPrefixCommand(Client client) : base(client)
@@ -22,7 +22,7 @@ namespace Skyra.Commands
 
 			await using var db = new SkyraDatabaseContext();
 
-			var entity = db.Guilds.Find(message.GuildId);
+			var entity = await db.Guilds.FindAsync(message.GuildId);
 
 			if (entity is null)
 			{

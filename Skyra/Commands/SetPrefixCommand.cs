@@ -29,7 +29,7 @@ namespace Skyra.Commands
 			if (entity is null)
 			{
 				entity = new Guild {Id = (ulong) message.GuildId, Prefix = prefix};
-				db.Guilds.Add(entity);
+				await db.Guilds.AddAsync(entity);
 			}
 			else
 			{

@@ -24,7 +24,7 @@ namespace Skyra.Resolvers
 			var boolean = content.ToLower();
 			if (Truths.Contains(boolean)) return Task.FromResult(true);
 			if (Falses.Contains(boolean)) return Task.FromResult(false);
-			throw new Exception("Gimme a valid boolean!");
+			throw new ArgumentException("Gimme a valid boolean!");
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace Skyra.Resolvers
 
 		public Task<string> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument, string content)
 		{
-			if (string.IsNullOrEmpty(content)) throw new Exception("Gimme a string!");
+			if (string.IsNullOrEmpty(content)) throw new ArgumentException("Gimme a string!");
 			return Task.FromResult(content);
 		}
 	}

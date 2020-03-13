@@ -56,7 +56,7 @@ namespace Skyra.Monitors
 			}
 			catch (Exception exception)
 			{
-				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
+				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
 				await message.SendAsync(Client, "Whoops! Something while processing arguments!");
 			}
 		}
@@ -72,12 +72,12 @@ namespace Skyra.Monitors
 			catch (TargetInvocationException exception)
 			{
 				if (exception.InnerException == null) throw;
-				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
+				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
 				await message.SendAsync(Client, "Whoops! Something happened!");
 			}
 			catch (Exception exception)
 			{
-				Console.Error.WriteLine($"[COMMANDS]: {exception.Message}\n{exception.StackTrace}");
+				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
 				await message.SendAsync(Client, "Whoops! Something happened while processing the command!");
 			}
 		}

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Structures;
@@ -18,8 +17,9 @@ namespace Skyra.Events
 		private void Run(ReadyDispatch args)
 		{
 			Task.Run(() => Client.Cache.SetClientUser(args.User.Id));
-			Console.WriteLine(
-				$"Skyra VI ready! [{args.User.Username}#{args.User.Discriminator}] [{args.Guilds.Length.ToString()} [G]]");
+			Client.Logger.Information(
+				"Skyra VI ready! [{Username}#{Discriminator}] [{Guilds} [G]]", args.User.Username,
+				args.User.Discriminator, args.Guilds.Length);
 		}
 	}
 }

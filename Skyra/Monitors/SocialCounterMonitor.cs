@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -16,8 +15,9 @@ namespace Skyra.Monitors
 
 		public async Task RunAsync(CoreMessage message)
 		{
-			Console.WriteLine(
-				$"Received Message [{message.Id}] from {(await message.GetAuthorAsync(Client))?.Username ?? "??"} with content '{message.Content}'.");
+			Client.Logger.Information(
+				"Received Message [{Id}] from {Username} with content '{Content}'.", message.Id,
+				(await message.GetAuthorAsync(Client))?.Username ?? "??", message.Content);
 		}
 	}
 }

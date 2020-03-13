@@ -7,8 +7,8 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreGuildChannel : CoreChannel, ICoreBaseStructure<CoreGuildChannel>
 	{
-		public CoreGuildChannel(ulong id, ChannelType type, CoreGuild? guild, ulong guildId, string name, int? rawPosition,
-			ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(id, type)
+		public CoreGuildChannel(ulong id, ChannelType type, CoreGuild? guild, ulong guildId, string name,
+			int? rawPosition, ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(id, type)
 		{
 			Guild = guild;
 			GuildId = guildId;
@@ -60,7 +60,7 @@ namespace Skyra.Core.Cache.Models
 
 		public new static CoreGuildChannel From(Channel channel)
 		{
-			return new CoreGuildChannel(ulong.Parse(channel.Id), channel.Type, null,ulong.Parse(channel.GuildId),
+			return new CoreGuildChannel(ulong.Parse(channel.Id), channel.Type, null, ulong.Parse(channel.GuildId),
 				channel.Name, channel.Position, ulong.Parse(channel.ParentId),
 				channel.PermissionOverwrites.Select(CorePermissionOverwrite.From).ToArray());
 		}

@@ -1,10 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Skyra.Core.Database.Models
 {

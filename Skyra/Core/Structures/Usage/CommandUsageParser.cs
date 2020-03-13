@@ -262,7 +262,8 @@ namespace Skyra.Core.Structures.Usage
 			return args.Count == 1 && string.IsNullOrEmpty(args[0]) ? new string[0] : args.ToArray();
 		}
 
-		private static string GetQuotedStringArg(string content, string delimiter, string quote, ref StringBuilder current, ref int i)
+		private static string GetQuotedStringArg(string content, string delimiter, string quote,
+			ref StringBuilder current, ref int i)
 		{
 			if (string.IsNullOrEmpty(quote))
 			{

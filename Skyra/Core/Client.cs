@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Core;
+using Serilog.Exceptions;
 using Skyra.Core.Cache;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
@@ -27,6 +30,11 @@ namespace Skyra.Core
 			BrokerUri = clientOptions.BrokerUri;
 			RedisUri = clientOptions.RedisUri;
 			Broker = new AmqpBroker(clientOptions.BrokerName);
+			Logger = new LoggerConfiguration()
+				.Enrich.WithExceptionDetails()
+				.WriteTo.Console()
+				.CreateLogger();
+
 			Rest = null!;
 			Broker.Receive += (sender, args) =>
 			{
@@ -77,6 +85,7 @@ namespace Skyra.Core
 		public RestClient Rest { get; private set; }
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
+		public Logger Logger { get; }
 
 		public async Task ConnectAsync()
 		{

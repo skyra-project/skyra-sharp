@@ -29,5 +29,4 @@ namespace Skyra.Core.Database.Models
 		[JsonProperty("o")]
 		public string Output { get; set; }
 	}
-
 }

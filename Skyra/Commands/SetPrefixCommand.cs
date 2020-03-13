@@ -1,7 +1,5 @@
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
 using Skyra.Core.Database.Models;

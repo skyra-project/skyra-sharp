@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
@@ -30,19 +29,9 @@ namespace Skyra.Events
 				{
 					await (Task) monitor.Method.Invoke(monitor.Instance, new object?[] {message})!;
 				}
-				catch (TargetInvocationException exception)
-				{
-					await Console.Error.WriteLineAsync($"[MONITORS]: {monitor.Name}");
-					await Console.Error.WriteLineAsync(
-						$"ERROR: {exception.InnerException?.Message ?? exception.Message}");
-					await Console.Error.WriteLineAsync(
-						$"ERROR: {exception.InnerException?.StackTrace ?? exception.StackTrace}");
-				}
 				catch (Exception exception)
 				{
-					await Console.Error.WriteLineAsync($"[MONITORS]: {monitor.Name}");
-					await Console.Error.WriteLineAsync($"ERROR: {exception.Message}");
-					await Console.Error.WriteLineAsync($"ERROR: {exception.StackTrace}");
+					Client.Logger.Error("[MONITORS]: {Name} | {Exception}", monitor.Name, exception);
 				}
 			}
 		}

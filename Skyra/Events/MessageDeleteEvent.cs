@@ -1,4 +1,3 @@
-using System;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,10 +14,11 @@ namespace Skyra.Events
 			Client.EventHandler.OnMessageDelete += Run;
 		}
 
-		private static void Run(MessageDeletePayload payload, CoreMessage? message)
+		private void Run(MessageDeletePayload payload, CoreMessage? message)
 		{
-			Console.WriteLine(
-				$"Received Deleted Message [{payload.Id}] with content '{message?.Content ?? "Unknown."}'.");
+			Client.Logger.Information(
+				"Received Deleted Message [{Id}] with content '{Content}'.", payload.Id,
+				message?.Content ?? "Unknown.");
 		}
 	}
 }

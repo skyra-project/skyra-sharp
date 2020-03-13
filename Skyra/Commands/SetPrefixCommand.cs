@@ -9,7 +9,7 @@ using Client = Skyra.Core.Client;
 
 namespace Skyra.Commands
 {
-	[Command(Inhibitors = new[] {"PermissionLevel"})]
+	[Command(Inhibitors = new[] {"Developer"})]
 	public class SetPrefixCommand : StructureBase
 	{
 		public SetPrefixCommand(Client client) : base(client)

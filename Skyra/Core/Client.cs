@@ -15,6 +15,7 @@ using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
+using Spectacles.NET.Types;
 using EventInfo = Skyra.Core.Structures.EventInfo;
 
 namespace Skyra.Core
@@ -27,6 +28,7 @@ namespace Skyra.Core
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
 			Id = null;
+			Owners = clientOptions.Owners;
 			Token = clientOptions.Token;
 			BrokerUri = clientOptions.BrokerUri;
 			RedisUri = clientOptions.RedisUri;
@@ -91,6 +93,7 @@ namespace Skyra.Core
 		private AmqpBroker Broker { get; }
 
 		public ulong? Id { get; set; }
+		public ulong[] Owners { get; set; }
 		public RestClient Rest { get; private set; }
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
@@ -137,6 +140,22 @@ namespace Skyra.Core
 				"WEBHOOKS_UPDATE"
 			});
 			Id = await Cache.GetClientUserAsync();
+
+			// If the owners array is empty, fetch it from application
+			if (Owners.Length == 0)
+			{
+				var application = await Rest.Application.GetAsync<ClientApplication>();
+				Owners = application.Team == null
+					? new[] {ulong.Parse(application.Owner.Id)}
+					: application.Team.Members.Where(x => x.MembershipState == MembershipState.ACCEPTED)
+						.Select(x => ulong.Parse(x.User.Id)).ToArray();
+
+				if (Id == null)
+				{
+					await Cache.SetClientUserAsync(application.Id);
+					Id = ulong.Parse(application.Id);
+				}
+			}
 		}
 
 		private static ArgumentInfo ToArgumentInfo(object argument)

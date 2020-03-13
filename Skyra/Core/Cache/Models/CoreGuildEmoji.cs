@@ -3,7 +3,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreGuildEmoji : ICoreBaseStructure<CoreGuildEmoji>
+	public sealed class CoreGuildEmoji : ICoreBaseStructure<CoreGuildEmoji>
 	{
 		public CoreGuildEmoji(ulong id, string name, bool animated)
 		{

@@ -5,9 +5,9 @@ using StackExchange.Redis;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class ChannelStore : HashMapCacheStoreBase<CoreChannel>
+	public sealed class ChannelStore : HashMapCacheStoreBase<CoreChannel>
 	{
-		public ChannelStore(CacheClient client) : base(client, "channels")
+		internal ChannelStore(CacheClient client) : base(client, "channels")
 		{
 		}
 

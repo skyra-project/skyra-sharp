@@ -3,9 +3,9 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class GuildEmojiStore : HashMapCacheStoreBase<CoreGuildEmoji>
+	public sealed class GuildEmojiStore : HashMapCacheStoreBase<CoreGuildEmoji>
 	{
-		public GuildEmojiStore(CacheClient client) : base(client, "emojis")
+		internal GuildEmojiStore(CacheClient client) : base(client, "emojis")
 		{
 		}
 

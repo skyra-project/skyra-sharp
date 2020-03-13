@@ -6,7 +6,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreMessage : ICoreBaseStructure<CoreMessage>
+	public sealed class CoreMessage : ICoreBaseStructure<CoreMessage>
 	{
 		public CoreMessage(ulong id, MessageType type, CoreChannel? channel, ulong channelId, CoreGuild? guild,
 			ulong? guildId, CoreGuildMember? member, Webhook? webhook, ulong? webhookId, CoreUser? author,

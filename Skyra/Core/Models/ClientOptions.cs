@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Skyra.Core.Models
 {
-	public readonly ref struct ClientOptions
+	internal readonly ref struct ClientOptions
 	{
 		public string Token { get; }
 		public string BrokerName { get; }

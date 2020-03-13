@@ -3,7 +3,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreGuildRole : ICoreBaseStructure<CoreGuildRole>
+	public sealed class CoreGuildRole : ICoreBaseStructure<CoreGuildRole>
 	{
 		public CoreGuildRole(ulong id, string name, uint color, bool managed, bool mentionable, Permission permissions,
 			uint position)

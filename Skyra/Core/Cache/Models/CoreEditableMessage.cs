@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreEditableMessage : ICoreBaseStructure<CoreEditableMessage>
+	public sealed class CoreEditableMessage : ICoreBaseStructure<CoreEditableMessage>
 	{
 		public CoreEditableMessage(ulong id, ulong ownMessageId)
 		{

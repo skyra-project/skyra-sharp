@@ -4,7 +4,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreInvite : ICoreBaseStructure<CoreInvite>
+	public sealed class CoreInvite : ICoreBaseStructure<CoreInvite>
 	{
 		public CoreInvite(string code, ulong guildId, ulong channelId)
 		{

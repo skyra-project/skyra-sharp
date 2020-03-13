@@ -19,6 +19,12 @@ namespace Skyra.Core.Cache.Stores.Base
 			return !result.IsNull ? JsonConvert.DeserializeObject<T>(result.ToString()) : null;
 		}
 
+		public override async Task<T[]> GetAllAsync(string? parent = null)
+		{
+			var results = await Database.HashGetAllAsync(FormatKeyName(parent));
+			return results.Select(result => JsonConvert.DeserializeObject<T>(result.Value.ToString())).ToArray();
+		}
+
 		public override async Task SetAsync(T entry, string? parent = null)
 		{
 			var id = GetKey(entry);
@@ -29,6 +35,12 @@ namespace Skyra.Core.Cache.Stores.Base
 		{
 			await Database.HashSetAsync(FormatKeyName(parent),
 				entries.Select(entry => new HashEntry(GetKey(entry), SerializeValue(entry))).ToArray());
+		}
+
+		public override async Task DeleteAsync(string id, string? parent = null)
+		{
+			if (parent != null) await Database.SetRemoveAsync(FormatKeyName(parent), id);
+			await Database.HashDeleteAsync(Prefix, id);
 		}
 	}
 }

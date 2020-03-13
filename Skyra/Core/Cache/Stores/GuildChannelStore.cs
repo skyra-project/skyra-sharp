@@ -3,9 +3,9 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class GuildChannelStore : HashMapCacheStoreBase<CoreGuildChannel>
+	public sealed class GuildChannelStore : HashMapCacheStoreBase<CoreGuildChannel>
 	{
-		public GuildChannelStore(CacheClient client) : base(client, "gchannels")
+		internal GuildChannelStore(CacheClient client) : base(client, "gchannels")
 		{
 		}
 

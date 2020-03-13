@@ -6,9 +6,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class GuildStore : HashMapCacheStoreBase<CoreGuild>
+	public sealed class GuildStore : HashMapCacheStoreBase<CoreGuild>
 	{
-		public GuildStore(CacheClient client) : base(client, "guilds")
+		internal GuildStore(CacheClient client) : base(client, "guilds")
 		{
 		}
 

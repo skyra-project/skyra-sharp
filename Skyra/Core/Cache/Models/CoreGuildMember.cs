@@ -6,7 +6,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
+	public sealed class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
 	{
 		public CoreGuildMember(ulong id, ulong[] roles, string? nickname, DateTime? joinedAt, bool deaf,
 			bool mute)

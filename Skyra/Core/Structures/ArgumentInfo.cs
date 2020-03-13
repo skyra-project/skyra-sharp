@@ -5,9 +5,9 @@ namespace Skyra.Core.Structures
 {
 	public struct ArgumentInfo
 	{
-		public object Instance { get; set; }
-		public MethodInfo Method { get; set; }
-		public Type Type { get; set; }
-		public string Displayname { get; set; }
+		internal object Instance { get; set; }
+		internal MethodInfo Method { get; set; }
+		internal Type Type { get; set; }
+		internal string DisplayName { get; set; }
 	}
 }

@@ -3,9 +3,9 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class UserStore : SetCacheStoreBase<CoreUser>
+	public sealed class UserStore : SetCacheStoreBase<CoreUser>
 	{
-		public UserStore(CacheClient client) : base(client, "users")
+		internal UserStore(CacheClient client) : base(client, "users")
 		{
 		}
 

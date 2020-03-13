@@ -3,11 +3,10 @@ using System.Reflection;
 
 namespace Skyra.Core.Structures.Usage
 {
-	public class CommandUsageOverload
+	public sealed class CommandUsageOverload
 	{
 		internal CommandUsageOverload(Client client, MethodBase methodInfo)
 		{
-			Client = client;
 			Method = methodInfo;
 			Arguments = methodInfo
 				.GetParameters()
@@ -16,9 +15,8 @@ namespace Skyra.Core.Structures.Usage
 				.ToArray();
 		}
 
-		private Client Client { get; }
-		public MethodBase Method { get; }
-		public CommandUsageOverloadArgument[] Arguments { get; }
+		internal MethodBase Method { get; }
+		internal CommandUsageOverloadArgument[] Arguments { get; }
 
 		public override string ToString()
 		{

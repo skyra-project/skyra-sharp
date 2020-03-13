@@ -5,14 +5,14 @@ namespace Skyra.Core.Structures
 {
 	public struct MonitorInfo
 	{
-		public object Instance { get; set; }
-		public MethodInfo Method { get; set; }
-		public string Name { get; set; }
-		public MessageType[] AllowedTypes { get; set; }
-		public bool IgnoreBots { get; set; }
-		public bool IgnoreSelf { get; set; }
-		public bool IgnoreOthers { get; set; }
-		public bool IgnoreWebhooks { get; set; }
-		public bool IgnoreEdits { get; set; }
+		internal object Instance { get; set; }
+		internal MethodInfo Method { get; set; }
+		internal string Name { get; set; }
+		internal MessageType[] AllowedTypes { get; set; }
+		internal bool IgnoreBots { get; set; }
+		internal bool IgnoreSelf { get; set; }
+		internal bool IgnoreOthers { get; set; }
+		internal bool IgnoreWebhooks { get; set; }
+		internal bool IgnoreEdits { get; set; }
 	}
 }

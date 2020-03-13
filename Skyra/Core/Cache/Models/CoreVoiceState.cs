@@ -4,7 +4,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreVoiceState : ICoreBaseStructure<CoreVoiceState>
+	public sealed class CoreVoiceState : ICoreBaseStructure<CoreVoiceState>
 	{
 		public CoreVoiceState(string sessionId, bool deaf, bool mute, bool suppress, ulong userId, ulong channelId,
 			ulong guildId, bool selfDeaf, bool selfMute)

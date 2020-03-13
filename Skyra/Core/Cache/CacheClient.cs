@@ -6,9 +6,9 @@ using StackExchange.Redis;
 
 namespace Skyra.Core.Cache
 {
-	public class CacheClient
+	public sealed class CacheClient
 	{
-		public CacheClient(string prefix)
+		internal CacheClient(string prefix)
 		{
 			Prefix = prefix;
 			Channels = new ChannelStore(this);
@@ -23,12 +23,12 @@ namespace Skyra.Core.Cache
 			VoiceStates = new VoiceStateStore(this);
 		}
 
-		public string Prefix { get; }
+		internal string Prefix { get; }
 		public ConnectionPool Pool { get; } = new ConnectionPool();
 
-		public ConnectionMultiplexer BestConnection => Pool.BestConnection;
+		internal ConnectionMultiplexer BestConnection => Pool.BestConnection;
 
-		public IDatabase Database => BestConnection.GetDatabase();
+		internal IDatabase Database => BestConnection.GetDatabase();
 
 		public IServer Redis => BestConnection.GetEndPoints().Select(endPoint => BestConnection.GetServer(endPoint))
 			.FirstOrDefault(server => !server.IsSlave);

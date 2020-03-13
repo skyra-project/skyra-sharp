@@ -20,9 +20,9 @@ using EventInfo = Skyra.Core.Structures.EventInfo;
 
 namespace Skyra.Core
 {
-	public class Client
+	public sealed class Client
 	{
-		public Client(ClientOptions clientOptions)
+		internal Client(ClientOptions clientOptions)
 		{
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
@@ -167,7 +167,7 @@ namespace Skyra.Core
 				Instance = argument,
 				Method = argument.GetType().GetMethod("ResolveAsync")!,
 				Type = attribute.Type,
-				Displayname = attribute.DisplayName
+				DisplayName = attribute.DisplayName
 			};
 		}
 

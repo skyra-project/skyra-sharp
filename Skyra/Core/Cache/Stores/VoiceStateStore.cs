@@ -3,9 +3,9 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class VoiceStateStore : HashMapCacheStoreBase<CoreVoiceState>
+	public sealed class VoiceStateStore : HashMapCacheStoreBase<CoreVoiceState>
 	{
-		public VoiceStateStore(CacheClient client) : base(client, "voiceStates")
+		internal VoiceStateStore(CacheClient client) : base(client, "voiceStates")
 		{
 		}
 

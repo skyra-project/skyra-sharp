@@ -3,7 +3,7 @@ using System;
 namespace Skyra.Core.Structures.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public class CommandAttribute : Attribute
+	public sealed class CommandAttribute : Attribute
 	{
 		public string Delimiter { get; set; } = "";
 		public string? Name { get; set; } = null;

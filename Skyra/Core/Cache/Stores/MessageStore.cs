@@ -5,9 +5,9 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public class MessageStore : SetCacheStoreBase<CoreMessage>
+	public sealed class MessageStore : SetCacheStoreBase<CoreMessage>
 	{
-		public MessageStore(CacheClient client) : base(client, "messages")
+		internal MessageStore(CacheClient client) : base(client, "messages")
 		{
 		}
 

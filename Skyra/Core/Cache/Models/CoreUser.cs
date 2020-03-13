@@ -3,7 +3,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreUser : ICoreBaseStructure<CoreUser>
+	public sealed class CoreUser : ICoreBaseStructure<CoreUser>
 	{
 		public CoreUser(ulong id, bool bot, string username, string discriminator, string? avatar)
 		{

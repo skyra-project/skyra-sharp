@@ -14,7 +14,7 @@ using Skyra.Core.Utils;
 
 namespace Skyra.Core.Structures.Usage
 {
-	public class CommandUsageParser
+	internal sealed class CommandUsageParser
 	{
 		private static readonly Regex FlagRegExp =
 			new Regex(
@@ -44,13 +44,13 @@ namespace Skyra.Core.Structures.Usage
 			ArgumentPosition = 0;
 		}
 
-		public Dictionary<string, string> Flags { get; }
-		public string[] Arguments { get; }
+		internal Dictionary<string, string> Flags { get; }
+		internal string[] Arguments { get; }
 		public object?[] Parameters { get; private set; }
-		public CommandInfo Command { get; }
-		public CommandUsage Usage { get; }
-		public CommandUsageOverload? Overload { get; private set; }
-		public CommandUsageOverloadArgument? Argument { get; private set; }
+		internal CommandInfo Command { get; }
+		internal CommandUsage Usage { get; }
+		internal CommandUsageOverload? Overload { get; private set; }
+		internal CommandUsageOverloadArgument? Argument { get; private set; }
 		private CoreMessage Message { get; }
 		private int ParameterPosition { get; set; }
 		private int ArgumentPosition { get; set; }

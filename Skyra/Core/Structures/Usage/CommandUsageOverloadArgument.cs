@@ -4,7 +4,7 @@ using Skyra.Core.Structures.Attributes;
 
 namespace Skyra.Core.Structures.Usage
 {
-	public class CommandUsageOverloadArgument
+	public sealed class CommandUsageOverloadArgument
 	{
 		internal CommandUsageOverloadArgument(Client client, ParameterInfo parameterInfo)
 		{
@@ -28,18 +28,18 @@ namespace Skyra.Core.Structures.Usage
 		}
 
 		private Client Client { get; }
-		public ArgumentInfo Resolver { get; }
-		public string Name { get; }
-		public Type ArgumentType { get; }
-		public Type Type { get; }
-		public bool Optional { get; }
-		public bool Repeating { get; }
-		public object? Default { get; }
-		public bool Rest { get; }
-		public int Minimum { get; }
-		public int Maximum { get; }
-		public uint MinimumValues { get; }
-		public uint MaximumValues { get; }
+		internal ArgumentInfo Resolver { get; }
+		internal string Name { get; }
+		internal Type ArgumentType { get; }
+		internal Type Type { get; }
+		internal bool Optional { get; }
+		internal bool Repeating { get; }
+		internal object? Default { get; }
+		internal bool Rest { get; }
+		internal int Minimum { get; }
+		internal int Maximum { get; }
+		internal uint MinimumValues { get; }
+		internal uint MaximumValues { get; }
 
 		private uint CalculatedMinimumValues => Repeating && !Optional ? 1U : uint.MinValue;
 
@@ -50,7 +50,7 @@ namespace Skyra.Core.Structures.Usage
 				var formatted = Type.IsEnum
 					? Repeating ? $"{ArrayRangeString}({string.Join("|", Type.GetEnumNames()).ToLower()})" :
 					$"{string.Join("|", Type.GetEnumNames()).ToLower()}"
-					: $"{Name}:{ArrayRangeString}{Resolver.Displayname}";
+					: $"{Name}:{ArrayRangeString}{Resolver.DisplayName}";
 				var rest = Rest ? " [...]" : "";
 				return $"{formatted}{RangeString}{rest}";
 			}

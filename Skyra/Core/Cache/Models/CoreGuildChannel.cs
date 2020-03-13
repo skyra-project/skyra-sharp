@@ -5,7 +5,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreGuildChannel : CoreChannel, ICoreBaseStructure<CoreGuildChannel>
+	public sealed class CoreGuildChannel : CoreChannel, ICoreBaseStructure<CoreGuildChannel>
 	{
 		public CoreGuildChannel(ulong id, ChannelType type, CoreGuild? guild, ulong guildId, string name,
 			int? rawPosition, ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(id, type)

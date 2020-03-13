@@ -1,12 +1,11 @@
-using System.Reflection;
+using Skyra.Core.Structures.Base;
 using Spectacles.NET.Types;
 
 namespace Skyra.Core.Structures
 {
 	public struct MonitorInfo
 	{
-		internal object Instance { get; set; }
-		internal MethodInfo Method { get; set; }
+		internal IMonitor Instance { get; set; }
 		internal string Name { get; set; }
 		internal MessageType[] AllowedTypes { get; set; }
 		internal bool IgnoreBots { get; set; }

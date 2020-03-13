@@ -3,11 +3,12 @@ using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Base;
 
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class SocialCounterMonitor : StructureBase
+	public class SocialCounterMonitor : StructureBase, IMonitor
 	{
 		public SocialCounterMonitor(Client client) : base(client)
 		{

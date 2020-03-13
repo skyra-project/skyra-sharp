@@ -27,7 +27,7 @@ namespace Skyra.Events
 			{
 				try
 				{
-					await (Task) monitor.Method.Invoke(monitor.Instance, new object?[] {message})!;
+					await monitor.Instance.RunAsync(message);
 				}
 				catch (Exception exception)
 				{

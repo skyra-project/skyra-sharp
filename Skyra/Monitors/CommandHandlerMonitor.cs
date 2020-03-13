@@ -7,12 +7,13 @@ using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Base;
 using Skyra.Core.Structures.Usage;
 
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class CommandHandlerMonitor : StructureBase
+	public class CommandHandlerMonitor : StructureBase, IMonitor
 	{
 		private const string DefaultPrefix = "t!";
 

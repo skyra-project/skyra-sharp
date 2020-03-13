@@ -1,3 +1,5 @@
+using Skyra.Core.Structures.Base;
+
 namespace Skyra.Core.Structures
 {
 	public struct InhibitorInfo

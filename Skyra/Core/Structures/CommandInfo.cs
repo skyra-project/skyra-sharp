@@ -1,3 +1,4 @@
+using Skyra.Core.Structures.Base;
 using Skyra.Core.Structures.Usage;
 
 namespace Skyra.Core.Structures

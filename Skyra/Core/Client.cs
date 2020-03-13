@@ -11,6 +11,7 @@ using Skyra.Core.Cache;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Base;
 using Skyra.Core.Structures.Usage;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
@@ -204,8 +205,7 @@ namespace Skyra.Core
 
 			return new MonitorInfo
 			{
-				Instance = monitor,
-				Method = methodInfo,
+				Instance = (IMonitor) monitor,
 				Name = attribute.Name ?? monitor.GetType().Name,
 				AllowedTypes = attribute.AllowedTypes,
 				IgnoreBots = attribute.IgnoreBots,

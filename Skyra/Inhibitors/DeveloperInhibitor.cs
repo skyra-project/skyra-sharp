@@ -4,6 +4,7 @@ using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Structures.Base;
 
 namespace Skyra.Inhibitors
 {

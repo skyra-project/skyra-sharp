@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public struct GuildStickyRole
+	public class GuildStickyRole
 	{
 		public GuildStickyRole(ulong userId, ulong[] roles)
 		{

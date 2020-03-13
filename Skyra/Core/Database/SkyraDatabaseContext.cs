@@ -59,6 +59,8 @@ namespace Skyra.Core.Database
 
 			modelBuilder.Entity<Starboard>(entity =>
 				entity.HasKey(e => new {e.GuildId, e.MessageId}));
+
+			modelBuilder.Entity<Guild>(Guild.OnModelCreating);
 		}
 	}
 }

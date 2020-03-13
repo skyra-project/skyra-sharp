@@ -242,7 +242,7 @@ namespace Skyra.Core.Structures.Usage
 
 		private static string[] GetQuotedStringArgs(string content, string delimiter)
 		{
-			if (string.IsNullOrEmpty(content)) return new[] {content};
+			if (string.IsNullOrEmpty(delimiter)) return new[] {content};
 
 			var args = new List<string>();
 			var current = new StringBuilder();

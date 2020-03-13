@@ -45,11 +45,12 @@
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/Text/@EntryValue">using System.Threading.Tasks;
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0E1B39CE748B59428A9F9A62DFDDBFCE/Text/@EntryValue">using System.Linq;
+using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
+using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Skyra.Core.Utils;
-using Spectacles.NET.Types;
 
 $HEADER$namespace $NAMESPACE$
 {
@@ -60,7 +61,7 @@ $HEADER$namespace $NAMESPACE$
 		{
 		}
 
-		public async Task RunAsync(Message message)
+		public async Task RunAsync(CoreMessage message)
 		{
 			$END$
 		}

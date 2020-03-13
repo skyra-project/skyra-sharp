@@ -10,5 +10,6 @@ namespace Skyra.Core.Structures
 		public CommandUsage Usage { get; set; }
 		public bool FlagSupport { get; set; }
 		public bool QuotedStringSupport { get; set; }
+		public IInhibitor[] Inhibitors { get; set; }
 	}
 }

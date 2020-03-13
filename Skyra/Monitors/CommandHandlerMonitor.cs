@@ -35,10 +35,29 @@ namespace Skyra.Monitors
 			}
 
 			var commandName = GetCommandName(prefixLess);
-			var command = Client.Commands[commandName.ToLower()];
-			if (command.Name == string.Empty) return;
+			if (Client.Commands.TryGetValue(commandName.ToLower(), out var command))
+			{
+				await RunInhibitorsAsync(message, command, prefixLess.Substring(commandName.Length));
+			}
+		}
 
-			await RunArgumentsAsync(message, command, prefixLess.Substring(commandName.Length));
+		private async Task RunInhibitorsAsync(CoreMessage message, CommandInfo command, string content)
+		{
+			foreach (var inhibitor in command.Inhibitors)
+			{
+				try
+				{
+					if (await inhibitor.RunAsync(message, command)) return;
+				}
+				catch (Exception exception)
+				{
+					await message.SendAsync(Client,
+						$"Inhibitor Error: {exception.InnerException?.Message ?? exception.Message}");
+					return;
+				}
+			}
+
+			await RunArgumentsAsync(message, command, content);
 		}
 
 		private async Task RunArgumentsAsync(CoreMessage message, CommandInfo command, string content)

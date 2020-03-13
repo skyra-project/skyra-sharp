@@ -47,6 +47,12 @@ namespace Skyra.Core
 				.AddSingleton(this)
 				.BuildServiceProvider();
 
+			Inhibitors = Assembly.GetExecutingAssembly()
+				.ExportedTypes
+				.Where(type => type.GetCustomAttribute<InhibitorAttribute>() != null)
+				.Select(type => ActivatorUtilities.CreateInstance(provider, type))
+				.Select(ToInhibitorInfo).ToDictionary(x => x.Name, x => x);
+
 			Events = Assembly.GetExecutingAssembly()
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<EventAttribute>() != null)
@@ -73,6 +79,7 @@ namespace Skyra.Core
 				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
+		public Dictionary<string, InhibitorInfo> Inhibitors { get; }
 		public Dictionary<string, CommandInfo> Commands { get; }
 		public Dictionary<string, EventInfo> Events { get; }
 		public Dictionary<string, MonitorInfo> Monitors { get; }
@@ -145,6 +152,17 @@ namespace Skyra.Core
 			};
 		}
 
+		private static InhibitorInfo ToInhibitorInfo(object inhibitor)
+		{
+			var attribute = inhibitor.GetType().GetCustomAttribute<InhibitorAttribute>()!;
+
+			return new InhibitorInfo
+			{
+				Name = attribute.Name ?? inhibitor.GetType().Name.Replace("Inhibitor", ""),
+				Instance = (IInhibitor) inhibitor
+			};
+		}
+
 		private static EventInfo ToEventInfo(object @event)
 		{
 			var attribute = @event.GetType().GetCustomAttribute<EventAttribute>()!;
@@ -191,7 +209,8 @@ namespace Skyra.Core
 				Name = commandInfo.Name ?? command.GetType().Name.Replace("Command", "").ToLower(),
 				Usage = new CommandUsage(this, command),
 				FlagSupport = commandInfo.FlagSupport,
-				QuotedStringSupport = commandInfo.QuotedStringSupport
+				QuotedStringSupport = commandInfo.QuotedStringSupport,
+				Inhibitors = commandInfo.Inhibitors.Select(v => Inhibitors[v].Instance).ToArray()
 			};
 		}
 	}

@@ -16,8 +16,7 @@ namespace Skyra.Commands
 
 		public async Task RunAsync(CoreMessage message, CommandInfo command)
 		{
-			await message.SendAsync(Client,
-				$"The usage(s) for {command.Name} are:\n{GetUsage(command)}");
+			await message.SendLocaleAsync(Client, "UsageCommand", new object?[] {command.Name, GetUsage(command)});
 		}
 
 		private static string GetUsage(CommandInfo command)

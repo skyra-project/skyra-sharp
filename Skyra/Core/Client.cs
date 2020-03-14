@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -25,6 +27,7 @@ namespace Skyra.Core
 	{
 		internal Client(ClientOptions clientOptions)
 		{
+			Cultures = new[] {"en-US", "es-ES"}.ToImmutableDictionary(x => x, x => new CultureInfo(x));
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
@@ -96,6 +99,7 @@ namespace Skyra.Core
 		public ulong? Id { get; set; }
 		public ulong[] Owners { get; set; }
 		public RestClient Rest { get; private set; }
+		public ImmutableDictionary<string, CultureInfo> Cultures { get; }
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
 		public Logger Logger { get; }

@@ -16,8 +16,8 @@ namespace Skyra.Commands
 
 		public async Task RunAsync(CoreMessage message)
 		{
-			var response = await message.SendAsync(Client, "Ping...");
-			await response.EditAsync(Client, $"Pong! Took {Difference(message, response).Milliseconds.ToString()}ms.");
+			var response = await message.SendLocaleAsync(Client, "Ping");
+			await response.EditLocaleAsync(Client, "Pong", new object?[] {Difference(message, response).Milliseconds});
 		}
 
 		private static TimeSpan Difference(CoreMessage message, CoreMessage response)

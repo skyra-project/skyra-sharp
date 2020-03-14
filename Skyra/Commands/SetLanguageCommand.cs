@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.Tasks;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
@@ -9,13 +10,13 @@ using Client = Skyra.Core.Client;
 namespace Skyra.Commands
 {
 	[Command(Inhibitors = new[] {"Developer"})]
-	public class SetPrefixCommand : StructureBase
+	public class SetLanguageCommand : StructureBase
 	{
-		public SetPrefixCommand(Client client) : base(client)
+		public SetLanguageCommand(Client client) : base(client)
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message, [Argument(Maximum = 10)] string prefix)
+		public async Task RunAsync(CoreMessage message, CultureInfo language)
 		{
 			await using var db = new SkyraDatabaseContext();
 
@@ -23,16 +24,16 @@ namespace Skyra.Commands
 
 			if (entity is null)
 			{
-				entity = new Guild {Id = (ulong) message.GuildId!, Prefix = prefix};
+				entity = new Guild {Id = (ulong) message.GuildId!, Language = language.Name};
 				await db.Guilds.AddAsync(entity);
 			}
 			else
 			{
-				entity.Prefix = prefix;
+				entity.Language = language.Name;
 			}
 
 			await db.SaveChangesAsync();
-			await message.SendLocaleAsync(Client, "SetPrefix", new object?[] {prefix});
+			await message.SendLocaleAsync(Client, "SetLanguage", new object?[] {language.Name});
 		}
 	}
 }

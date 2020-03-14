@@ -26,4 +26,19 @@
       <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Resources\Languages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Languages.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Languages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
 using Serilog.Exceptions;
-using Skyra.Resources;
 using Skyra.Core.Cache;
 using Skyra.Core.Models;
 using Skyra.Core.Structures;
@@ -28,6 +25,7 @@ namespace Skyra.Core
 	{
 		internal Client(ClientOptions clientOptions)
 		{
+			Language = new CultureLanguage(new[] {"en-US", "es-ES"});
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
@@ -99,18 +97,13 @@ namespace Skyra.Core
 		public ulong? Id { get; set; }
 		public ulong[] Owners { get; set; }
 		public RestClient Rest { get; private set; }
+		public CultureLanguage Language { get; }
 		public EventHandler EventHandler { get; }
 		public CacheClient Cache { get; }
 		public Logger Logger { get; }
 
 		public async Task ConnectAsync()
 		{
-			
-			var ci = CultureInfo.GetCultureInfo("en-US");
-			var v = Languages.ResourceManager.GetString("ping", ci);
-			Logger.Debug("{v}", v);
-			Logger.Debug("{ping}", Skyra.Resources.Languages.ping);
-
 			await Cache.ConnectAsync(RedisUri);
 			Rest = new RestClient(Token, new RedisBucketFactory(Cache.Pool));
 			await Broker.ConnectAsync(new Uri(BrokerUri));

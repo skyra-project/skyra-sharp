@@ -19,7 +19,7 @@ namespace Skyra.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Languages {
@@ -63,18 +63,45 @@ namespace Skyra.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Pinging....
         /// </summary>
-        internal static string ping {
+        internal static string Ping {
             get {
-                return ResourceManager.GetString("ping", resourceCulture);
+                return ResourceManager.GetString("Ping", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Pong! Took {0}ms!.
         /// </summary>
-        internal static string pong {
+        internal static string Pong {
             get {
-                return ResourceManager.GetString("pong", resourceCulture);
+                return ResourceManager.GetString("Pong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully set the language to `{0}`..
+        /// </summary>
+        internal static string SetLanguage {
+            get {
+                return ResourceManager.GetString("SetLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully set the prefix to `{0}`..
+        /// </summary>
+        internal static string SetPrefix {
+            get {
+                return ResourceManager.GetString("SetPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The usage(s) for {0} are:\n{1}.
+        /// </summary>
+        internal static string UsageCommand {
+            get {
+                return ResourceManager.GetString("UsageCommand", resourceCulture);
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Skyra.Core.Structures.Usage
 		}
 
 		private Client Client { get; }
-		internal ArgumentInfo Resolver { get; }
+		internal ResolverInfo Resolver { get; }
 		internal string Name { get; }
 		internal Type ArgumentType { get; }
 		internal Type Type { get; }

@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Skyra.Core.Structures
 {
-	public struct ArgumentInfo
+	public struct ResolverInfo
 	{
 		internal object Instance { get; set; }
 		internal MethodInfo Method { get; set; }

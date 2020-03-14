@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
@@ -8,6 +7,7 @@ using Skyra.Core.Database;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Base;
+using Skyra.Core.Structures.Exceptions;
 using Skyra.Core.Structures.Usage;
 
 namespace Skyra.Monitors
@@ -40,6 +40,10 @@ namespace Skyra.Monitors
 			{
 				await RunInhibitorsAsync(message, command, prefixLess.Substring(commandName.Length));
 			}
+			else
+			{
+				await Client.EventHandler.OnCommandUnknownAsync(message, commandName);
+			}
 		}
 
 		private async Task RunInhibitorsAsync(CoreMessage message, CommandInfo command, string content)
@@ -50,10 +54,14 @@ namespace Skyra.Monitors
 				{
 					if (await inhibitor.RunAsync(message, command)) return;
 				}
+				catch (InhibitorException exception)
+				{
+					await Client.EventHandler.OnCommandInhibitedAsync(message, command.Name, exception);
+					return;
+				}
 				catch (Exception exception)
 				{
-					await message.SendAsync(Client,
-						$"Inhibitor Error: {exception.InnerException?.Message ?? exception.Message}");
+					await Client.EventHandler.OnInhibitorExceptionAsync(message, command.Name, exception);
 					return;
 				}
 			}
@@ -71,13 +79,11 @@ namespace Skyra.Monitors
 			}
 			catch (ArgumentException exception)
 			{
-				await message.SendAsync(Client,
-					$"Argument Error: {exception.InnerException?.Message ?? exception.Message}");
+				await Client.EventHandler.OnCommandArgumentExceptionAsync(message, command.Name, exception);
 			}
 			catch (Exception exception)
 			{
-				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
-				await message.SendAsync(Client, "Whoops! Something while processing arguments!");
+				await Client.EventHandler.OnArgumentErrorAsync(message, command.Name, exception);
 			}
 		}
 
@@ -85,19 +91,15 @@ namespace Skyra.Monitors
 		{
 			try
 			{
+				await Client.EventHandler.OnCommandRunAsync(message, command.Name, parser.Parameters);
 #pragma warning disable CS8600, CS8602
 				await (Task) parser.Overload!.Method.Invoke(command.Instance, parser.Parameters);
 #pragma warning restore CS8600, CS8602
-			}
-			catch (TargetInvocationException exception)
-			{
-				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
-				await message.SendAsync(Client, "Whoops! Something happened!");
+				await Client.EventHandler.OnCommandSuccessAsync(message, command.Name, parser.Parameters);
 			}
 			catch (Exception exception)
 			{
-				Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command.Name, exception);
-				await message.SendAsync(Client, "Whoops! Something happened while processing the command!");
+				await Client.EventHandler.OnCommandErrorAsync(message, command.Name, parser.Parameters, exception);
 			}
 		}
 
@@ -120,11 +122,11 @@ namespace Skyra.Monitors
 			}
 
 			int prefixLength;
-			if (message.Content.StartsWith("<@!"))
+			if (message.Content.StartsWith("<@!", StringComparison.Ordinal))
 			{
 				prefixLength = 3;
 			}
-			else if (message.Content.StartsWith("<@"))
+			else if (message.Content.StartsWith("<@", StringComparison.Ordinal))
 			{
 				prefixLength = 2;
 			}
@@ -133,7 +135,7 @@ namespace Skyra.Monitors
 				return (null, PrefixTypeResult.None);
 			}
 
-			return message.Content.Substring(prefixLength).StartsWith($"{Client.Id}>")
+			return message.Content.Substring(prefixLength).StartsWith($"{Client.Id}>", StringComparison.Ordinal)
 				? (message.Content.Substring(0, prefixLength + Client.Id.ToString()!.Length + 1),
 					PrefixTypeResult.MentionPrefix)
 				: ((string?) null, PrefixTypeResult.None);
@@ -143,7 +145,7 @@ namespace Skyra.Monitors
 		{
 			Debug.Assert(message.GuildId != null, "message.GuildId != null");
 			var prefix = await RetrieveGuildPrefixAsync((ulong) message.GuildId);
-			return message.Content.StartsWith(prefix)
+			return message.Content.StartsWith(prefix, StringComparison.Ordinal)
 				? (prefix, PrefixTypeResult.RegularPrefix)
 				: ((string?) null, PrefixTypeResult.None);
 		}
@@ -151,7 +153,7 @@ namespace Skyra.Monitors
 		private static (string?, PrefixTypeResult) GetDefaultPrefix(CoreMessage message)
 		{
 			const string prefix = DefaultPrefix;
-			return message.Content.StartsWith(prefix)
+			return message.Content.StartsWith(prefix, StringComparison.Ordinal)
 				? (prefix, PrefixTypeResult.RegularPrefix)
 				: ((string?) null, PrefixTypeResult.None);
 		}

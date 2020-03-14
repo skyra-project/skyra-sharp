@@ -1,18 +1,29 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Models;
+using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
 namespace Skyra
 {
-	public class EventHandler
+	public sealed class EventHandler
 	{
-		public Action<CoreMessage> OnMessageCreate = dispatch => { };
-		public Action<MessageDeletePayload, CoreMessage?> OnMessageDelete = (_, __) => { };
-		public Action<CoreMessage?, CoreMessage> OnMessageUpdate = (_, __) => { };
+		internal Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync = default!;
+		internal Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync = default!;
+		internal Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync = default!;
+		internal Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync = default!;
+		internal Func<CoreMessage, string, object?[], Task> OnCommandRunAsync = default!;
+		internal Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync = default!;
+		internal Func<CoreMessage, string, Task> OnCommandUnknownAsync = default!;
+		internal Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync = default!;
+		internal Action<CoreMessage> OnMessageCreate = default!;
+		internal Action<MessageDeletePayload, CoreMessage?> OnMessageDelete = default!;
+		internal Action<CoreMessage?, CoreMessage> OnMessageUpdate = default!;
+
 		public event Action<ReadyDispatch> OnReady = dispatch => { };
 		public event Action<Guild> OnRawGuildCreate = dispatch => { };
 		public event Action<Guild> OnRawGuildUpdate = dispatch => { };

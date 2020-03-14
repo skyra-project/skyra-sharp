@@ -35,9 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Languages.en-US.resx">
-        <Generator></Generator>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Languages.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Languages.Designer.cs</LastGenOutput>

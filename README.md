@@ -36,7 +36,7 @@ $ dotnet ef database update
 ## Translations <img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%">
 
 We use **crowdin** to provide translations of Skyra's messages to all users, if you are interested on translating,
-please enter the link [here][Translation]. Please contact any of the developers at the
+please click the link [here][Translation]. Please contact any of the developers at the
 [official Discord server][Skyra Invite Link] if you are interested on becoming a proof-reader.
 
 ## Story - as written by owner [`Kyra`]

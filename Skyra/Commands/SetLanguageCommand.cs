@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.Tasks;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
@@ -15,7 +16,7 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message, [Argument(Maximum = 5)] string language)
+		public async Task RunAsync(CoreMessage message, CultureInfo language)
 		{
 			await using var db = new SkyraDatabaseContext();
 
@@ -23,16 +24,16 @@ namespace Skyra.Commands
 
 			if (entity is null)
 			{
-				entity = new Guild {Id = (ulong) message.GuildId!, Language = language};
+				entity = new Guild {Id = (ulong) message.GuildId!, Language = language.Name};
 				await db.Guilds.AddAsync(entity);
 			}
 			else
 			{
-				entity.Language = language;
+				entity.Language = language.Name;
 			}
 
 			await db.SaveChangesAsync();
-			await message.SendLocaleAsync(Client, "SetLanguage", new object?[] {language});
+			await message.SendLocaleAsync(Client, "SetLanguage", new object?[] {language.Name});
 		}
 	}
 }

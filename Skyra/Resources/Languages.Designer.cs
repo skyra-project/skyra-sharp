@@ -97,7 +97,8 @@ namespace Skyra.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The usage(s) for {0} are:\n{1}.
+        ///   Looks up a localized string similar to The usage(s) for {0} are:
+        ///{1}.
         /// </summary>
         internal static string UsageCommand {
             get {

@@ -70,7 +70,8 @@
         <value>Pong! Took {0}ms!</value>
     </data>
     <data name="UsageCommand" xml:space="preserve">
-        <value>The usage(s) for {0} are:\n{1}</value>
+        <value>The usage(s) for {0} are:
+{1}</value>
     </data>
     <data name="SetPrefix" xml:space="preserve">
         <value>Successfully set the prefix to `{0}`.</value>

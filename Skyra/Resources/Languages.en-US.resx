@@ -63,19 +63,4 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="Ping" xml:space="preserve">
-    <value>Pinging...</value>
-  </data>
-    <data name="Pong" xml:space="preserve">
-    <value>Pong! Took {0}ms!</value>
-  </data>
-    <data name="UsageCommand" xml:space="preserve">
-        <value>The usage(s) for {0} are:\n{1}</value>
-    </data>
-    <data name="SetPrefix" xml:space="preserve">
-        <value>Successfully set the prefix to `{0}`.</value>
-    </data>
-    <data name="SetLanguage" xml:space="preserve">
-        <value>Successfully set the language to `{0}`.</value>
-    </data>
 </root>

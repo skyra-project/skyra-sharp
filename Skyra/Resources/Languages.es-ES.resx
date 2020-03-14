@@ -70,7 +70,8 @@
     <value>[Ecooo] ¡Tardé {0}ms!</value>
   </data>
     <data name="UsageCommand" xml:space="preserve">
-        <value>Los parámetros de comando {0} son:\n{1}</value>
+        <value>Los parámetros de comando {0} son:
+{1}</value>
     </data>
     <data name="SetPrefix" xml:space="preserve">
         <value>Modificado el prefijo a `{0}` con éxito.</value>

@@ -176,7 +176,7 @@ namespace Skyra.Core.Cache.Models
 			await using var db = new SkyraDatabaseContext();
 			var guild = await db.Guilds.FindAsync(GuildId);
 			var languageId = guild is null ? "en-US" : guild.Language;
-			return Language = client.Language[languageId];
+			return Language = client.Cultures[languageId];
 		}
 
 		public async Task<CoreMessage> SendAsync(Client client, string content)

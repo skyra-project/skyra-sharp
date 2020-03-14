@@ -24,6 +24,12 @@ Install a .NET IDE of your choice. We recommend in descending order:
 
 Once you have your IDE of choice installed, open Skyra solution.
 
+## Translations <img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%">
+
+We use **crowdin** to provide translations of Skyra's messages to all users, if you are interested on translating,
+please enter the link [here][Translation]. Please contact any of the developers at the
+[official Discord server][Skyra Invite Link] if you are interested on becoming a proof-reader.
+
 ### Database Migration
 
 To update the database's tables and columns so they match those needed for Skyra to function properly, run the following
@@ -88,7 +94,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [skyra invite link]:    https://skyra.pw/invite
 [support server]:       https://join.skyra.pw
 [patreon]:              https://www.patreon.com/kyranet
-[translation]:          https://skyra.pw/translate
+[translation]:          https://crowdin.com/project/skyra
 
 [patreonimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
 [bitcoinimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png

@@ -64,19 +64,19 @@
         </value>
     </resheader>
     <data name="Ping" xml:space="preserve">
-        <value>Ecooo...</value>
+        <value>Pinging...</value>
     </data>
     <data name="Pong" xml:space="preserve">
-        <value>[Ecooo] ¡Tardé {0}ms en oírlo!</value>
+        <value>Pong! Trajalo {0}ms!</value>
     </data>
     <data name="UsageCommand" xml:space="preserve">
-        <value>Los parámetros de comando {0} son:
+        <value>Uporaba/i/e za {0} je/sta/so:
 {1}</value>
     </data>
     <data name="SetPrefix" xml:space="preserve">
-        <value>Modificado el prefijo a `{0}` con éxito.</value>
+        <value>Prefix uspešno nastavljen na `{0}`.</value>
     </data>
     <data name="SetLanguage" xml:space="preserve">
-        <value>Modificado el lenguaje a `{0}` con éxito.</value>
+        <value>Jezik uspešno nastavljen na `{0}`.</value>
     </data>
 </root>

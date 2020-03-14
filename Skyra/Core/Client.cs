@@ -22,7 +22,7 @@ namespace Skyra.Core
 	{
 		internal Client(ClientOptions clientOptions)
 		{
-			Cultures = new[] {"en-US", "es-ES"}.ToImmutableDictionary(x => x, x => new CultureInfo(x));
+			Cultures = Loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 

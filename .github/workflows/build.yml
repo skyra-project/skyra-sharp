@@ -20,9 +20,9 @@ jobs:
       - run: dotnet build Skyra
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
-    test:
-      name: test
-      runs-on: ubuntu-latest
-      steps:
-        - name: Run Tests
-        - run: dotnet test Skyra.Tests
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Tests
+      - run: dotnet test Skyra.Tests

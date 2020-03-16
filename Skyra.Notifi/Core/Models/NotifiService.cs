@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Skyra.Notifi.Core.Database;
 using Spectacles.NET.Broker.Amqp;
 
 namespace Skyra.Notifi.Core.Models
@@ -21,10 +22,12 @@ namespace Skyra.Notifi.Core.Models
 
 		public string TwitchToken { get; }
 		public AmqpBroker Broker { get; }
+		public NotifiDatabaseContext Db { get; set; }
 
 		public async Task StartAsync()
 		{
 			await Broker.ConnectAsync(_brokerUrl);
+			Db = new NotifiDatabaseContext();
 		}
 	}
 }

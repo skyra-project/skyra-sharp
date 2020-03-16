@@ -1,3 +1,5 @@
+// ReSharper disable InconsistentNaming
+
 namespace Skyra.Core.Models
 {
 	public enum SkyraEvent
@@ -83,7 +85,7 @@ namespace Skyra.Core.Models
 		GUILD_MEMBER_UPDATE,
 
 		/// <summary>
-		///     Response to Request Guild Members.
+		///     Response to Request Guild GuildMembers.
 		/// </summary>
 		GUILD_MEMBERS_CHUNK,
 

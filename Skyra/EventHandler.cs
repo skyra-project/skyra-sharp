@@ -1,29 +1,38 @@
 using System;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Models;
+using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
 namespace Skyra
 {
-	public class EventHandler
+	public sealed class EventHandler
 	{
-		public EventHandler(Client client)
-		{
-			Client = client;
-		}
+		internal Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync = default!;
+		internal Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync = default!;
+		internal Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync = default!;
+		internal Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync = default!;
+		internal Func<CoreMessage, string, object?[], Task> OnCommandRunAsync = default!;
+		internal Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync = default!;
+		internal Func<CoreMessage, string, Task> OnCommandUnknownAsync = default!;
+		internal Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync = default!;
+		internal Action<CoreMessage> OnMessageCreate = default!;
+		internal Action<MessageDeletePayload, CoreMessage?> OnMessageDelete = default!;
+		internal Action<CoreMessage?, CoreMessage> OnMessageUpdate = default!;
 
-		private Client Client { get; }
 		public event Action<ReadyDispatch> OnReady = dispatch => { };
-		public event Action<Guild> OnGuildCreate = dispatch => { };
-		public event Action<Guild> OnGuildUpdate = dispatch => { };
-		public event Action<GuildBanAddPayload> OnGuildBanAdd = dispatch => { };
-		public event Action<GuildBanRemovePayload> OnGuildBanRemove = dispatch => { };
-		public event Action<Message> OnMessageCreate = dispatch => { };
-		public event Action<MessageUpdatePayload> OnMessageUpdate = dispatch => { };
-		public event Action<MessageDeletePayload> OnMessageDelete = dispatch => { };
+		public event Action<Guild> OnRawGuildCreate = dispatch => { };
+		public event Action<Guild> OnRawGuildUpdate = dispatch => { };
+		public event Action<UnavailableGuild> OnRawGuildDelete = dispatch => { };
+		public event Action<GuildBanAddPayload> OnRawGuildBanAdd = dispatch => { };
+		public event Action<GuildBanRemovePayload> OnRawGuildBanRemove = dispatch => { };
+		public event Action<Message> OnRawMessageCreate = dispatch => { };
+		public event Action<MessageUpdatePayload> OnRawMessageUpdate = dispatch => { };
+		public event Action<MessageDeletePayload> OnRawMessageDelete = dispatch => { };
 
 		public void HandleEvent(SkyraEvent @event, AmqpReceiveEventArgs args)
 		{
@@ -44,18 +53,19 @@ namespace Skyra
 				case SkyraEvent.CHANNEL_PINS_UPDATE:
 					break;
 				case SkyraEvent.GUILD_CREATE:
-					OnGuildCreate(JsonConvert.DeserializeObject<Guild>(data));
+					OnRawGuildCreate(JsonConvert.DeserializeObject<Guild>(data));
 					break;
 				case SkyraEvent.GUILD_UPDATE:
-					OnGuildUpdate(JsonConvert.DeserializeObject<Guild>(data));
+					OnRawGuildUpdate(JsonConvert.DeserializeObject<Guild>(data));
 					break;
 				case SkyraEvent.GUILD_DELETE:
+					OnRawGuildDelete(JsonConvert.DeserializeObject<UnavailableGuild>(data));
 					break;
 				case SkyraEvent.GUILD_BAN_ADD:
-					OnGuildBanAdd(JsonConvert.DeserializeObject<GuildBanAddPayload>(data));
+					OnRawGuildBanAdd(JsonConvert.DeserializeObject<GuildBanAddPayload>(data));
 					break;
 				case SkyraEvent.GUILD_BAN_REMOVE:
-					OnGuildBanRemove(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data));
+					OnRawGuildBanRemove(JsonConvert.DeserializeObject<GuildBanRemovePayload>(data));
 					break;
 				case SkyraEvent.GUILD_EMOJIS_UPDATE:
 					break;
@@ -80,13 +90,13 @@ namespace Skyra
 				case SkyraEvent.INVITE_DELETE:
 					break;
 				case SkyraEvent.MESSAGE_CREATE:
-					OnMessageCreate(JsonConvert.DeserializeObject<Message>(data));
+					OnRawMessageCreate(JsonConvert.DeserializeObject<Message>(data));
 					break;
 				case SkyraEvent.MESSAGE_UPDATE:
-					OnMessageUpdate(JsonConvert.DeserializeObject<MessageUpdatePayload>(data));
+					OnRawMessageUpdate(JsonConvert.DeserializeObject<MessageUpdatePayload>(data));
 					break;
 				case SkyraEvent.MESSAGE_DELETE:
-					OnMessageDelete(JsonConvert.DeserializeObject<MessageDeletePayload>(data));
+					OnRawMessageDelete(JsonConvert.DeserializeObject<MessageDeletePayload>(data));
 					break;
 				case SkyraEvent.MESSAGE_DELETE_BULK:
 					break;

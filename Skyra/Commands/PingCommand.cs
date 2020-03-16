@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Skyra.Core.Utils;
-using Spectacles.NET.Types;
 
 namespace Skyra.Commands
 {
@@ -15,13 +14,13 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(Message message)
+		public async Task RunAsync(CoreMessage message)
 		{
-			var response = await message.SendAsync(Client, "Ping...");
-			await response.EditAsync(Client, $"Pong! Took {Difference(message, response).Milliseconds.ToString()}ms.");
+			var response = await message.SendLocaleAsync(Client, "Ping");
+			await response.EditLocaleAsync(Client, "Pong", new object?[] {Difference(message, response).Milliseconds});
 		}
 
-		private static TimeSpan Difference(Message message, Message response)
+		private static TimeSpan Difference(CoreMessage message, CoreMessage response)
 		{
 			return (response.EditedTimestamp ?? response.Timestamp) - (message.EditedTimestamp ?? message.Timestamp);
 		}

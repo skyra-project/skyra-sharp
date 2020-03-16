@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Models;
@@ -20,7 +20,8 @@ namespace Skyra
 				Environment.GetEnvironmentVariable("BROKER_NAME") ?? "skyra",
 				Environment.GetEnvironmentVariable("BROKER_URL") ?? "amqp://localhost:5672",
 				Environment.GetEnvironmentVariable("REDIS_PREFIX") ?? "skyra",
-				Environment.GetEnvironmentVariable("REDIS_URL") ?? "localhost")
+				Environment.GetEnvironmentVariable("REDIS_URL") ?? "localhost",
+				Environment.GetEnvironmentVariable("OWNERS"))
 			);
 
 			await client.ConnectAsync();

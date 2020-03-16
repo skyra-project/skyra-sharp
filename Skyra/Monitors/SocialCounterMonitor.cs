@@ -1,24 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Spectacles.NET.Types;
+using Skyra.Core.Structures.Base;
 
 namespace Skyra.Monitors
 {
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
-	public class SocialCounterMonitor : StructureBase
+	public class SocialCounterMonitor : StructureBase, IMonitor
 	{
 		public SocialCounterMonitor(Client client) : base(client)
 		{
 		}
 
-		public Task RunAsync(Message message)
+		public async Task RunAsync(CoreMessage message)
 		{
-			Console.WriteLine(
-				$"Received Message [{message.Id}] from {message.Author.Username} with content '{message.Content}'.");
-			return Task.FromResult(true);
+			Client.Logger.Information(
+				"Received Message [{Id}] from {Username} with content '{Content}'.", message.Id,
+				(await message.GetAuthorAsync(Client))?.Username ?? "??", message.Content);
 		}
 	}
 }

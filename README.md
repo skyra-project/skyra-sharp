@@ -33,6 +33,12 @@ command in the terminal of your choice from this project's folder:
 $ dotnet ef database update
 ```
 
+## Translations <img src="https://support.crowdin.com/assets/logos/crowdin-TranslationManagementService-logo-onecolor.png" align="right" width="30%">
+
+We use **crowdin** to provide translations of Skyra's messages to all users, if you are interested on translating,
+please click the link [here][Translation]. Please contact any of the developers at the
+[official Discord server][Skyra Invite Link] if you are interested on becoming a proof-reader.
+
 ## Story - as written by owner [`Kyra`]
 
 **A bit of story**: Skyra, formerly known as kyraBOT (renamed in the middle of March of 2017), is a multipurpose Discord
@@ -88,7 +94,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [skyra invite link]:    https://skyra.pw/invite
 [support server]:       https://join.skyra.pw
 [patreon]:              https://www.patreon.com/kyranet
-[translation]:          https://skyra.pw/translate
+[translation]:          https://crowdin.com/project/skyra
 
 [patreonimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
 [bitcoinimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png

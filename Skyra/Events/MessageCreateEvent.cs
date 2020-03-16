@@ -1,9 +1,10 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Spectacles.NET.Types;
 
 namespace Skyra.Events
 {
@@ -15,26 +16,32 @@ namespace Skyra.Events
 			Client.EventHandler.OnMessageCreate += Run;
 		}
 
-		private void Run(Message message)
+		private void Run(CoreMessage message)
 		{
-			RunMonitors(message);
-			Task.Run(() => Client.Cache.Messages.SetAsync(message));
+			Task.Run(() => RunAsync(message));
 		}
 
-		private void RunMonitors(Message message)
+		private async Task RunAsync(CoreMessage message)
 		{
-			foreach (var monitor in Client.Monitors.Values.Where(monitor => ShouldRunMonitor(message, monitor)))
+			foreach (var monitor in Client.Monitors.Values.Where(m => ShouldRunMonitor(message, m)))
 			{
-				monitor.Method.Invoke(monitor.Instance, new object?[] {message});
+				try
+				{
+					await monitor.Instance.RunAsync(message);
+				}
+				catch (Exception exception)
+				{
+					Client.Logger.Error("[MONITORS]: {Name} | {Exception}", monitor.Name, exception);
+				}
 			}
 		}
 
-		private static bool ShouldRunMonitor(Message message, MonitorInfo monitor)
+		private bool ShouldRunMonitor(CoreMessage message, MonitorInfo monitor)
 		{
 			return monitor.AllowedTypes.Contains(message.Type)
-			       && !(monitor.IgnoreBots && message.Author.Bot)
-			       // && !(monitor.IgnoreSelf && message.Author.Id == Client.User.Id)
-			       // && !(monitor.IgnoreOthers && message.Author.Id != Client.User.Id)
+			       && !(monitor.IgnoreBots && message.Author!.Bot)
+			       && !(monitor.IgnoreSelf && message.Author!.Id == Client.Id)
+			       && !(monitor.IgnoreOthers && message.Author!.Id != Client.Id)
 			       && !(monitor.IgnoreWebhooks && message.WebhookId != null)
 			       && !(monitor.IgnoreEdits && message.EditedTimestamp != null);
 		}

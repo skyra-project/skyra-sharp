@@ -1,10 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Skyra.Core;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Skyra.Core.Utils;
-using Spectacles.NET.Types;
 
 namespace Skyra.Commands
 {
@@ -15,15 +14,14 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(Message message, CommandInfo command)
+		public async Task RunAsync(CoreMessage message, CommandInfo command)
 		{
-			await message.SendAsync(Client,
-				$"The usage(s) for {command.Name} are: {GetUsage(command)}.");
+			await message.SendLocaleAsync(Client, "UsageCommand", new object?[] {command.Name, GetUsage(command)});
 		}
 
 		private static string GetUsage(CommandInfo command)
 		{
-			return string.Join(", ", command.Usage.Overloads.Select(o => $"`Skyra, {command.Name} {o}`"));
+			return string.Join("\n", command.Usage.Overloads.Select(o => $"- `Skyra, {command.Name} {o}`"));
 		}
 	}
 }

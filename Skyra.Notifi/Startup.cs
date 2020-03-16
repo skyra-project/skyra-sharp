@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Skyra.Notifi.Core.Database;
 using Skyra.Notifi.Core.Models;
 
 namespace Skyra.Notifi
@@ -20,6 +21,8 @@ namespace Skyra.Notifi
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services
+				.AddEntityFrameworkNpgsql()
+				.AddDbContext<NotifiDatabaseContext>()
 				.AddSingleton<NotifiService>()
 				.AddControllers();
 		}
@@ -32,13 +35,11 @@ namespace Skyra.Notifi
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.UseHttpsRedirection();
-
-			app.UseRouting();
-
-			app.UseAuthorization();
-
-			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+			app
+				.UseHttpsRedirection()
+				.UseRouting()
+				.UseAuthorization()
+				.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 		}
 	}
 }

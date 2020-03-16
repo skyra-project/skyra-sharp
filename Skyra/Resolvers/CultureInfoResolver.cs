@@ -20,7 +20,8 @@ namespace Skyra.Resolvers
 			string content)
 		{
 			if (Client.Cultures.TryGetValue(content, out var resolved)) return Task.FromResult(resolved);
-			throw new ArgumentException($"I could not resolve a language from {content}");
+			return Task.FromException<CultureInfo>(
+				new ArgumentException($"I could not resolve a language from {content}"));
 		}
 	}
 }

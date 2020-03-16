@@ -19,19 +19,19 @@ namespace Skyra.Resolvers
 		{
 			if (!int.TryParse(content, out var resolved))
 			{
-				throw new ArgumentException($"I could not resolve a number from {content}");
+				return Task.FromException<int>(new ArgumentException($"I could not resolve a number from {content}"));
 			}
 
 			if (resolved < argument.Minimum)
 			{
-				throw new ArgumentException(
-					$"{resolved.ToString()} is too big, you must give a number bigger or equals than {argument.Minimum}.");
+				return Task.FromException<int>(new ArgumentException(
+					$"{resolved.ToString()} is too small, you must give a number bigger or equals than {argument.Minimum.ToString()}."));
 			}
 
 			if (resolved > argument.Maximum)
 			{
-				throw new ArgumentException(
-					$"{resolved.ToString()} is too small, you must give a number smaller or equals than {argument.Maximum}.");
+				return Task.FromException<int>(new ArgumentException(
+					$"{resolved.ToString()} is too big, you must give a number smaller or equals than {argument.Maximum.ToString()}."));
 			}
 
 			return Task.FromResult(resolved);

@@ -88,6 +88,10 @@ namespace Skyra.Core.Structures.Usage
 			{
 				throw exception.InnerException ?? exception;
 			}
+			catch (AggregateException exception)
+			{
+				throw exception.InnerException ?? exception;
+			}
 		}
 
 		private object? ResolveNextArgument()

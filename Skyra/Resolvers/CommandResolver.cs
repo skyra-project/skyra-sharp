@@ -19,7 +19,8 @@ namespace Skyra.Resolvers
 			string content)
 		{
 			if (Client.Commands.TryGetValue(content, out var resolved)) return Task.FromResult(resolved);
-			throw new ArgumentException($"I could not resolve a command from {content}");
+			return Task.FromException<CommandInfo>(
+				new ArgumentException($"I could not resolve a command from {content}"));
 		}
 	}
 }

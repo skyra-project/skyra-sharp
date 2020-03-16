@@ -18,7 +18,7 @@ namespace Skyra.Resolvers
 		public Task<DateTime> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument, string content)
 		{
 			if (DateTime.TryParse(content, out var resolved)) return Task.FromResult(resolved);
-			throw new ArgumentException($"I could not resolve a date from {content}");
+			return Task.FromException<DateTime>(new ArgumentException($"I could not resolve a date from {content}"));
 		}
 	}
 }

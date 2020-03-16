@@ -63,9 +63,9 @@ namespace Skyra.Core.Structures.Usage
 				var hasMinimum = Minimum != int.MinValue;
 				var hasMaximum = Maximum != int.MaxValue;
 
-				if (hasMinimum && hasMaximum) return $"{{{Minimum},{Maximum}}}";
-				if (hasMinimum) return $"{{{Minimum}...}}";
-				return hasMaximum ? $"{{...{Maximum}}}" : "";
+				if (hasMinimum && hasMaximum) return $"{{{Minimum.ToString()},{Maximum.ToString()}}}";
+				if (hasMinimum) return $"{{{Minimum.ToString()}...}}";
+				return hasMaximum ? $"{{...{Maximum.ToString()}}}" : "";
 			}
 		}
 
@@ -77,9 +77,9 @@ namespace Skyra.Core.Structures.Usage
 				var hasMinimum = MinimumValues != CalculatedMinimumValues;
 				var hasMaximum = MaximumValues != uint.MaxValue;
 
-				if (hasMinimum && hasMaximum) return $"<<{MinimumValues},{MaximumValues}>>";
-				if (hasMinimum) return $"<<{MinimumValues}...>>";
-				return hasMaximum ? $"<<...{MaximumValues}>>" : "...";
+				if (hasMinimum && hasMaximum) return $"<<{MinimumValues.ToString()},{MaximumValues.ToString()}>>";
+				if (hasMinimum) return $"<<{MinimumValues.ToString()}...>>";
+				return hasMaximum ? $"<<...{MaximumValues.ToString()}>>" : "...";
 			}
 		}
 

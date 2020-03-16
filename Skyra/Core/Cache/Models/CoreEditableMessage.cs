@@ -28,7 +28,7 @@ namespace Skyra.Core.Cache.Models
 			return new CoreEditableMessage(Id, OwnMessageId);
 		}
 
-		public async Task<CoreMessage?> GetMessageAsync(Client client)
+		public async Task<CoreMessage?> GetMessageAsync(IClient client)
 		{
 			return await client.Cache.Messages.GetAsync(OwnMessageId.ToString());
 		}

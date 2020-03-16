@@ -10,7 +10,7 @@ namespace Skyra.Events
 	[Event]
 	public class ArgumentErrorEvent : StructureBase
 	{
-		public ArgumentErrorEvent(Client client) : base(client)
+		public ArgumentErrorEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnArgumentErrorAsync += RunAsync;
 		}

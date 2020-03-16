@@ -74,7 +74,7 @@ namespace Skyra.Core.Cache.Models
 				guildMember.Nickname, joinedAt, guildMember.Deaf, guildMember.Mute);
 		}
 
-		public async Task<CoreUser?> GetUserAsync(Client client)
+		public async Task<CoreUser?> GetUserAsync(IClient client)
 		{
 			return await client.Cache.Users.GetAsync(Id.ToString());
 		}

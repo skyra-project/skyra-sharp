@@ -11,7 +11,7 @@ namespace Skyra.Inhibitors
 	[Inhibitor]
 	public class DeveloperInhibitor : StructureBase, IInhibitor
 	{
-		public DeveloperInhibitor(Client client) : base(client)
+		public DeveloperInhibitor(IClient client) : base(client)
 		{
 		}
 

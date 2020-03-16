@@ -2,11 +2,11 @@ namespace Skyra.Core.Structures
 {
 	public abstract class StructureBase
 	{
-		protected StructureBase(Client client)
+		protected StructureBase(IClient client)
 		{
 			Client = client;
 		}
 
-		protected Client Client { get; }
+		protected IClient Client { get; }
 	}
 }

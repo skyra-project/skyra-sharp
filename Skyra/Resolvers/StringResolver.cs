@@ -11,7 +11,7 @@ namespace Skyra.Resolvers
 	[Resolver(typeof(string), "string")]
 	public class StringResolver : StructureBase
 	{
-		public StringResolver(Client client) : base(client)
+		public StringResolver(IClient client) : base(client)
 		{
 		}
 

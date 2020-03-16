@@ -9,7 +9,7 @@ namespace Skyra.Events.Raw
 	[Event]
 	public class RawGuildDeleteEvent : StructureBase
 	{
-		public RawGuildDeleteEvent(Client client) : base(client)
+		public RawGuildDeleteEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnRawGuildDelete += Run;
 		}

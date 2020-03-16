@@ -15,7 +15,7 @@ namespace Skyra.Resolvers
 		private static readonly string[] Truths = {"1", "t", "true", "+", "y", "yes"};
 		private static readonly string[] Falses = {"0", "f", "false", "-", "n", "no"};
 
-		public BoolResolver(Client client) : base(client)
+		public BoolResolver(IClient client) : base(client)
 		{
 		}
 

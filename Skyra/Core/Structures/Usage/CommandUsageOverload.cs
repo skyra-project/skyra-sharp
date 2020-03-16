@@ -5,7 +5,7 @@ namespace Skyra.Core.Structures.Usage
 {
 	public sealed class CommandUsageOverload
 	{
-		internal CommandUsageOverload(Client client, MethodBase methodInfo)
+		internal CommandUsageOverload(IClient client, MethodBase methodInfo)
 		{
 			Method = methodInfo;
 			Arguments = methodInfo

@@ -79,17 +79,17 @@ namespace Skyra.Core.Cache.Models
 				voiceState.SelfDeaf, voiceState.SelfMute);
 		}
 
-		public async Task<CoreGuild?> GetGuildAsync(Client client)
+		public async Task<CoreGuild?> GetGuildAsync(IClient client)
 		{
 			return await client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
-		public async Task<CoreGuildChannel?> GetChannelAsync(Client client)
+		public async Task<CoreGuildChannel?> GetChannelAsync(IClient client)
 		{
 			return await client.Cache.GuildChannels.GetAsync(GuildId.ToString());
 		}
 
-		public async Task<CoreUser?> GetUserAsync(Client client)
+		public async Task<CoreUser?> GetUserAsync(IClient client)
 		{
 			return await client.Cache.Users.GetAsync(UserId.ToString());
 		}

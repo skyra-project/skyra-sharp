@@ -9,7 +9,7 @@ namespace Skyra.Events.Raw
 	[Event]
 	public class RawGuildCreateEvent : StructureBase
 	{
-		public RawGuildCreateEvent(Client client) : base(client)
+		public RawGuildCreateEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnRawGuildCreate += Run;
 		}

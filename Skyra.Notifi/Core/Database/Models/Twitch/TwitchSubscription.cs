@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Skyra.Notifi.Core.Database.Models.Twitch
 {
-	public abstract class TwitchSubscription
+	public sealed class TwitchSubscription
 	{
 		[Key]
 		[Column("id")]

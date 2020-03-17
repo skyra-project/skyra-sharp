@@ -6,7 +6,7 @@ namespace Skyra.Core.Structures.Usage
 {
 	public sealed class CommandUsageOverloadArgument
 	{
-		internal CommandUsageOverloadArgument(Client client, ParameterInfo parameterInfo)
+		internal CommandUsageOverloadArgument(IClient client, ParameterInfo parameterInfo)
 		{
 			ArgumentType = parameterInfo.ParameterType;
 			var innerType = ArgumentType.GetElementType() ?? ArgumentType;
@@ -27,7 +27,7 @@ namespace Skyra.Core.Structures.Usage
 			MaximumValues = attribute?.MaximumValues ?? uint.MaxValue;
 		}
 
-		private Client Client { get; }
+		private IClient Client { get; }
 		internal ResolverInfo Resolver { get; }
 		internal string Name { get; }
 		internal Type ArgumentType { get; }

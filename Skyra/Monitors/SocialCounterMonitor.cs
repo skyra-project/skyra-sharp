@@ -10,7 +10,7 @@ namespace Skyra.Monitors
 	[Monitor(IgnoreOthers = false, IgnoreEdits = false)]
 	public class SocialCounterMonitor : StructureBase, IMonitor
 	{
-		public SocialCounterMonitor(Client client) : base(client)
+		public SocialCounterMonitor(IClient client) : base(client)
 		{
 		}
 

@@ -18,11 +18,12 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core
 {
-	public sealed class Client
+	public sealed class Client : IClient
 	{
 		internal Client(ClientOptions clientOptions)
 		{
-			Cultures = Loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
+			var loader = new Loader();
+			Cultures = loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
 
@@ -48,11 +49,11 @@ namespace Skyra.Core
 				.AddSingleton(this)
 				.BuildServiceProvider();
 
-			Inhibitors = Loader.LoadInhibitors(this);
-			Events = Loader.LoadEvents(this);
-			Monitors = Loader.LoadMonitors(this);
-			Resolvers = Loader.LoadResolvers(this);
-			Commands = Loader.LoadCommands(this);
+			Inhibitors = loader.LoadInhibitors(this);
+			Events = loader.LoadEvents(this);
+			Monitors = loader.LoadMonitors(this);
+			Resolvers = loader.LoadResolvers(this);
+			Commands = loader.LoadCommands(this);
 		}
 
 		public Dictionary<string, InhibitorInfo> Inhibitors { get; }

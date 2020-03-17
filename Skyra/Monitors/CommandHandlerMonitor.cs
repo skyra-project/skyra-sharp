@@ -17,7 +17,7 @@ namespace Skyra.Monitors
 	{
 		private const string DefaultPrefix = "t!";
 
-		public CommandHandlerMonitor(Client client) : base(client)
+		public CommandHandlerMonitor(IClient client) : base(client)
 		{
 		}
 

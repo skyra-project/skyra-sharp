@@ -9,7 +9,7 @@ namespace Skyra.Events
 	[Event]
 	public class CommandUnknownEvent : StructureBase
 	{
-		public CommandUnknownEvent(Client client) : base(client)
+		public CommandUnknownEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnCommandUnknownAsync += RunAsync;
 		}

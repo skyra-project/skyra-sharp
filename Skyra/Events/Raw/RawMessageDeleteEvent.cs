@@ -9,7 +9,7 @@ namespace Skyra.Events.Raw
 	[Event]
 	public class RawMessageDeleteEvent : StructureBase
 	{
-		public RawMessageDeleteEvent(Client client) : base(client)
+		public RawMessageDeleteEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnRawMessageDelete += Run;
 		}

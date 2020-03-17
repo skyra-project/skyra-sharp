@@ -9,7 +9,7 @@ namespace Skyra.Events
 	[Event]
 	public class ReadyEvent : StructureBase
 	{
-		public ReadyEvent(Client client) : base(client)
+		public ReadyEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnReady += Run;
 		}

@@ -10,7 +10,7 @@ namespace Skyra.Events
 	[Event]
 	public class CommandArgumentExceptionEvent : StructureBase
 	{
-		public CommandArgumentExceptionEvent(Client client) : base(client)
+		public CommandArgumentExceptionEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnCommandArgumentExceptionAsync += RunAsync;
 		}

@@ -10,7 +10,7 @@ namespace Skyra.Commands
 	[Command(Delimiter = " ")]
 	public class HelpCommand : StructureBase
 	{
-		public HelpCommand(Client client) : base(client)
+		public HelpCommand(IClient client) : base(client)
 		{
 		}
 

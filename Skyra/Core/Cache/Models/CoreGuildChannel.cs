@@ -65,7 +65,7 @@ namespace Skyra.Core.Cache.Models
 				channel.PermissionOverwrites.Select(CorePermissionOverwrite.From).ToArray());
 		}
 
-		public async Task<CoreGuild?> GetGuildAsync(Client client)
+		public async Task<CoreGuild?> GetGuildAsync(IClient client)
 		{
 			return Guild ??= await client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}

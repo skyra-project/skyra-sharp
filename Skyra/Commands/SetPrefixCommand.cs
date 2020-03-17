@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
 using Skyra.Core.Database.Models;
@@ -11,7 +12,7 @@ namespace Skyra.Commands
 	[Command(Inhibitors = new[] {"Developer"})]
 	public class SetPrefixCommand : StructureBase
 	{
-		public SetPrefixCommand(Client client) : base(client)
+		public SetPrefixCommand(IClient client) : base(client)
 		{
 		}
 

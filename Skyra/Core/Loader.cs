@@ -14,52 +14,58 @@ using EventInfo = Skyra.Core.Structures.EventInfo;
 
 namespace Skyra.Core
 {
-	internal static class Loader
+	internal sealed class Loader
 	{
-		public static ImmutableDictionary<string, CultureInfo> LoadCultures([NotNull] IEnumerable<string> cultures)
+		public Assembly Assembly { get; }
+
+		public Loader(Assembly? assembly = null)
+		{
+			Assembly = assembly ?? Assembly.GetExecutingAssembly();
+		}
+		public ImmutableDictionary<string, CultureInfo> LoadCultures([NotNull] IEnumerable<string> cultures)
 		{
 			return cultures.ToImmutableDictionary(x => x, x => new CultureInfo(x));
 		}
 
-		public static Dictionary<string, InhibitorInfo> LoadInhibitors([NotNull] Client client)
+		public Dictionary<string, InhibitorInfo> LoadInhibitors([NotNull] IClient client)
 		{
-			return Assembly.GetExecutingAssembly()
+			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<InhibitorAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type))
+				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type) as IInhibitor)
 				.Select(ToInhibitorInfo).ToDictionary(x => x.Name, x => x);
 		}
 
-		public static Dictionary<string, CommandInfo> LoadCommands([NotNull] Client client)
+		public Dictionary<string, CommandInfo> LoadCommands([NotNull] IClient client)
 		{
-			return Assembly.GetExecutingAssembly()
+			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
 				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type))
 				.Select(x => ToCommandInfo(client, x)).ToDictionary(x => x.Name, x => x);
 		}
 
-		public static Dictionary<string, EventInfo> LoadEvents([NotNull] Client client)
+		public Dictionary<string, EventInfo> LoadEvents([NotNull] IClient client)
 		{
-			return Assembly.GetExecutingAssembly()
+			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<EventAttribute>() != null)
 				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type))
 				.Select(ToEventInfo).ToDictionary(x => x.Name, x => x);
 		}
 
-		public static Dictionary<string, MonitorInfo> LoadMonitors([NotNull] Client client)
+		public Dictionary<string, MonitorInfo> LoadMonitors([NotNull] IClient client)
 		{
-			return Assembly.GetExecutingAssembly()
+			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<MonitorAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type))
+				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type) as IMonitor)
 				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
 		}
 
-		public static Dictionary<Type, ResolverInfo> LoadResolvers([NotNull] Client client)
+		public Dictionary<Type, ResolverInfo> LoadResolvers([NotNull] IClient client)
 		{
-			return Assembly.GetExecutingAssembly()
+			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
 				.Select(type => ActivatorUtilities.CreateInstance(client.ServiceProvider, type))
@@ -67,7 +73,7 @@ namespace Skyra.Core
 				.ToDictionary(x => x.Type, x => x);
 		}
 
-		private static ResolverInfo ToArgumentInfo(object argument)
+		private ResolverInfo ToArgumentInfo(object argument)
 		{
 			var attribute = argument.GetType().GetCustomAttribute<ResolverAttribute>()!;
 
@@ -80,18 +86,18 @@ namespace Skyra.Core
 			};
 		}
 
-		private static InhibitorInfo ToInhibitorInfo(object inhibitor)
+		private InhibitorInfo ToInhibitorInfo(IInhibitor inhibitor)
 		{
 			var attribute = inhibitor.GetType().GetCustomAttribute<InhibitorAttribute>()!;
 
 			return new InhibitorInfo
 			{
 				Name = attribute.Name ?? inhibitor.GetType().Name.Replace("Inhibitor", ""),
-				Instance = (IInhibitor) inhibitor
+				Instance = inhibitor
 			};
 		}
 
-		private static EventInfo ToEventInfo(object @event)
+		private EventInfo ToEventInfo(object @event)
 		{
 			var attribute = @event.GetType().GetCustomAttribute<EventAttribute>()!;
 
@@ -102,12 +108,12 @@ namespace Skyra.Core
 			};
 		}
 
-		private static MonitorInfo ToMonitorInfo(object monitor)
+		private MonitorInfo ToMonitorInfo(IMonitor monitor)
 		{
 			var attribute = monitor.GetType().GetCustomAttribute<MonitorAttribute>()!;
 			return new MonitorInfo
 			{
-				Instance = (IMonitor) monitor,
+				Instance = monitor,
 				Name = attribute.Name ?? monitor.GetType().Name,
 				AllowedTypes = attribute.AllowedTypes,
 				IgnoreBots = attribute.IgnoreBots,
@@ -118,7 +124,7 @@ namespace Skyra.Core
 			};
 		}
 
-		private static CommandInfo ToCommandInfo(Client client, object command)
+		private CommandInfo ToCommandInfo(IClient client, object command)
 		{
 			var t = command.GetType();
 			var commandInfo = t.GetCustomAttribute<CommandAttribute>()!;

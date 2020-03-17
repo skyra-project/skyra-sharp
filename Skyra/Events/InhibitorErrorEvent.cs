@@ -10,7 +10,7 @@ namespace Skyra.Events
 	[Event]
 	public class InhibitorErrorEvent : StructureBase
 	{
-		public InhibitorErrorEvent(Client client) : base(client)
+		public InhibitorErrorEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnInhibitorExceptionAsync += RunAsync;
 		}

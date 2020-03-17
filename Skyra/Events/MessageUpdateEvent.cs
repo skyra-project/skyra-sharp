@@ -11,7 +11,7 @@ namespace Skyra.Events
 	[Event]
 	public class MessageUpdateEvent : StructureBase
 	{
-		public MessageUpdateEvent(Client client) : base(client)
+		public MessageUpdateEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnMessageUpdate += Run;
 		}

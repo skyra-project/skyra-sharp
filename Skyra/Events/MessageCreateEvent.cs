@@ -11,7 +11,7 @@ namespace Skyra.Events
 	[Event]
 	public class MessageCreateEvent : StructureBase
 	{
-		public MessageCreateEvent(Client client) : base(client)
+		public MessageCreateEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnMessageCreate += Run;
 		}

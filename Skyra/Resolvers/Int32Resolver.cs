@@ -11,7 +11,7 @@ namespace Skyra.Resolvers
 	[Resolver(typeof(int), "integer")]
 	public class Int32Resolver : StructureBase
 	{
-		public Int32Resolver(Client client) : base(client)
+		public Int32Resolver(IClient client) : base(client)
 		{
 		}
 

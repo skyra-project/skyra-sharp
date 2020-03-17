@@ -9,7 +9,7 @@ namespace Skyra.Events
 	[Event]
 	public class CommandRunEvent : StructureBase
 	{
-		public CommandRunEvent(Client client) : base(client)
+		public CommandRunEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnCommandRunAsync += RunAsync;
 		}

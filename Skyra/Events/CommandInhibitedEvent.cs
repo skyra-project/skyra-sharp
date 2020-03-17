@@ -10,7 +10,7 @@ namespace Skyra.Events
 	[Event]
 	public class CommandInhibitedEvent : StructureBase
 	{
-		public CommandInhibitedEvent(Client client) : base(client)
+		public CommandInhibitedEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnCommandInhibitedAsync += RunAsync;
 		}

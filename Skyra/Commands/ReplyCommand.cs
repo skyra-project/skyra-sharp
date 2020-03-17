@@ -11,7 +11,7 @@ namespace Skyra.Commands
 	[Command(Delimiter = " ", FlagSupport = true)]
 	public class ReplyCommand : StructureBase
 	{
-		public ReplyCommand(Client client) : base(client)
+		public ReplyCommand(IClient client) : base(client)
 		{
 		}
 

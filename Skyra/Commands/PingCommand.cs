@@ -10,7 +10,7 @@ namespace Skyra.Commands
 	[Command]
 	public class PingCommand : StructureBase
 	{
-		public PingCommand(Client client) : base(client)
+		public PingCommand(IClient client) : base(client)
 		{
 		}
 

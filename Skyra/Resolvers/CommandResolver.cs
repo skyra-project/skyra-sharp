@@ -11,7 +11,7 @@ namespace Skyra.Resolvers
 	[Resolver(typeof(CommandInfo), "command")]
 	public class CommandResolver : StructureBase
 	{
-		public CommandResolver(Client client) : base(client)
+		public CommandResolver(IClient client) : base(client)
 		{
 		}
 

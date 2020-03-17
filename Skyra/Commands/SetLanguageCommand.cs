@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Threading.Tasks;
+using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
 using Skyra.Core.Database.Models;
@@ -12,7 +13,7 @@ namespace Skyra.Commands
 	[Command(Inhibitors = new[] {"Developer"})]
 	public class SetLanguageCommand : StructureBase
 	{
-		public SetLanguageCommand(Client client) : base(client)
+		public SetLanguageCommand(IClient client) : base(client)
 		{
 		}
 

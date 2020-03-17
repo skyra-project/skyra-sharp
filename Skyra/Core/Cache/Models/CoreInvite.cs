@@ -39,12 +39,12 @@ namespace Skyra.Core.Cache.Models
 			return new CoreInvite(invite.Code, ulong.Parse(invite.Guild.Id), ulong.Parse(invite.Channel.Id));
 		}
 
-		public async Task<CoreGuild?> GetGuildAsync(Client client)
+		public async Task<CoreGuild?> GetGuildAsync(IClient client)
 		{
 			return await client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
-		public async Task<CoreGuildChannel?> GetChannelAsync(Client client)
+		public async Task<CoreGuildChannel?> GetChannelAsync(IClient client)
 		{
 			return await client.Cache.GuildChannels.GetAsync(ChannelId.ToString());
 		}

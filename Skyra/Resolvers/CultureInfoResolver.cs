@@ -12,7 +12,7 @@ namespace Skyra.Resolvers
 	[Resolver(typeof(CultureInfo), "language")]
 	public class CultureInfoResolver : StructureBase
 	{
-		public CultureInfoResolver(Client client) : base(client)
+		public CultureInfoResolver(IClient client) : base(client)
 		{
 		}
 

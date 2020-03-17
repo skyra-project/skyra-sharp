@@ -10,7 +10,7 @@ namespace Skyra.Events.Raw
 	[Event]
 	public class RawGuildUpdateEvent : StructureBase
 	{
-		public RawGuildUpdateEvent(Client client) : base(client)
+		public RawGuildUpdateEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnRawGuildUpdate += Run;
 		}

@@ -6,16 +6,16 @@ namespace Skyra.Core.Structures.Usage
 {
 	public sealed class CommandUsage
 	{
-		internal CommandUsage(Client client, object instance)
+		internal CommandUsage(IClient client, object instance)
 		{
 			Client = client;
 			Overloads = GetOverloads(Client, instance.GetType());
 		}
 
-		private Client Client { get; }
+		private IClient Client { get; }
 		internal CommandUsageOverload[] Overloads { get; }
 
-		private static CommandUsageOverload[] GetOverloads(Client client, Type instanceType)
+		private static CommandUsageOverload[] GetOverloads(IClient client, Type instanceType)
 		{
 			return instanceType.GetRuntimeMethods()
 				.Where(x => x.Name == "RunAsync")

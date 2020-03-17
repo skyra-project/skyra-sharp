@@ -67,17 +67,17 @@ namespace Skyra.Core.Cache.Models
 				guild.MemberCount, guild.OwnerId);
 		}
 
-		public async Task<CoreGuildChannel[]> GetChannelsAsync(Client client)
+		public async Task<CoreGuildChannel[]> GetChannelsAsync(IClient client)
 		{
 			return await client.Cache.GuildChannels.GetAllAsync(Id.ToString());
 		}
 
-		public async Task<CoreGuildRole[]> GetRolesAsync(Client client)
+		public async Task<CoreGuildRole[]> GetRolesAsync(IClient client)
 		{
 			return await client.Cache.GuildRoles.GetAllAsync(Id.ToString());
 		}
 
-		public async Task<CoreGuildMember[]> GetMembersAsync(Client client)
+		public async Task<CoreGuildMember[]> GetMembersAsync(IClient client)
 		{
 			return await client.Cache.GuildMembers.GetAllAsync(Id.ToString());
 		}

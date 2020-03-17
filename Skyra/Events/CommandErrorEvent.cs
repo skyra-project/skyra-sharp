@@ -10,7 +10,7 @@ namespace Skyra.Events
 	[Event]
 	public class CommandErrorEvent : StructureBase
 	{
-		public CommandErrorEvent(Client client) : base(client)
+		public CommandErrorEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnCommandErrorAsync += RunAsync;
 		}

@@ -10,7 +10,7 @@ namespace Skyra.Events.Raw
 	[Event]
 	public class RawMessageUpdateEvent : StructureBase
 	{
-		public RawMessageUpdateEvent(Client client) : base(client)
+		public RawMessageUpdateEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnRawMessageUpdate += Run;
 		}

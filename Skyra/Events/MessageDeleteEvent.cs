@@ -9,7 +9,7 @@ namespace Skyra.Events
 	[Event]
 	public class MessageDeleteEvent : StructureBase
 	{
-		public MessageDeleteEvent(Client client) : base(client)
+		public MessageDeleteEvent(IClient client) : base(client)
 		{
 			Client.EventHandler.OnMessageDelete += Run;
 		}

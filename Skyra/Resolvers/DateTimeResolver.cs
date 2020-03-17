@@ -11,7 +11,7 @@ namespace Skyra.Resolvers
 	[Resolver(typeof(DateTime), "date")]
 	public class DateTimeResolver : StructureBase
 	{
-		public DateTimeResolver(Client client) : base(client)
+		public DateTimeResolver(IClient client) : base(client)
 		{
 		}
 

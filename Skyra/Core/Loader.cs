@@ -44,7 +44,7 @@ namespace Skyra.Core
 			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<CommandAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(Client.ServiceProvider, type))
+				.Select(type => (ActivatorUtilities.CreateInstance(Client.ServiceProvider, type) as StructureBase)!)
 				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
@@ -53,7 +53,7 @@ namespace Skyra.Core
 			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<EventAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(Client.ServiceProvider, type))
+				.Select(type => (ActivatorUtilities.CreateInstance(Client.ServiceProvider, type) as StructureBase)!)
 				.Select(ToEventInfo).ToDictionary(x => x.Name, x => x);
 		}
 
@@ -71,11 +71,11 @@ namespace Skyra.Core
 			return Assembly
 				.ExportedTypes
 				.Where(type => type.GetCustomAttribute<ResolverAttribute>() != null)
-				.Select(type => ActivatorUtilities.CreateInstance(Client.ServiceProvider, type))
+				.Select(type => (ActivatorUtilities.CreateInstance(Client.ServiceProvider, type) as StructureBase)!)
 				.Select(ToArgumentInfo).ToDictionary(x => x.Type, x => x);
 		}
 
-		private ResolverInfo ToArgumentInfo([NotNull] object argument)
+		private ResolverInfo ToArgumentInfo([NotNull] StructureBase argument)
 		{
 			var attribute = argument.GetType().GetCustomAttribute<ResolverAttribute>()!;
 
@@ -99,7 +99,7 @@ namespace Skyra.Core
 			};
 		}
 
-		private EventInfo ToEventInfo([NotNull] object @event)
+		private EventInfo ToEventInfo([NotNull] StructureBase @event)
 		{
 			var attribute = @event.GetType().GetCustomAttribute<EventAttribute>()!;
 
@@ -126,7 +126,7 @@ namespace Skyra.Core
 			};
 		}
 
-		private CommandInfo ToCommandInfo(object command)
+		private CommandInfo ToCommandInfo(StructureBase command)
 		{
 			var t = command.GetType();
 			var commandInfo = t.GetCustomAttribute<CommandAttribute>()!;

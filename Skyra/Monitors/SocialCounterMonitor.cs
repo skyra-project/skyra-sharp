@@ -18,7 +18,7 @@ namespace Skyra.Monitors
 		{
 			Client.Logger.Information(
 				"Received Message [{Id}] from {Username} with content '{Content}'.", message.Id,
-				(await message.GetAuthorAsync(Client))?.Username ?? "??", message.Content);
+				(await message.GetAuthorAsync())?.Username ?? "??", message.Content);
 		}
 	}
 }

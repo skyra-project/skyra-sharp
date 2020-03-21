@@ -5,7 +5,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class GuildRoleStore : HashMapCacheStoreBase<CoreGuildRole>
 	{
-		internal GuildRoleStore(CacheClient client) : base(client, "roles")
+		internal GuildRoleStore(CacheClient context) : base(context, "roles")
 		{
 		}
 

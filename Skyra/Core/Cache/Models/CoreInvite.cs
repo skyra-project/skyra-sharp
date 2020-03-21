@@ -6,8 +6,9 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreInvite : ICoreBaseStructure<CoreInvite>
 	{
-		public CoreInvite(string code, ulong guildId, ulong channelId)
+		public CoreInvite(IClient client, string code, ulong guildId, ulong channelId)
 		{
+			Client = client;
 			Code = code;
 			GuildId = guildId;
 			ChannelId = channelId;
@@ -22,6 +23,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("cid")]
 		public ulong ChannelId { get; set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreInvite Patch(CoreInvite value)
 		{
 			return this;
@@ -29,24 +33,25 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreInvite Clone()
 		{
-			return new CoreInvite(Code,
+			return new CoreInvite(Client,
+				Code,
 				GuildId,
 				ChannelId);
 		}
 
-		public static CoreInvite From(Invite invite)
+		public static CoreInvite From(IClient client, Invite invite)
 		{
-			return new CoreInvite(invite.Code, ulong.Parse(invite.Guild.Id), ulong.Parse(invite.Channel.Id));
+			return new CoreInvite(client, invite.Code, ulong.Parse(invite.Guild.Id), ulong.Parse(invite.Channel.Id));
 		}
 
-		public async Task<CoreGuild?> GetGuildAsync(IClient client)
+		public async Task<CoreGuild?> GetGuildAsync()
 		{
-			return await client.Cache.Guilds.GetAsync(GuildId.ToString());
+			return await Client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
-		public async Task<CoreGuildChannel?> GetChannelAsync(IClient client)
+		public async Task<CoreGuildChannel?> GetChannelAsync()
 		{
-			return await client.Cache.GuildChannels.GetAsync(ChannelId.ToString());
+			return await Client.Cache.GuildChannels.GetAsync(ChannelId.ToString());
 		}
 	}
 }

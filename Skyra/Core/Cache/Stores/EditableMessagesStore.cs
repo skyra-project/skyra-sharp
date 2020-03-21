@@ -5,7 +5,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class EditableMessagesStore : HashMapCacheStoreBase<CoreEditableMessage>
 	{
-		internal EditableMessagesStore(CacheClient client) : base(client, "editable_messages")
+		internal EditableMessagesStore(CacheClient context) : base(context, "editable_messages")
 		{
 		}
 

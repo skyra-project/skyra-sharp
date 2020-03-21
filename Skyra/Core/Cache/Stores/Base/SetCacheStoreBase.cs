@@ -9,7 +9,7 @@ namespace Skyra.Core.Cache.Stores.Base
 {
 	public abstract class SetCacheStoreBase<T> : CacheStoreBase<T> where T : class, ICoreBaseStructure<T>
 	{
-		protected SetCacheStoreBase(CacheClient client, string prefix) : base(client, prefix)
+		protected SetCacheStoreBase(CacheClient context, string prefix) : base(context, prefix)
 		{
 		}
 

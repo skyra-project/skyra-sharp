@@ -18,8 +18,7 @@ namespace Skyra.Events
 		private async Task RunAsync(CoreMessage message, string command, Exception exception)
 		{
 			Client.Logger.Error("[INHIBITORS]: {Name} | {Exception}", command, exception);
-			await message.SendAsync(Client,
-				$"Inhibitor Error: {exception.InnerException?.Message ?? exception.Message}");
+			await message.SendAsync($"Inhibitor Error: {exception.InnerException?.Message ?? exception.Message}");
 		}
 	}
 }

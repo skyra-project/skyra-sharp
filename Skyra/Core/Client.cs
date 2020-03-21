@@ -25,7 +25,7 @@ namespace Skyra.Core
 			var loader = new Loader(this);
 			Cultures = loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
 			EventHandler = new EventHandler();
-			Cache = new CacheClient(clientOptions.RedisPrefix);
+			Cache = new CacheClient(this, clientOptions.RedisPrefix);
 
 			Id = null;
 			Owners = clientOptions.Owners;

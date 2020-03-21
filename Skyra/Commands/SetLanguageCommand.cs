@@ -33,7 +33,7 @@ namespace Skyra.Commands
 			}
 
 			await db.SaveChangesAsync();
-			await message.SendLocaleAsync(Client, "SetLanguage", language.Name);
+			await message.SendLocaleAsync("SetLanguage", language.Name);
 		}
 	}
 }

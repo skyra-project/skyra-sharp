@@ -6,9 +6,10 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreVoiceState : ICoreBaseStructure<CoreVoiceState>
 	{
-		public CoreVoiceState(string sessionId, bool deaf, bool mute, bool suppress, ulong userId, ulong channelId,
-			ulong guildId, bool selfDeaf, bool selfMute)
+		public CoreVoiceState(IClient client, string sessionId, bool deaf, bool mute, bool suppress, ulong userId,
+			ulong channelId, ulong guildId, bool selfDeaf, bool selfMute)
 		{
+			Client = client;
 			SessionId = sessionId;
 			Deaf = deaf;
 			Mute = mute;
@@ -47,6 +48,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("sm")]
 		public bool SelfMute { get; private set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreVoiceState Patch(CoreVoiceState value)
 		{
 			SessionId = value.SessionId;
@@ -61,7 +65,8 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreVoiceState Clone()
 		{
-			return new CoreVoiceState(SessionId,
+			return new CoreVoiceState(Client,
+				SessionId,
 				Deaf,
 				Mute,
 				Suppress,
@@ -72,26 +77,27 @@ namespace Skyra.Core.Cache.Models
 				SelfMute);
 		}
 
-		public static CoreVoiceState From(VoiceState voiceState)
+		public async Task<CoreGuild?> GetGuildAsync()
 		{
-			return new CoreVoiceState(voiceState.SessionId, voiceState.Deaf, voiceState.Mute, voiceState.Suppress,
+			return await Client.Cache.Guilds.GetAsync(GuildId.ToString());
+		}
+
+		public async Task<CoreGuildChannel?> GetChannelAsync()
+		{
+			return await Client.Cache.GuildChannels.GetAsync(GuildId.ToString());
+		}
+
+		public async Task<CoreUser?> GetUserAsync()
+		{
+			return await Client.Cache.Users.GetAsync(UserId.ToString());
+		}
+
+		public static CoreVoiceState From(IClient client, VoiceState voiceState)
+		{
+			return new CoreVoiceState(client, voiceState.SessionId, voiceState.Deaf, voiceState.Mute,
+				voiceState.Suppress,
 				ulong.Parse(voiceState.UserId), ulong.Parse(voiceState.ChannelId), ulong.Parse(voiceState.UserId),
 				voiceState.SelfDeaf, voiceState.SelfMute);
-		}
-
-		public async Task<CoreGuild?> GetGuildAsync(IClient client)
-		{
-			return await client.Cache.Guilds.GetAsync(GuildId.ToString());
-		}
-
-		public async Task<CoreGuildChannel?> GetChannelAsync(IClient client)
-		{
-			return await client.Cache.GuildChannels.GetAsync(GuildId.ToString());
-		}
-
-		public async Task<CoreUser?> GetUserAsync(IClient client)
-		{
-			return await client.Cache.Users.GetAsync(UserId.ToString());
 		}
 	}
 }

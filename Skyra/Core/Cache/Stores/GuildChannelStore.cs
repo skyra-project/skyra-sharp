@@ -5,7 +5,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class GuildChannelStore : HashMapCacheStoreBase<CoreGuildChannel>
 	{
-		internal GuildChannelStore(CacheClient client) : base(client, "gchannels")
+		internal GuildChannelStore(CacheClient context) : base(context, "gchannels")
 		{
 		}
 

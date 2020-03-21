@@ -5,7 +5,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class VoiceStateStore : HashMapCacheStoreBase<CoreVoiceState>
 	{
-		internal VoiceStateStore(CacheClient client) : base(client, "voiceStates")
+		internal VoiceStateStore(CacheClient context) : base(context, "voiceStates")
 		{
 		}
 

@@ -7,8 +7,9 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreGuildChannel : CoreChannel, ICoreBaseStructure<CoreGuildChannel>
 	{
-		public CoreGuildChannel(ulong id, ChannelType type, CoreGuild? guild, ulong guildId, string name,
-			int? rawPosition, ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(id, type)
+		public CoreGuildChannel(IClient client, ulong id, ChannelType type, CoreGuild? guild, ulong guildId,
+			string name, int? rawPosition, ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(
+			client, id, type)
 		{
 			Guild = guild;
 			GuildId = guildId;
@@ -48,7 +49,8 @@ namespace Skyra.Core.Cache.Models
 
 		public new CoreGuildChannel Clone()
 		{
-			return new CoreGuildChannel(Id,
+			return new CoreGuildChannel(Client,
+				Id,
 				Type,
 				Guild,
 				GuildId,
@@ -58,16 +60,17 @@ namespace Skyra.Core.Cache.Models
 				PermissionOverwrites);
 		}
 
-		public new static CoreGuildChannel From(Channel channel)
-		{
-			return new CoreGuildChannel(ulong.Parse(channel.Id), channel.Type, null, ulong.Parse(channel.GuildId),
-				channel.Name, channel.Position, ulong.Parse(channel.ParentId),
-				channel.PermissionOverwrites.Select(CorePermissionOverwrite.From).ToArray());
-		}
-
 		public async Task<CoreGuild?> GetGuildAsync(IClient client)
 		{
 			return Guild ??= await client.Cache.Guilds.GetAsync(GuildId.ToString());
+		}
+
+		public new static CoreGuildChannel From(IClient client, Channel channel)
+		{
+			return new CoreGuildChannel(client, ulong.Parse(channel.Id), channel.Type, null,
+				ulong.Parse(channel.GuildId),
+				channel.Name, channel.Position, ulong.Parse(channel.ParentId),
+				channel.PermissionOverwrites.Select(CorePermissionOverwrite.From).ToArray());
 		}
 	}
 }

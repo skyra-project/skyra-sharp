@@ -18,7 +18,7 @@ namespace Skyra.Events
 		private async Task RunAsync(CoreMessage message, string command, Exception exception)
 		{
 			Client.Logger.Error("[ARGUMENTS]: {Name} | {Exception}", command, exception);
-			await message.SendAsync(Client, "Whoops! Something while processing arguments!");
+			await message.SendAsync("Whoops! Something while processing arguments!");
 		}
 	}
 }

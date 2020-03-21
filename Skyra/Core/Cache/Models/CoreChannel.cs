@@ -5,8 +5,9 @@ namespace Skyra.Core.Cache.Models
 {
 	public class CoreChannel : ICoreBaseStructure<CoreChannel>
 	{
-		public CoreChannel(ulong id, ChannelType type)
+		public CoreChannel(IClient client, ulong id, ChannelType type)
 		{
+			Client = client;
 			Id = id;
 			Type = type;
 		}
@@ -17,6 +18,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("t")]
 		public ChannelType Type { get; private set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreChannel Patch(CoreChannel value)
 		{
 			Type = value.Type;
@@ -25,12 +29,12 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreChannel Clone()
 		{
-			return new CoreChannel(Id, Type);
+			return new CoreChannel(Client, Id, Type);
 		}
 
-		public static CoreChannel From(Channel channel)
+		public static CoreChannel From(IClient client, Channel channel)
 		{
-			return new CoreChannel(ulong.Parse(channel.Id), channel.Type);
+			return new CoreChannel(client, ulong.Parse(channel.Id), channel.Type);
 		}
 	}
 }

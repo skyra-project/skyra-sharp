@@ -17,7 +17,7 @@ namespace Skyra.Events.Raw
 
 		private void Run(Guild guild)
 		{
-			Task.Run(() => Client.Cache.Guilds.PatchAsync(CoreGuild.From(guild), guild.Id));
+			Task.Run(() => Client.Cache.Guilds.PatchAsync(CoreGuild.From(Client, guild), guild.Id));
 		}
 	}
 }

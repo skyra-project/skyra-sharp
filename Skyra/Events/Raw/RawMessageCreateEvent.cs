@@ -17,12 +17,12 @@ namespace Skyra.Events.Raw
 
 		private void Run(Message message)
 		{
-			Task.Run(() => RunMonitors(CoreMessage.From(message)));
+			Task.Run(() => RunMonitors(CoreMessage.From(Client, message)));
 		}
 
 		private async Task RunMonitors(CoreMessage message)
 		{
-			await message.CacheAsync(Client);
+			await message.CacheAsync();
 			Client.EventHandler.OnMessageCreate(message);
 		}
 	}

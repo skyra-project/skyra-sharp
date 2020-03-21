@@ -8,7 +8,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class GuildMemberStore : HashMapCacheStoreBase<CoreGuildMember>
 	{
-		internal GuildMemberStore(CacheClient client) : base(client, "members")
+		internal GuildMemberStore(CacheClient context) : base(context, "members")
 		{
 		}
 
@@ -18,11 +18,11 @@ namespace Skyra.Core.Cache.Stores
 			var members = new List<CoreGuildMember>();
 			foreach (var entry in entries)
 			{
-				users.Add(CoreUser.From(entry.User));
-				members.Add(CoreGuildMember.From(entry));
+				users.Add(CoreUser.From(Context.Client, entry.User));
+				members.Add(CoreGuildMember.From(Context.Client, entry));
 			}
 
-			await Task.WhenAll(Client.Users.SetAsync(users), SetAsync(members, parent));
+			await Task.WhenAll(Context.Users.SetAsync(users), SetAsync(members, parent));
 		}
 
 		protected override string GetKey(CoreGuildMember value)

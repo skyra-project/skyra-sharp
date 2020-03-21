@@ -29,7 +29,7 @@ namespace Skyra.Monitors
 			var prefixLess = message.Content.Substring(prefix!.Length).TrimStart();
 			if (prefixLess == "" && typeResult == PrefixTypeResult.MentionPrefix)
 			{
-				await message.SendAsync(Client, message.GuildId == null
+				await message.SendAsync(message.GuildId == null
 					? $"The prefix for my commands is `{DefaultPrefix}`"
 					: $"The prefix for my commands in this server is `{await RetrieveGuildPrefixAsync((ulong) message.GuildId)}`");
 				return;

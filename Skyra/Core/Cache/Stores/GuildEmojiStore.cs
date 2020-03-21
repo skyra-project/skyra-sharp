@@ -5,7 +5,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class GuildEmojiStore : HashMapCacheStoreBase<CoreGuildEmoji>
 	{
-		internal GuildEmojiStore(CacheClient client) : base(client, "emojis")
+		internal GuildEmojiStore(CacheClient context) : base(context, "emojis")
 		{
 		}
 

@@ -5,7 +5,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class UserStore : SetCacheStoreBase<CoreUser>
 	{
-		internal UserStore(CacheClient client) : base(client, "users")
+		internal UserStore(CacheClient context) : base(context, "users")
 		{
 		}
 

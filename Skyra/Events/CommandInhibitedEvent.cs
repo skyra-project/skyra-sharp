@@ -23,7 +23,7 @@ namespace Skyra.Events
 			}
 			else
 			{
-				await message.SendAsync(Client, $"Inhibitor Error: {exception.Message}");
+				await message.SendAsync($"Inhibitor Error: {exception.Message}");
 			}
 		}
 	}

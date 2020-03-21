@@ -8,9 +8,10 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
 	{
-		public CoreGuildMember(ulong id, ulong[] roles, string? nickname, DateTime? joinedAt, bool deaf,
+		public CoreGuildMember(IClient client, ulong id, ulong[] roles, string? nickname, DateTime? joinedAt, bool deaf,
 			bool mute)
 		{
+			Client = client;
 			Id = id;
 			Roles = roles;
 			Nickname = nickname;
@@ -37,6 +38,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("m")]
 		public bool Mute { get; set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreGuildMember Patch(CoreGuildMember value)
 		{
 			Roles = value.Roles;
@@ -49,7 +53,8 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreGuildMember Clone()
 		{
-			return new CoreGuildMember(Id,
+			return new CoreGuildMember(Client,
+				Id,
 				Roles,
 				Nickname,
 				JoinedAt,
@@ -57,7 +62,12 @@ namespace Skyra.Core.Cache.Models
 				Mute);
 		}
 
-		public static CoreGuildMember From(GuildMember guildMember, User? user = null)
+		public async Task<CoreUser?> GetUserAsync()
+		{
+			return await Client.Cache.Users.GetAsync(Id.ToString());
+		}
+
+		public static CoreGuildMember From(IClient client, GuildMember guildMember, User? user = null)
 		{
 			DateTime? joinedAt;
 			if (DateTime.TryParse(guildMember.JoinedAt, out var result))
@@ -69,14 +79,9 @@ namespace Skyra.Core.Cache.Models
 				joinedAt = null;
 			}
 
-			return new CoreGuildMember(ulong.Parse((guildMember.User ?? user!).Id),
+			return new CoreGuildMember(client, ulong.Parse((guildMember.User ?? user!).Id),
 				guildMember.Roles.Select(ulong.Parse).ToArray(),
 				guildMember.Nickname, joinedAt, guildMember.Deaf, guildMember.Mute);
-		}
-
-		public async Task<CoreUser?> GetUserAsync(IClient client)
-		{
-			return await client.Cache.Users.GetAsync(Id.ToString());
 		}
 	}
 }

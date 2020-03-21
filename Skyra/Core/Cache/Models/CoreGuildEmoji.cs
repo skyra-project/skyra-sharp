@@ -5,8 +5,9 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreGuildEmoji : ICoreBaseStructure<CoreGuildEmoji>
 	{
-		public CoreGuildEmoji(ulong id, string name, bool animated)
+		public CoreGuildEmoji(IClient client, ulong id, string name, bool animated)
 		{
+			Client = client;
 			Id = id;
 			Name = name;
 			Animated = animated;
@@ -21,6 +22,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("a")]
 		public bool Animated { get; set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreGuildEmoji Patch(CoreGuildEmoji value)
 		{
 			Animated = value.Animated;
@@ -30,14 +34,15 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreGuildEmoji Clone()
 		{
-			return new CoreGuildEmoji(Id,
+			return new CoreGuildEmoji(Client,
+				Id,
 				Name,
 				Animated);
 		}
 
-		public static CoreGuildEmoji From(Emoji emoji)
+		public static CoreGuildEmoji From(IClient client, Emoji emoji)
 		{
-			return new CoreGuildEmoji(ulong.Parse(emoji.Id), emoji.Name, emoji.Animated ?? false);
+			return new CoreGuildEmoji(client, ulong.Parse(emoji.Id), emoji.Name, emoji.Animated ?? false);
 		}
 	}
 }

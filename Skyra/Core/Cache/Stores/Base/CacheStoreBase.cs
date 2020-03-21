@@ -13,23 +13,23 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// <summary>
 		///     Create a cache store.
 		/// </summary>
-		/// <param name="client">The client singleton that manages this instance.</param>
+		/// <param name="context">The context singleton that manages this instance.</param>
 		/// <param name="prefix">The prefix all keys for this store will be prefixed.</param>
-		protected CacheStoreBase(CacheClient client, string prefix)
+		protected CacheStoreBase(CacheClient context, string prefix)
 		{
-			Client = client;
-			Prefix = $"{Client.Prefix}:{prefix}";
+			Context = context;
+			Prefix = $"{Context.Prefix}:{prefix}";
 		}
 
 		/// <summary>
-		///     The client singleton that manages this instance.
+		///     The context singleton that manages this instance.
 		/// </summary>
-		protected CacheClient Client { get; }
+		protected CacheClient Context { get; }
 
 		/// <summary>
 		///     The <see cref="IDatabase" /> instance that handles all queries to Redis.
 		/// </summary>
-		protected IDatabase Database => Client.Database;
+		protected IDatabase Database => Context.Database;
 
 		/// <summary>
 		///     The prefix for this cache store.

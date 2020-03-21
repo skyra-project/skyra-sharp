@@ -8,9 +8,10 @@ namespace Skyra.Core.Cache
 {
 	public sealed class CacheClient
 	{
-		internal CacheClient(string prefix)
+		internal CacheClient(IClient client, string prefix)
 		{
 			Prefix = prefix;
+			Client = client;
 			Channels = new ChannelStore(this);
 			GuildChannels = new GuildChannelStore(this);
 			EditableMessages = new EditableMessagesStore(this);
@@ -24,6 +25,7 @@ namespace Skyra.Core.Cache
 		}
 
 		internal string Prefix { get; }
+		internal IClient Client { get; }
 		public ConnectionPool Pool { get; } = new ConnectionPool();
 
 		internal ConnectionMultiplexer BestConnection => Pool.BestConnection;

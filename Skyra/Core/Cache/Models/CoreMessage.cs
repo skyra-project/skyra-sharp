@@ -11,11 +11,12 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreMessage : ICoreBaseStructure<CoreMessage>
 	{
-		public CoreMessage(ulong id, MessageType type, CoreChannel? channel, ulong channelId, CoreGuild? guild,
-			ulong? guildId, CoreGuildMember? member, Webhook? webhook, ulong? webhookId, CoreUser? author,
-			ulong authorId, string content, Embed[] embeds, Attachment[] attachments, DateTime timestamp,
-			DateTime? editedTimestamp, CultureInfo? language)
+		public CoreMessage(IClient client, ulong id, MessageType type, CoreChannel? channel, ulong channelId,
+			CoreGuild? guild, ulong? guildId, CoreGuildMember? member, Webhook? webhook, ulong? webhookId,
+			CoreUser? author, ulong authorId, string content, Embed[] embeds, Attachment[] attachments,
+			DateTime timestamp, DateTime? editedTimestamp, CultureInfo? language)
 		{
+			Client = client;
 			Id = id;
 			Type = type;
 			Channel = channel;
@@ -87,6 +88,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public CultureInfo? Language { get; private set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreMessage Patch(CoreMessage value)
 		{
 			Content = value.Content;
@@ -97,7 +101,8 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreMessage Clone()
 		{
-			return new CoreMessage(Id,
+			return new CoreMessage(Client,
+				Id,
 				Type,
 				Channel,
 				ChannelId,
@@ -116,28 +121,6 @@ namespace Skyra.Core.Cache.Models
 				Language);
 		}
 
-		public static CoreMessage From(Message message)
-		{
-			return new CoreMessage(ulong.Parse(message.Id), message.Type, null, ulong.Parse(message.ChannelId), null,
-				message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
-				message.Member == null ? null : CoreGuildMember.From(message.Member, message.Author), null,
-				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
-				CoreUser.From(message.Author), ulong.Parse(message.Author.Id), message.Content,
-				message.Embeds.ToArray(), message.Attachments.ToArray(), message.Timestamp, message.EditedTimestamp,
-				null);
-		}
-
-		public static CoreMessage From(MessageUpdatePayload message)
-		{
-			return new CoreMessage(ulong.Parse(message.Id), MessageType.DEFAULT, null, ulong.Parse(message.ChannelId),
-				null, message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
-				message.Member == null ? null : CoreGuildMember.From(message.Member, message.Author), null,
-				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
-				CoreUser.From(message.Author), ulong.Parse(message.Author.Id), message.Content,
-				message.Embeds.ToArray(), message.Attachments.ToArray(), message.Timestamp ?? DateTime.MinValue,
-				message.EditedTimestamp, null);
-		}
-
 		public CoreMessage Patch(MessageUpdatePayload value)
 		{
 			Content = value.Content;
@@ -146,71 +129,71 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
-		public async Task<CoreUser?> GetAuthorAsync(IClient client)
+		public async Task<CoreUser?> GetAuthorAsync()
 		{
-			return Author ??= await client.Cache.Users.GetAsync(AuthorId.ToString());
+			return Author ??= await Client.Cache.Users.GetAsync(AuthorId.ToString());
 		}
 
-		public async Task<CoreGuildMember?> GetMemberAsync(IClient client)
+		public async Task<CoreGuildMember?> GetMemberAsync()
 		{
-			return Member ??= await client.Cache.GuildMembers.GetAsync(AuthorId.ToString(), GuildId.ToString());
+			return Member ??= await Client.Cache.GuildMembers.GetAsync(AuthorId.ToString(), GuildId.ToString());
 		}
 
-		public async Task<CoreChannel?> GetChannelAsync(IClient client)
+		public async Task<CoreChannel?> GetChannelAsync()
 		{
 			return Channel ??= GuildId == null
-				? await client.Cache.Channels.GetAsync(ChannelId.ToString())
-				: await client.Cache.GuildChannels.GetAsync(ChannelId.ToString(), GuildId.ToString());
+				? await Client.Cache.Channels.GetAsync(ChannelId.ToString())
+				: await Client.Cache.GuildChannels.GetAsync(ChannelId.ToString(), GuildId.ToString());
 		}
 
-		public async Task<CoreGuild?> GetGuildAsync(IClient client)
+		public async Task<CoreGuild?> GetGuildAsync()
 		{
 			if (GuildId == null) return null;
-			return Guild ??= await client.Cache.Guilds.GetAsync(GuildId.ToString()!);
+			return Guild ??= await Client.Cache.Guilds.GetAsync(GuildId.ToString()!);
 		}
 
-		public async Task<CultureInfo> GetLanguageAsync(IClient client)
+		public async Task<CultureInfo> GetLanguageAsync()
 		{
 			if (!(Language is null)) return Language;
 
 			await using var db = new SkyraDatabaseContext();
 			var guild = await db.Guilds.FindAsync(GuildId);
 			var languageId = guild is null ? "en-US" : guild.Language;
-			return Language = client.Cultures[languageId];
+			return Language = Client.Cultures[languageId];
 		}
 
-		public async Task<CoreMessage> SendAsync(IClient client, string content)
+		public async Task<CoreMessage> SendAsync(string content)
 		{
-			return await SendAsync(client, new SendableMessage
+			return await SendAsync(new SendableMessage
 			{
 				Content = content
 			});
 		}
 
-		public async Task<CoreMessage> SendLocaleAsync(IClient client, string key)
+		public async Task<CoreMessage> SendLocaleAsync(string key)
 		{
-			var language = await GetLanguageAsync(client);
+			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
 			              throw new Exception($"Cannot find key {key}");
-			return await SendAsync(client, content);
+			return await SendAsync(content);
 		}
 
-		public async Task<CoreMessage> SendLocaleAsync(IClient client, string key, params object?[] values)
+		public async Task<CoreMessage> SendLocaleAsync(string key, params object?[] values)
 		{
-			var language = await GetLanguageAsync(client);
+			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
 			              throw new Exception($"Cannot find key {key}");
-			return await SendAsync(client, string.Format(content, values));
+			return await SendAsync(string.Format(content, values));
 		}
 
-		public async Task<CoreMessage> SendAsync(IClient client, SendableMessage data)
+		public async Task<CoreMessage> SendAsync(SendableMessage data)
 		{
 			// Cache the string values
 			var id = Id.ToString();
 			var channel = ChannelId.ToString();
 
 			// Retrieve the previous message
-			var previous = await client.Cache.EditableMessages.GetAsync(id, channel);
+			var previous = await Client.Cache.EditableMessages.GetAsync(id, channel);
 
 			CoreMessage response;
 
@@ -221,7 +204,7 @@ namespace Skyra.Core.Cache.Models
 				if (Attachments.Length == 0 && data.File == null)
 				{
 					// We update the message and return.
-					response = From(await client.Rest.Channels[channel]
+					response = From(Client, await Client.Rest.Channels[channel]
 						.Messages[previous.OwnMessageId.ToString()]
 						.PatchAsync<Message>(data));
 					response.GuildId = GuildId;
@@ -229,66 +212,90 @@ namespace Skyra.Core.Cache.Models
 				}
 
 				// Otherwise we delete the previous message and do a fallback.
-				await client.Rest.Channels[channel].Messages[previous.OwnMessageId.ToString()].DeleteAsync();
+				await Client.Rest.Channels[channel].Messages[previous.OwnMessageId.ToString()].DeleteAsync();
 			}
 
 			// Send a message to Discord, receive a Message back.
-			response = From(await client.Rest.Channels[channel].Messages.PostAsync<Message>(data));
+			response = From(Client, await Client.Rest.Channels[channel].Messages.PostAsync<Message>(data));
 			response.GuildId = GuildId;
 
 			// Store the message into Redis for later processing.
-			await client.Cache.EditableMessages.SetAsync(
-				new CoreEditableMessage(Id, response.Id), channel);
+			await Client.Cache.EditableMessages.SetAsync(
+				new CoreEditableMessage(Client, Id, response.Id), channel);
 
 			// Return the response.
 			return response;
 		}
 
-		public async Task<CoreMessage> EditAsync(IClient client, string content)
+		public async Task<CoreMessage> EditAsync(string content)
 		{
-			return await EditAsync(client, new SendableMessage
+			return await EditAsync(new SendableMessage
 			{
 				Content = content
 			});
 		}
 
-		public async Task<CoreMessage> EditAsync(IClient client, SendableMessage data)
+		public async Task<CoreMessage> EditAsync(SendableMessage data)
 		{
-			return From(await client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
+			return From(Client, await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
 				.PatchAsync<Message>(data));
 		}
 
-		public async Task<CoreMessage> EditLocaleAsync(IClient client, string key)
+		public async Task<CoreMessage> EditLocaleAsync(string key)
 		{
-			var language = await GetLanguageAsync(client);
+			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
 			              throw new Exception($"Cannot find key {key}");
-			return await EditAsync(client, content);
+			return await EditAsync(content);
 		}
 
-		public async Task<CoreMessage> EditLocaleAsync(IClient client, string key, params object?[] values)
+		public async Task<CoreMessage> EditLocaleAsync(string key, params object?[] values)
 		{
-			var language = await GetLanguageAsync(client);
+			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
 			              throw new Exception($"Cannot find key {key}");
-			return await EditAsync(client, string.Format(content, values));
+			return await EditAsync(string.Format(content, values));
 		}
 
-		public async Task<CoreMessage> DeleteAsync(IClient client, string? reason)
+		public async Task<CoreMessage> DeleteAsync(string? reason)
 		{
-			await client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()].DeleteAsync(reason);
+			await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()].DeleteAsync(reason);
 			return this;
 		}
 
-		public async Task CacheAsync(IClient client)
+		public async Task CacheAsync()
 		{
 			var channelTask = GuildId == null
-				? client.Cache.Channels.SetNullableAsync(Channel)
-				: client.Cache.GuildChannels.SetNullableAsync(Channel as CoreGuildChannel, GuildId.ToString());
-			var authorTask = client.Cache.Users.SetNullableAsync(Author);
-			var memberTask = client.Cache.GuildMembers.SetNullableAsync(Member, GuildId.ToString());
-			var messageTask = client.Cache.Messages.SetAsync(this, ChannelId.ToString());
+				? Client.Cache.Channels.SetNullableAsync(Channel)
+				: Client.Cache.GuildChannels.SetNullableAsync(Channel as CoreGuildChannel, GuildId.ToString());
+			var authorTask = Client.Cache.Users.SetNullableAsync(Author);
+			var memberTask = Client.Cache.GuildMembers.SetNullableAsync(Member, GuildId.ToString());
+			var messageTask = Client.Cache.Messages.SetAsync(this, ChannelId.ToString());
 			await Task.WhenAll(channelTask, authorTask, memberTask, messageTask);
+		}
+
+		public static CoreMessage From(IClient client, Message message)
+		{
+			return new CoreMessage(client, ulong.Parse(message.Id), message.Type, null, ulong.Parse(message.ChannelId),
+				null,
+				message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
+				message.Member == null ? null : CoreGuildMember.From(client, message.Member, message.Author), null,
+				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
+				CoreUser.From(client, message.Author), ulong.Parse(message.Author.Id), message.Content,
+				message.Embeds.ToArray(), message.Attachments.ToArray(), message.Timestamp, message.EditedTimestamp,
+				null);
+		}
+
+		public static CoreMessage From(IClient client, MessageUpdatePayload message)
+		{
+			return new CoreMessage(client, ulong.Parse(message.Id), MessageType.DEFAULT, null,
+				ulong.Parse(message.ChannelId),
+				null, message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
+				message.Member == null ? null : CoreGuildMember.From(client, message.Member, message.Author), null,
+				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
+				CoreUser.From(client, message.Author), ulong.Parse(message.Author.Id), message.Content,
+				message.Embeds.ToArray(), message.Attachments.ToArray(), message.Timestamp ?? DateTime.MinValue,
+				message.EditedTimestamp, null);
 		}
 	}
 }

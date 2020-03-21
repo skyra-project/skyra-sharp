@@ -8,18 +8,21 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class GuildStore : HashMapCacheStoreBase<CoreGuild>
 	{
-		internal GuildStore(CacheClient client) : base(client, "guilds")
+		internal GuildStore(CacheClient context) : base(context, "guilds")
 		{
 		}
 
 		public async Task SetAsync(Guild entry, string? parent = null)
 		{
-			await Task.WhenAll(Client.GuildMembers.SetAsync(entry.Members, entry.Id),
-				Client.GuildRoles.SetAsync(entry.Roles.Select(CoreGuildRole.From), entry.Id),
-				Client.GuildChannels.SetAsync(entry.Channels.Select(CoreGuildChannel.From), entry.Id),
-				Client.VoiceStates.SetAsync(entry.VoiceStates.Select(CoreVoiceState.From), entry.Id),
-				Client.GuildEmojis.SetAsync(entry.Emojis.Select(CoreGuildEmoji.From), entry.Id),
-				SetAsync(CoreGuild.From(entry), parent));
+			await Task.WhenAll(Context.GuildMembers.SetAsync(entry.Members, entry.Id),
+				Context.GuildRoles.SetAsync(entry.Roles.Select(x => CoreGuildRole.From(Context.Client, x)), entry.Id),
+				Context.GuildChannels.SetAsync(entry.Channels.Select(x => CoreGuildChannel.From(Context.Client, x)),
+					entry.Id),
+				Context.VoiceStates.SetAsync(entry.VoiceStates.Select(x => CoreVoiceState.From(Context.Client, x)),
+					entry.Id),
+				Context.GuildEmojis.SetAsync(entry.Emojis.Select(x => CoreGuildEmoji.From(Context.Client, x)),
+					entry.Id),
+				SetAsync(CoreGuild.From(Context.Client, entry), parent));
 		}
 
 		protected override string GetKey(CoreGuild value)

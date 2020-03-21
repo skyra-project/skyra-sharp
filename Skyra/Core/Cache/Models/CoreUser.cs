@@ -5,8 +5,9 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreUser : ICoreBaseStructure<CoreUser>
 	{
-		public CoreUser(ulong id, bool bot, string username, string discriminator, string? avatar)
+		public CoreUser(IClient client, ulong id, bool bot, string username, string discriminator, string? avatar)
 		{
+			Client = client;
 			Id = id;
 			Username = username;
 			Discriminator = discriminator;
@@ -29,6 +30,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("a")]
 		public string? Avatar { get; private set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreUser Patch(CoreUser value)
 		{
 			Username = value.Username;
@@ -39,16 +43,17 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreUser Clone()
 		{
-			return new CoreUser(Id,
+			return new CoreUser(Client,
+				Id,
 				Bot,
 				Username,
 				Discriminator,
 				Avatar);
 		}
 
-		public static CoreUser From(User user)
+		public static CoreUser From(IClient client, User user)
 		{
-			return new CoreUser(ulong.Parse(user.Id), user.Bot, user.Username, user.Discriminator, user.Avatar);
+			return new CoreUser(client, ulong.Parse(user.Id), user.Bot, user.Username, user.Discriminator, user.Avatar);
 		}
 	}
 }

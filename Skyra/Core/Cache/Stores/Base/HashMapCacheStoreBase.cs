@@ -9,7 +9,7 @@ namespace Skyra.Core.Cache.Stores.Base
 {
 	public abstract class HashMapCacheStoreBase<T> : CacheStoreBase<T> where T : class, ICoreBaseStructure<T>
 	{
-		protected HashMapCacheStoreBase(CacheClient client, string prefix) : base(client, prefix)
+		protected HashMapCacheStoreBase(CacheClient context, string prefix) : base(context, prefix)
 		{
 		}
 

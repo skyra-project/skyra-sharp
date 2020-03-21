@@ -5,9 +5,10 @@ namespace Skyra.Core.Cache.Models
 {
 	public sealed class CoreGuildRole : ICoreBaseStructure<CoreGuildRole>
 	{
-		public CoreGuildRole(ulong id, string name, uint color, bool managed, bool mentionable, Permission permissions,
-			uint position)
+		public CoreGuildRole(IClient client, ulong id, string name, uint color, bool managed, bool mentionable,
+			Permission permissions, uint position)
 		{
+			Client = client;
 			Id = id;
 			Name = name;
 			Color = color;
@@ -38,6 +39,9 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("pt")]
 		public uint Position { get; set; }
 
+		[JsonIgnore]
+		public IClient Client { get; }
+
 		public CoreGuildRole Patch(CoreGuildRole value)
 		{
 			Name = value.Name;
@@ -50,7 +54,8 @@ namespace Skyra.Core.Cache.Models
 
 		public CoreGuildRole Clone()
 		{
-			return new CoreGuildRole(Id,
+			return new CoreGuildRole(Client,
+				Id,
 				Name,
 				Color,
 				Managed,
@@ -59,9 +64,10 @@ namespace Skyra.Core.Cache.Models
 				Position);
 		}
 
-		public static CoreGuildRole From(Role role)
+		public static CoreGuildRole From(IClient client, Role role)
 		{
-			return new CoreGuildRole(ulong.Parse(role.Id), role.Name, (uint) role.Color, role.Managed, role.Mentionable,
+			return new CoreGuildRole(client, ulong.Parse(role.Id), role.Name, (uint) role.Color, role.Managed,
+				role.Mentionable,
 				(Permission) role.Permissions, (uint) role.Position);
 		}
 	}

@@ -7,7 +7,7 @@ namespace Skyra.Core.Cache.Stores
 {
 	public sealed class ChannelStore : HashMapCacheStoreBase<CoreChannel>
 	{
-		internal ChannelStore(CacheClient client) : base(client, "channels")
+		internal ChannelStore(CacheClient context) : base(context, "channels")
 		{
 		}
 

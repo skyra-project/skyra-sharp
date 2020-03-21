@@ -8,7 +8,7 @@ using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
 
-namespace Skyra
+namespace Skyra.Core
 {
 	public sealed class EventHandler
 	{

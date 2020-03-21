@@ -5,7 +5,6 @@ using Skyra.Core.Database;
 using Skyra.Core.Database.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
-using Client = Skyra.Core.Client;
 
 namespace Skyra.Commands
 {

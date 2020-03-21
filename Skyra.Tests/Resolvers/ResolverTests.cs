@@ -1,24 +1,25 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Skyra.Resolvers;
 
+#pragma warning disable 8625
+
 namespace Skyra.Tests.Resolvers
 {
-	public class ResolverTests
+	public sealed class ResolverTests
 	{
 		[Test]
 		public async Task BoolResolver_Resolves_TruthfulBools(
-			[Values("1", "t", "true", "+", "y", "yes")] string argument)
+			[Values("1", "t", "true", "+", "y", "yes")]
+			string argument)
 		{
-			// assign
+			// Assign
 			var resolver = new BoolResolver(null);
 
-			// act
+			// Act
 			var result = await resolver.ResolveAsync(null, null, argument);
 
-			// assert
+			// Assert
 			Assert.IsTrue(result);
 		}
 	}

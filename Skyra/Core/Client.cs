@@ -22,7 +22,7 @@ namespace Skyra.Core
 	{
 		internal Client(ClientOptions clientOptions)
 		{
-			var loader = new Loader();
+			var loader = new Loader(this);
 			Cultures = loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(clientOptions.RedisPrefix);
@@ -46,15 +46,20 @@ namespace Skyra.Core
 			};
 
 			ServiceProvider = new ServiceCollection()
-				.AddSingleton(this)
+				.AddSingleton<IClient>(this)
 				.BuildServiceProvider();
 
-			Inhibitors = loader.LoadInhibitors(this);
-			Events = loader.LoadEvents(this);
-			Monitors = loader.LoadMonitors(this);
-			Resolvers = loader.LoadResolvers(this);
-			Commands = loader.LoadCommands(this);
+			Inhibitors = loader.LoadInhibitors();
+			Events = loader.LoadEvents();
+			Monitors = loader.LoadMonitors();
+			Resolvers = loader.LoadResolvers();
+			Commands = loader.LoadCommands();
 		}
+
+		private string Token { get; }
+		private string BrokerUri { get; }
+		private string RedisUri { get; }
+		private AmqpBroker Broker { get; }
 
 		public Dictionary<string, InhibitorInfo> Inhibitors { get; }
 		public Dictionary<string, CommandInfo> Commands { get; }
@@ -62,11 +67,6 @@ namespace Skyra.Core
 		public Dictionary<string, MonitorInfo> Monitors { get; }
 		public Dictionary<Type, ResolverInfo> Resolvers { get; }
 		public ServiceProvider ServiceProvider { get; }
-
-		private string Token { get; }
-		private string BrokerUri { get; }
-		private string RedisUri { get; }
-		private AmqpBroker Broker { get; }
 
 		public ulong? Id { get; set; }
 		public ulong[] Owners { get; set; }

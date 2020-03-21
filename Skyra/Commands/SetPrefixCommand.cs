@@ -32,7 +32,7 @@ namespace Skyra.Commands
 			}
 
 			await db.SaveChangesAsync();
-			await message.SendLocaleAsync(Client, "SetPrefix", new object?[] {prefix});
+			await message.SendLocaleAsync(Client, "SetPrefix", prefix);
 		}
 	}
 }

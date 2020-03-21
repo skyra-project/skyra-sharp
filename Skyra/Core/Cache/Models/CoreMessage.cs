@@ -195,7 +195,7 @@ namespace Skyra.Core.Cache.Models
 			return await SendAsync(client, content);
 		}
 
-		public async Task<CoreMessage> SendLocaleAsync(IClient client, string key, object?[] values)
+		public async Task<CoreMessage> SendLocaleAsync(IClient client, string key, params object?[] values)
 		{
 			var language = await GetLanguageAsync(client);
 			var content = Languages.ResourceManager.GetString(key, language) ??
@@ -266,7 +266,7 @@ namespace Skyra.Core.Cache.Models
 			return await EditAsync(client, content);
 		}
 
-		public async Task<CoreMessage> EditLocaleAsync(IClient client, string key, object?[] values)
+		public async Task<CoreMessage> EditLocaleAsync(IClient client, string key, params object?[] values)
 		{
 			var language = await GetLanguageAsync(client);
 			var content = Languages.ResourceManager.GetString(key, language) ??

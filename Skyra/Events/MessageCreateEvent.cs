@@ -13,12 +13,7 @@ namespace Skyra.Events
 	{
 		public MessageCreateEvent(IClient client) : base(client)
 		{
-			Client.EventHandler.OnMessageCreate += Run;
-		}
-
-		private void Run(CoreMessage message)
-		{
-			Task.Run(() => RunAsync(message));
+			Client.EventHandler.OnMessageCreateAsync += RunAsync;
 		}
 
 		private async Task RunAsync(CoreMessage message)

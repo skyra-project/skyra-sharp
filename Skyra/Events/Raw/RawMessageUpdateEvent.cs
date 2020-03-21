@@ -12,15 +12,10 @@ namespace Skyra.Events.Raw
 	{
 		public RawMessageUpdateEvent(IClient client) : base(client)
 		{
-			Client.EventHandler.OnRawMessageUpdate += Run;
+			Client.EventHandler.OnRawMessageUpdateAsync += RunAsync;
 		}
 
-		private void Run(MessageUpdatePayload message)
-		{
-			Task.Run(() => RunMonitorsAsync(message));
-		}
-
-		private async Task RunMonitorsAsync(MessageUpdatePayload messageUpdate)
+		private async Task RunAsync(MessageUpdatePayload messageUpdate)
 		{
 			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
 			var message = previousMessage == null
@@ -28,7 +23,7 @@ namespace Skyra.Events.Raw
 				: previousMessage.Clone().Patch(messageUpdate);
 
 			await message.CacheAsync();
-			Client.EventHandler.OnMessageUpdate(previousMessage, message);
+			await Client.EventHandler.OnMessageUpdateAsync(previousMessage, message);
 		}
 	}
 }

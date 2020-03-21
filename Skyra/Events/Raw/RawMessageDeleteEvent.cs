@@ -11,12 +11,7 @@ namespace Skyra.Events.Raw
 	{
 		public RawMessageDeleteEvent(IClient client) : base(client)
 		{
-			Client.EventHandler.OnRawMessageDelete += Run;
-		}
-
-		private void Run(MessageDeletePayload messageDeletePayload)
-		{
-			Task.Run(() => RunAsync(messageDeletePayload));
+			Client.EventHandler.OnRawMessageDeleteAsync += RunAsync;
 		}
 
 		private async Task RunAsync(MessageDeletePayload messageDeletePayload)
@@ -34,7 +29,7 @@ namespace Skyra.Events.Raw
 					Client.Cache.EditableMessages.DeleteAsync(messageDeletePayload.Id, messageDeletePayload.ChannelId));
 			}
 
-			Client.EventHandler.OnMessageDelete(messageDeletePayload, message);
+			await Client.EventHandler.OnMessageDeleteAsync(messageDeletePayload, message);
 		}
 	}
 }

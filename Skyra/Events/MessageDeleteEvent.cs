@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -11,14 +12,16 @@ namespace Skyra.Events
 	{
 		public MessageDeleteEvent(IClient client) : base(client)
 		{
-			Client.EventHandler.OnMessageDelete += Run;
+			Client.EventHandler.OnMessageDeleteAsync += RunAsync;
 		}
 
-		private void Run(MessageDeletePayload payload, CoreMessage? message)
+		private Task RunAsync(MessageDeletePayload payload, CoreMessage? message)
 		{
 			Client.Logger.Information(
 				"Received Deleted Message [{Id}] with content '{Content}'.", payload.Id,
 				message?.Content ?? "Unknown.");
+
+			return Task.CompletedTask;
 		}
 	}
 }

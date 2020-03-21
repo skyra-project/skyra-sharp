@@ -13,12 +13,7 @@ namespace Skyra.Events
 	{
 		public MessageUpdateEvent(IClient client) : base(client)
 		{
-			Client.EventHandler.OnMessageUpdate += Run;
-		}
-
-		private void Run(CoreMessage? previousMessage, CoreMessage message)
-		{
-			Task.Run(() => RunAsync(previousMessage, message));
+			Client.EventHandler.OnMessageUpdateAsync += RunAsync;
 		}
 
 		private async Task RunAsync(CoreMessage? _, CoreMessage message)

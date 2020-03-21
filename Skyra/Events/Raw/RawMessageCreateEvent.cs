@@ -12,18 +12,14 @@ namespace Skyra.Events.Raw
 	{
 		public RawMessageCreateEvent(IClient client) : base(client)
 		{
-			Client.EventHandler.OnRawMessageCreate += Run;
+			Client.EventHandler.OnRawMessageCreateAsync += RunAsync;
 		}
 
-		private void Run(Message message)
+		private async Task RunAsync(Message rawMessage)
 		{
-			Task.Run(() => RunMonitors(CoreMessage.From(Client, message)));
-		}
-
-		private async Task RunMonitors(CoreMessage message)
-		{
+			var message = CoreMessage.From(Client, rawMessage);
 			await message.CacheAsync();
-			Client.EventHandler.OnMessageCreate(message);
+			await Client.EventHandler.OnMessageCreateAsync(message);
 		}
 	}
 }

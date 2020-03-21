@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Skyra.Core.Utils
 {
-	public static class StringUtils
+	public static class StringExtensions
 	{
 		private static readonly Regex EscapeRegex = new Regex(@"[-/\\^$*+?.()|[\]{}]");
 

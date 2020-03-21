@@ -5,6 +5,7 @@ using Skyra.Core.Database;
 using Skyra.Core.Database.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Utils;
 
 namespace Skyra.Commands
 {
@@ -18,19 +19,8 @@ namespace Skyra.Commands
 		public async Task RunAsync(CoreMessage message, [Argument(Maximum = 10)] string prefix)
 		{
 			await using var db = new SkyraDatabaseContext();
-
-			var entity = await db.Guilds.FindAsync(message.GuildId);
-
-			if (entity is null)
-			{
-				entity = new Guild {Id = (ulong) message.GuildId!, Prefix = prefix};
-				await db.Guilds.AddAsync(entity);
-			}
-			else
-			{
-				entity.Prefix = prefix;
-			}
-
+			await db.Guilds.UpdateOrCreateAsync((ulong) message.GuildId!, guild => { guild.Prefix = prefix; },
+				guild => new Guild {Id = (ulong) message.GuildId!});
 			await db.SaveChangesAsync();
 			await message.SendLocaleAsync("SetPrefix", prefix);
 		}

@@ -6,6 +6,7 @@ using Skyra.Core.Database;
 using Skyra.Core.Database.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Utils;
 
 namespace Skyra.Commands
 {
@@ -19,19 +20,8 @@ namespace Skyra.Commands
 		public async Task RunAsync(CoreMessage message, CultureInfo language)
 		{
 			await using var db = new SkyraDatabaseContext();
-
-			var entity = await db.Guilds.FindAsync(message.GuildId);
-
-			if (entity is null)
-			{
-				entity = new Guild {Id = (ulong) message.GuildId!, Language = language.Name};
-				await db.Guilds.AddAsync(entity);
-			}
-			else
-			{
-				entity.Language = language.Name;
-			}
-
+			await db.Guilds.UpdateOrCreateAsync((ulong) message.GuildId!, guild => { guild.Language = language.Name; },
+				guild => new Guild {Id = (ulong) message.GuildId!});
 			await db.SaveChangesAsync();
 			await message.SendLocaleAsync("SetLanguage", language.Name);
 		}

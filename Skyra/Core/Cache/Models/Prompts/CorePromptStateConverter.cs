@@ -11,7 +11,8 @@ namespace Skyra.Core.Cache.Models.Prompts
 			throw new NotImplementedException();
 		}
 
-		public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+		public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue,
+			JsonSerializer serializer)
 		{
 			var jo = JObject.Load(reader);
 			var rawType = (string) jo["type"]!;
@@ -22,12 +23,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 			if (rawType == "MessageSingleUser")
 			{
 				type = CorePromptStateType.MessageSingleUser;
-				state = new CorePromptStateMessage((ulong) rawState["aid"]!, (ulong) rawState["cid"]!, rawState["ctx"]!);
+				state = new CorePromptStateMessage((ulong) rawState["aid"]!, (ulong) rawState["cid"]!,
+					rawState["ctx"]!);
 			}
 			else
 			{
 				type = CorePromptStateType.ReactionSingleUser;
-				state = new CorePromptStateReaction((ulong) rawState["aid"]!, (ulong) rawState["mid"]!, rawState["ctx"]!);
+				state = new CorePromptStateReaction((ulong) rawState["aid"]!, (ulong) rawState["mid"]!,
+					rawState["ctx"]!);
 			}
 
 			return new CorePromptState(null!, type, state);

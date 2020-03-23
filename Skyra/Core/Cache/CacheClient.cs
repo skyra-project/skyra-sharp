@@ -20,6 +20,7 @@ namespace Skyra.Core.Cache
 			GuildMembers = new GuildMemberStore(this);
 			Messages = new MessageStore(this);
 			GuildRoles = new GuildRoleStore(this);
+			Prompts = new PromptStore(this);
 			Users = new UserStore(this);
 			VoiceStates = new VoiceStateStore(this);
 		}
@@ -52,6 +53,8 @@ namespace Skyra.Core.Cache
 		public GuildRoleStore GuildRoles { get; }
 
 		public UserStore Users { get; }
+
+		public PromptStore Prompts { get; }
 
 		public VoiceStateStore VoiceStates { get; }
 

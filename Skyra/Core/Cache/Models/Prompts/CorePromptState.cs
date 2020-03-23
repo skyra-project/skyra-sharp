@@ -1,21 +1,23 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-namespace Skyra.Core.Cache.Models
+namespace Skyra.Core.Cache.Models.Prompts
 {
 	public sealed class CorePromptState : ICoreBaseStructure<CorePromptState>
 	{
-		public CorePromptState(IClient client, ulong id, ICorePromptState state)
+		public CorePromptState(IClient client, CorePromptStateType type, ICorePromptState state)
 		{
 			Client = client;
-			Id = id;
+			Type = type;
 			State = state;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; private set; }
-
 		[JsonProperty("s")]
 		public ICorePromptState State { get; private set; }
+
+		[JsonProperty("type")]
+		[JsonConverter(typeof(StringEnumConverter))]
+		public CorePromptStateType Type { get; }
 
 		[JsonIgnore]
 		public IClient Client { get; set; }
@@ -27,7 +29,7 @@ namespace Skyra.Core.Cache.Models
 
 		public CorePromptState Clone()
 		{
-			return new CorePromptState(Client, Id, State);
+			return new CorePromptState(Client, Type, State);
 		}
 
 		public CorePromptState Patch(ICorePromptState value)

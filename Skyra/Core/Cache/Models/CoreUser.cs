@@ -31,7 +31,7 @@ namespace Skyra.Core.Cache.Models
 		public string? Avatar { get; private set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreUser Patch(CoreUser value)
 		{

@@ -40,7 +40,7 @@ namespace Skyra.Core.Cache.Models
 		public uint Position { get; set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreGuildRole Patch(CoreGuildRole value)
 		{

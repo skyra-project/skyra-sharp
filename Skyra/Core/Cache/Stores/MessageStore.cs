@@ -13,7 +13,7 @@ namespace Skyra.Core.Cache.Stores
 
 		public override async Task SetAsync(CoreMessage entry, string? parent = null)
 		{
-			var id = FormatKeyName(parent, entry.Id.ToString());
+			var id = FormatKeyName(parent, GetKey(entry));
 			await Database.StringSetAsync(id, SerializeValue(entry));
 			await Database.KeyExpireAsync(id, TimeSpan.FromMinutes(20));
 		}

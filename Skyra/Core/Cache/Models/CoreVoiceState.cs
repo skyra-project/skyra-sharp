@@ -49,7 +49,7 @@ namespace Skyra.Core.Cache.Models
 		public bool SelfMute { get; private set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreVoiceState Patch(CoreVoiceState value)
 		{

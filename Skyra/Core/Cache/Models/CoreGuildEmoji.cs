@@ -23,7 +23,7 @@ namespace Skyra.Core.Cache.Models
 		public bool Animated { get; set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreGuildEmoji Patch(CoreGuildEmoji value)
 		{

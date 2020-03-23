@@ -19,7 +19,7 @@ namespace Skyra.Core.Cache.Models
 		public ulong OwnMessageId { get; private set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreEditableMessage Patch(CoreEditableMessage value)
 		{

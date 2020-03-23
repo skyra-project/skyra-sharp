@@ -18,7 +18,7 @@ namespace Skyra.Core.Cache.Models
 		public ICorePromptState State { get; private set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CorePromptState Patch(CorePromptState value)
 		{

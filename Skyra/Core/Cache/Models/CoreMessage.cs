@@ -89,7 +89,7 @@ namespace Skyra.Core.Cache.Models
 		public CultureInfo? Language { get; private set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreMessage Patch(CoreMessage value)
 		{

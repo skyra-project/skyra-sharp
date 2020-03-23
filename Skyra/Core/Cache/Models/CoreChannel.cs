@@ -19,7 +19,7 @@ namespace Skyra.Core.Cache.Models
 		public ChannelType Type { get; private set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreChannel Patch(CoreChannel value)
 		{

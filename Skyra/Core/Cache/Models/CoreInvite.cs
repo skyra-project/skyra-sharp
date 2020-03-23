@@ -24,7 +24,7 @@ namespace Skyra.Core.Cache.Models
 		public ulong ChannelId { get; set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreInvite Patch(CoreInvite value)
 		{

@@ -41,7 +41,7 @@ namespace Skyra.Core.Cache.Models
 		public string OwnerId { get; set; }
 
 		[JsonIgnore]
-		public IClient Client { get; }
+		public IClient Client { get; set; }
 
 		public CoreGuild Patch(CoreGuild value)
 		{

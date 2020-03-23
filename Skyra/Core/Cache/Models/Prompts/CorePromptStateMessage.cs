@@ -4,7 +4,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	public sealed class CorePromptStateMessage : ICorePromptState
 	{
-		private CorePromptStateMessage(ulong authorId, ulong channelId, object context)
+		public CorePromptStateMessage(ulong authorId, ulong channelId, object context)
 		{
 			AuthorId = authorId;
 			ChannelId = channelId;

@@ -1,6 +1,7 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
-using Microsoft.EntityFrameworkCore.Internal;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Services;
@@ -25,18 +26,17 @@ namespace Skyra.Commands
 			try
 			{
 				var result = await _eval.EvaluateAsync(code, globals);
-				if (result != null) await message.SendAsync(result.ToString());
+				if (result != null) await message.SendAsync(result.ToString()!);
 			}
 			catch (CompilationErrorException e)
 			{
-				await message.SendAsync(e.Diagnostics.Join("\n"));
+				await message.SendAsync(String.Join("\n", e.Diagnostics.Select(x => x.ToString())));
 			}
 
 		}
-
 		public class ScriptGlobals
 		{
-			public CoreMessage Message { get; set; }
+			public CoreMessage? Message { get; set; }
 		}
 	}
 }

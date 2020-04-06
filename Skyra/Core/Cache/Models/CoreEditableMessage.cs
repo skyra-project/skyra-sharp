@@ -12,14 +12,11 @@ namespace Skyra.Core.Cache.Models
 			OwnMessageId = ownMessageId;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; private set; }
+		[JsonProperty("id")] public ulong Id { get; private set; }
 
-		[JsonProperty("o")]
-		public ulong OwnMessageId { get; private set; }
+		[JsonProperty("o")] public ulong OwnMessageId { get; private set; }
 
-		[JsonIgnore]
-		public IClient Client { get; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreEditableMessage Patch(CoreEditableMessage value)
 		{

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
 
 namespace Skyra.Core.Cache.Stores.Base
@@ -16,7 +15,7 @@ namespace Skyra.Core.Cache.Stores.Base
 		public override async Task<T?> GetAsync(string id, string? parent = null)
 		{
 			var result = await Database.StringGetAsync(FormatKeyName(parent, id));
-			return !result.IsNull ? JsonConvert.DeserializeObject<T>(result.ToString()) : null;
+			return result.IsNull ? null : DeserializeValue(result.ToString());
 		}
 
 		public override Task<T[]> GetAllAsync(string? parent = null)

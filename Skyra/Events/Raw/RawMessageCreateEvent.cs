@@ -17,8 +17,11 @@ namespace Skyra.Events.Raw
 
 		private async Task RunAsync(Message rawMessage)
 		{
+			// Instantiate CoreMessage for usage everywhere
 			var message = CoreMessage.From(Client, rawMessage);
 			await message.CacheAsync();
+
+			// Handle the message
 			await Client.EventHandler.OnMessageCreateAsync(message);
 		}
 	}

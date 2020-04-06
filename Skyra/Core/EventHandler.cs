@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
+using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Models;
 using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
@@ -25,7 +26,9 @@ namespace Skyra.Core
 		internal Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync = default!;
 		internal Func<Message, Task> OnRawMessageCreateAsync = default!;
 		internal Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync = default!;
+		internal Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync = default!;
 		internal Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync = default!;
+		internal Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync = default!;
 
 		public event Action<ReadyDispatch> OnReady = dispatch => { };
 		public event Action<Guild> OnRawGuildCreate = dispatch => { };

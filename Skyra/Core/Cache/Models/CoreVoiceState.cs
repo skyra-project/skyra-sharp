@@ -21,35 +21,25 @@ namespace Skyra.Core.Cache.Models
 			SelfMute = selfMute;
 		}
 
-		[JsonProperty("sid")]
-		public string SessionId { get; private set; }
+		[JsonProperty("sid")] public string SessionId { get; private set; }
 
-		[JsonProperty("d")]
-		public bool Deaf { get; private set; }
+		[JsonProperty("d")] public bool Deaf { get; private set; }
 
-		[JsonProperty("m")]
-		public bool Mute { get; private set; }
+		[JsonProperty("m")] public bool Mute { get; private set; }
 
-		[JsonProperty("s")]
-		public bool Suppress { get; private set; }
+		[JsonProperty("s")] public bool Suppress { get; private set; }
 
-		[JsonProperty("uid")]
-		public ulong UserId { get; private set; }
+		[JsonProperty("uid")] public ulong UserId { get; private set; }
 
-		[JsonProperty("cid")]
-		public ulong ChannelId { get; private set; }
+		[JsonProperty("cid")] public ulong ChannelId { get; private set; }
 
-		[JsonProperty("gid")]
-		public ulong GuildId { get; private set; }
+		[JsonProperty("gid")] public ulong GuildId { get; private set; }
 
-		[JsonProperty("sd")]
-		public bool SelfDeaf { get; private set; }
+		[JsonProperty("sd")] public bool SelfDeaf { get; private set; }
 
-		[JsonProperty("sm")]
-		public bool SelfMute { get; private set; }
+		[JsonProperty("sm")] public bool SelfMute { get; private set; }
 
-		[JsonIgnore]
-		public IClient Client { get; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreVoiceState Patch(CoreVoiceState value)
 		{

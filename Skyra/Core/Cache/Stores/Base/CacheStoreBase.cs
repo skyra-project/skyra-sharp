@@ -159,5 +159,12 @@ namespace Skyra.Core.Cache.Stores.Base
 			return JsonConvert.SerializeObject(value, Formatting.None,
 				new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
 		}
+
+		protected T DeserializeValue(string value)
+		{
+			var deserialized = JsonConvert.DeserializeObject<T>(value);
+			deserialized.Client = Context.Client;
+			return deserialized;
+		}
 	}
 }

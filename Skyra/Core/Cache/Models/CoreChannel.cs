@@ -12,14 +12,11 @@ namespace Skyra.Core.Cache.Models
 			Type = type;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; private set; }
+		[JsonProperty("id")] public ulong Id { get; private set; }
 
-		[JsonProperty("t")]
-		public ChannelType Type { get; private set; }
+		[JsonProperty("t")] public ChannelType Type { get; private set; }
 
-		[JsonIgnore]
-		public IClient Client { get; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreChannel Patch(CoreChannel value)
 		{

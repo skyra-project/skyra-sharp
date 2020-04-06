@@ -20,26 +20,19 @@ namespace Skyra.Core.Cache.Models
 			Mute = mute;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; set; }
+		[JsonProperty("id")] public ulong Id { get; set; }
 
-		[JsonProperty("r")]
-		public ulong[] Roles { get; set; }
+		[JsonProperty("r")] public ulong[] Roles { get; set; }
 
-		[JsonProperty("n")]
-		public string? Nickname { get; set; }
+		[JsonProperty("n")] public string? Nickname { get; set; }
 
-		[JsonProperty("j")]
-		public DateTime? JoinedAt { get; set; }
+		[JsonProperty("j")] public DateTime? JoinedAt { get; set; }
 
-		[JsonProperty("d")]
-		public bool Deaf { get; set; }
+		[JsonProperty("d")] public bool Deaf { get; set; }
 
-		[JsonProperty("m")]
-		public bool Mute { get; set; }
+		[JsonProperty("m")] public bool Mute { get; set; }
 
-		[JsonIgnore]
-		public IClient Client { get; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreGuildMember Patch(CoreGuildMember value)
 		{

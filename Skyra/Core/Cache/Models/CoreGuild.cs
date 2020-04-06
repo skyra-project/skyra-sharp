@@ -19,29 +19,21 @@ namespace Skyra.Core.Cache.Models
 			OwnerId = ownerId;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; set; }
+		[JsonProperty("id")] public ulong Id { get; set; }
 
-		[JsonProperty("n")]
-		public string Name { get; set; }
+		[JsonProperty("n")] public string Name { get; set; }
 
-		[JsonProperty("r")]
-		public string Region { get; set; }
+		[JsonProperty("r")] public string Region { get; set; }
 
-		[JsonProperty("i")]
-		public string? Icon { get; set; }
+		[JsonProperty("i")] public string? Icon { get; set; }
 
-		[JsonProperty("p")]
-		public Permission? Permissions { get; set; }
+		[JsonProperty("p")] public Permission? Permissions { get; set; }
 
-		[JsonProperty("m")]
-		public int? MemberCount { get; set; }
+		[JsonProperty("m")] public int? MemberCount { get; set; }
 
-		[JsonProperty("o")]
-		public string OwnerId { get; set; }
+		[JsonProperty("o")] public string OwnerId { get; set; }
 
-		[JsonIgnore]
-		public IClient Client { get; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreGuild Patch(CoreGuild value)
 		{

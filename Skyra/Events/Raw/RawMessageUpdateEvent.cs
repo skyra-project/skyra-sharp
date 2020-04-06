@@ -17,12 +17,14 @@ namespace Skyra.Events.Raw
 
 		private async Task RunAsync(MessageUpdatePayload messageUpdate)
 		{
-			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id);
+			// Instantiate CoreMessage for usage everywhere
+			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id, messageUpdate.ChannelId);
 			var message = previousMessage == null
 				? CoreMessage.From(Client, messageUpdate)
 				: previousMessage.Clone().Patch(messageUpdate);
-
 			await message.CacheAsync();
+
+			// Handle the message
 			await Client.EventHandler.OnMessageUpdateAsync(previousMessage, message);
 		}
 	}

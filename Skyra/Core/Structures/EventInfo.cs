@@ -2,7 +2,7 @@ namespace Skyra.Core.Structures
 {
 	public struct EventInfo
 	{
-		internal StructureBase Instance { get; set; }
-		internal string Name { get; set; }
+		public StructureBase Instance { get; set; }
+		public string Name { get; set; }
 	}
 }

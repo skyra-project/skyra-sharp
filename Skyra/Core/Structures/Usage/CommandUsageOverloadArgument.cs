@@ -28,18 +28,18 @@ namespace Skyra.Core.Structures.Usage
 		}
 
 		private IClient Client { get; }
-		internal ResolverInfo Resolver { get; }
-		internal string Name { get; }
-		internal Type ArgumentType { get; }
-		internal Type Type { get; }
-		internal bool Optional { get; }
-		internal bool Repeating { get; }
-		internal object? Default { get; }
-		internal bool Rest { get; }
-		internal int Minimum { get; }
-		internal int Maximum { get; }
-		internal uint MinimumValues { get; }
-		internal uint MaximumValues { get; }
+		public ResolverInfo Resolver { get; }
+		public string Name { get; }
+		public Type ArgumentType { get; }
+		public Type Type { get; }
+		public bool Optional { get; }
+		public bool Repeating { get; }
+		public object? Default { get; }
+		public bool Rest { get; }
+		public int Minimum { get; }
+		public int Maximum { get; }
+		public uint MinimumValues { get; }
+		public uint MaximumValues { get; }
 
 		private uint CalculatedMinimumValues => Repeating && !Optional ? 1U : uint.MinValue;
 

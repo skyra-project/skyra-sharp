@@ -5,9 +5,9 @@ namespace Skyra.Core.Structures
 {
 	public struct ResolverInfo
 	{
-		internal StructureBase Instance { get; set; }
-		internal MethodInfo Method { get; set; }
-		internal Type Type { get; set; }
-		internal string DisplayName { get; set; }
+		public StructureBase Instance { get; set; }
+		public MethodInfo Method { get; set; }
+		public Type Type { get; set; }
+		public string DisplayName { get; set; }
 	}
 }

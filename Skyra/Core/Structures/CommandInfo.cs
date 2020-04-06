@@ -5,12 +5,12 @@ namespace Skyra.Core.Structures
 {
 	public struct CommandInfo
 	{
-		internal string Delimiter { get; set; }
-		internal StructureBase Instance { get; set; }
-		internal string Name { get; set; }
-		internal CommandUsage Usage { get; set; }
-		internal bool FlagSupport { get; set; }
-		internal bool QuotedStringSupport { get; set; }
-		internal IInhibitor[] Inhibitors { get; set; }
+		public string Delimiter { get; set; }
+		public StructureBase Instance { get; set; }
+		public string Name { get; set; }
+		public CommandUsage Usage { get; set; }
+		public bool FlagSupport { get; set; }
+		public bool QuotedStringSupport { get; set; }
+		public IInhibitor[] Inhibitors { get; set; }
 	}
 }

@@ -3,7 +3,7 @@ using Skyra.Core.Cache.Models;
 
 namespace Skyra.Core.Structures.Base
 {
-	internal interface IInhibitor
+	public interface IInhibitor
 	{
 		Task<bool> RunAsync(CoreMessage message, CommandInfo command);
 	}

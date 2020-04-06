@@ -4,7 +4,7 @@ namespace Skyra.Core.Structures
 {
 	public struct InhibitorInfo
 	{
-		internal IInhibitor Instance { get; set; }
-		internal string Name { get; set; }
+		public IInhibitor Instance { get; set; }
+		public string Name { get; set; }
 	}
 }

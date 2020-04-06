@@ -327,14 +327,14 @@ namespace Skyra.Tests.Utils
 		public void InspectionFormatter_Formats_DelegateSingleArgument()
 		{
 			var formatter = new InspectionFormatter(new DelegateSingleArgument(name => name));
-			Assert.AreEqual("DelegateSingleArgument(String name)", formatter.ToString());
+			Assert.AreEqual("DelegateSingleArgument(String name) => String", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_DelegateMultipleArguments()
 		{
 			var formatter = new InspectionFormatter(new DelegateMultipleArguments((a, b) => a + b));
-			Assert.AreEqual("DelegateMultipleArguments(Int32 a, Int32 b)", formatter.ToString());
+			Assert.AreEqual("DelegateMultipleArguments(Int32 a, Int32 b) => Int32", formatter.ToString());
 		}
 
 		private delegate string DelegateSingleArgument(string name);

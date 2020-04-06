@@ -8,27 +8,28 @@ using Skyra.Core.Models;
 using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
+// ReSharper disable RedundantDefaultMemberInitializer
 
 namespace Skyra.Core
 {
 	public sealed class EventHandler
 	{
-		public Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync = default!;
-		public Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync = default!;
-		public Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync = default!;
-		public Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync = default!;
-		public Func<CoreMessage, string, object?[], Task> OnCommandRunAsync = default!;
-		public Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync = default!;
-		public Func<CoreMessage, string, Task> OnCommandUnknownAsync = default!;
-		public Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync = default!;
-		public Func<CoreMessage, Task> OnMessageCreateAsync = default!;
-		public Func<MessageDeletePayload, CoreMessage?, Task> OnMessageDeleteAsync = default!;
-		public Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync = default!;
-		public Func<Message, Task> OnRawMessageCreateAsync = default!;
-		public Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync = default!;
-		public Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync = default!;
-		public Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync = default!;
-		public Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync = default!;
+		public Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync { get; set; } = default!;
+		public Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync { get; set; } = default!;
+		public Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync { get; set; } = default!;
+		public Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync { get; set; } = default!;
+		public Func<CoreMessage, string, object?[], Task> OnCommandRunAsync { get; set; } = default!;
+		public Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync { get; set; } = default!;
+		public Func<CoreMessage, string, Task> OnCommandUnknownAsync { get; set; } = default!;
+		public Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync { get; set; } = default!;
+		public Func<CoreMessage, Task> OnMessageCreateAsync { get; set; } = default!;
+		public Func<MessageDeletePayload, CoreMessage?, Task> OnMessageDeleteAsync { get; set; } = default!;
+		public Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync { get; set; } = default!;
+		public Func<Message, Task> OnRawMessageCreateAsync { get; set; } = default!;
+		public Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync { get; set; } = default!;
+		public Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync { get; set; } = default!;
+		public Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync { get; set; } = default!;
+		public Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync { get; set; } = default!;
 
 		public event Action<ReadyDispatch> OnReady = dispatch => { };
 		public event Action<Guild> OnRawGuildCreate = dispatch => { };

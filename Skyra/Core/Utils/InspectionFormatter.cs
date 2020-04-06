@@ -241,7 +241,7 @@ namespace Skyra.Core.Utils
 			var type = value.GetType();
 			var sb = new StringBuilder();
 
-			sb.Append(type.Name);
+			sb.Append(CleanName(type.Name));
 			sb.Append("(");
 
 			var parameters = value.Method.GetParameters();
@@ -255,7 +255,9 @@ namespace Skyra.Core.Utils
 				if (++index < count) sb.Append(", ");
 			}
 
-			sb.Append(")");
+			sb.Append(") => ");
+			sb.Append(CleanName(value.Method.ReturnType.Name));
+
 			return sb.ToString();
 		}
 

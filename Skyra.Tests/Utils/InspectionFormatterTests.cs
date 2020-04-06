@@ -201,7 +201,7 @@ namespace Skyra.Tests.Utils
 		{
 			var dictionary = new Dictionary<char, string> {{'a', "An amazing \"flute\"!"}, {'b', "Boom!"}};
 			var formatter = new InspectionFormatter(dictionary);
-			Assert.AreEqual(@"Dictionary`2<Char, String> {
+			Assert.AreEqual(@"Dictionary<Char, String> {
   'a' => ""An amazing \""flute\""!"",
   'b' => ""Boom!"" }", formatter.ToString());
 		}

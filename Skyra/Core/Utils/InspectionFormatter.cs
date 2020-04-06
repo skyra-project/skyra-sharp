@@ -167,11 +167,11 @@ namespace Skyra.Core.Utils
 				var generics = type.GetGenericArguments();
 				var keyType = generics[0].Name;
 				var valueType = generics[1].Name;
-				header = $"{type.Name}<{keyType}, {valueType}>";
+				header = $"{CleanName(type.Name)}<{keyType}, {valueType}>";
 			}
 			else
 			{
-				header = $"{type.Name} [Dictionary]";
+				header = $"{CleanName(type.Name)} [Dictionary]";
 			}
 
 			if (Depth == 0 || value.Count == 0)
@@ -207,7 +207,7 @@ namespace Skyra.Core.Utils
 			var valueType = type.GetElementType()!;
 
 			// ReSharper disable once PossibleNullReferenceException
-			var header = $"{valueType.Name}[{value.Length}]";
+			var header = $"{CleanName(valueType.Name)}[{value.Length}]";
 			if (Depth == 0)
 			{
 				return header;
@@ -241,7 +241,7 @@ namespace Skyra.Core.Utils
 			var index = 0;
 			foreach (var parameter in parameters)
 			{
-				sb.Append(parameter.ParameterType.Name);
+				sb.Append(CleanName(parameter.ParameterType.Name));
 				sb.Append(" ");
 				sb.Append(parameter.Name);
 				if (++index < count) sb.Append(", ");
@@ -254,7 +254,7 @@ namespace Skyra.Core.Utils
 		internal string Inspect([NotNull] Enum value)
 		{
 			var type = value.GetType();
-			return $"{type.Name}.{value.ToString()}";
+			return $"{CleanName(type.Name)}.{value.ToString()}";
 		}
 
 		internal string Inspect([NotNull] object value)
@@ -263,11 +263,11 @@ namespace Skyra.Core.Utils
 
 			if (Depth == 0)
 			{
-				return $"[{type.Name}]";
+				return $"[{CleanName(type.Name)}]";
 			}
 
 			var sb = new StringBuilder();
-			sb.Append(type.Name);
+			sb.Append(CleanName(type.Name));
 			sb.Append(" {\n");
 
 			var properties = type.GetProperties();
@@ -284,6 +284,12 @@ namespace Skyra.Core.Utils
 
 			sb.Append(" }");
 			return sb.ToString();
+		}
+
+		internal string CleanName([NotNull] string name)
+		{
+			var index = name.IndexOf("`", StringComparison.InvariantCulture);
+			return index == -1 ? name : name.Substring(0, index);
 		}
 	}
 }

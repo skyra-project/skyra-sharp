@@ -24,14 +24,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
-		public async Task RunAsync(CoreMessageReaction reaction, CorePromptStateReaction state)
-		{
-			await Task.CompletedTask;
-		}
-
 		public string ToKey()
 		{
 			return ToKey(MessageId, AuthorId);
+		}
+
+		public async Task RunAsync(CoreMessageReaction reaction, CorePromptStateReaction state)
+		{
+			await Task.CompletedTask;
 		}
 
 		public static string ToKey(ulong messageId, ulong authorId)

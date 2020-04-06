@@ -36,60 +36,43 @@ namespace Skyra.Core.Cache.Models
 			Language = language;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; private set; }
+		[JsonProperty("id")] public ulong Id { get; private set; }
 
 		[JsonProperty("tid")]
 		[JsonConverter(typeof(StringEnumConverter))]
 		public MessageType Type { get; private set; }
 
-		[JsonIgnore]
-		public CoreChannel? Channel { get; private set; }
+		[JsonIgnore] public CoreChannel? Channel { get; private set; }
 
-		[JsonProperty("cid")]
-		public ulong ChannelId { get; private set; }
+		[JsonProperty("cid")] public ulong ChannelId { get; private set; }
 
-		[JsonIgnore]
-		public CoreGuild? Guild { get; private set; }
+		[JsonIgnore] public CoreGuild? Guild { get; private set; }
 
-		[JsonProperty("gid")]
-		public ulong? GuildId { get; private set; }
+		[JsonProperty("gid")] public ulong? GuildId { get; private set; }
 
-		[JsonIgnore]
-		public CoreGuildMember? Member { get; private set; }
+		[JsonIgnore] public CoreGuildMember? Member { get; private set; }
 
-		[JsonIgnore]
-		public Webhook? Webhook { get; }
+		[JsonIgnore] public Webhook? Webhook { get; }
 
-		[JsonProperty("wid")]
-		public ulong? WebhookId { get; private set; }
+		[JsonProperty("wid")] public ulong? WebhookId { get; private set; }
 
-		[JsonIgnore]
-		public CoreUser? Author { get; private set; }
+		[JsonIgnore] public CoreUser? Author { get; private set; }
 
-		[JsonProperty("aid")]
-		public ulong AuthorId { get; private set; }
+		[JsonProperty("aid")] public ulong AuthorId { get; private set; }
 
-		[JsonProperty("c")]
-		public string Content { get; private set; }
+		[JsonProperty("c")] public string Content { get; private set; }
 
-		[JsonProperty("e")]
-		public Embed[] Embeds { get; private set; }
+		[JsonProperty("e")] public Embed[] Embeds { get; private set; }
 
-		[JsonProperty("a")]
-		public Attachment[] Attachments { get; private set; }
+		[JsonProperty("a")] public Attachment[] Attachments { get; private set; }
 
-		[JsonProperty("t")]
-		public DateTime Timestamp { get; private set; }
+		[JsonProperty("t")] public DateTime Timestamp { get; private set; }
 
-		[JsonProperty("et")]
-		public DateTime? EditedTimestamp { get; private set; }
+		[JsonProperty("et")] public DateTime? EditedTimestamp { get; private set; }
 
-		[JsonIgnore]
-		public CultureInfo? Language { get; private set; }
+		[JsonIgnore] public CultureInfo? Language { get; private set; }
 
-		[JsonIgnore]
-		public IClient Client { get; set; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreMessage Patch(CoreMessage value)
 		{

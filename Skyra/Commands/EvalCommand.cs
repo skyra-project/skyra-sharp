@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
@@ -30,10 +29,10 @@ namespace Skyra.Commands
 			}
 			catch (CompilationErrorException e)
 			{
-				await message.SendAsync(String.Join("\n", e.Diagnostics.Select(x => x.ToString())));
+				await message.SendAsync(string.Join("\n", e.Diagnostics.Select(x => x.ToString())));
 			}
-
 		}
+
 		public class ScriptGlobals
 		{
 			public CoreMessage? Message { get; set; }

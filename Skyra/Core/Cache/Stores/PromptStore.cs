@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Cache.Stores.Base;
 

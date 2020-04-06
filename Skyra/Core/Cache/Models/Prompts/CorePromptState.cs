@@ -12,15 +12,13 @@ namespace Skyra.Core.Cache.Models.Prompts
 			State = state;
 		}
 
-		[JsonProperty("s")]
-		public ICorePromptState State { get; private set; }
+		[JsonProperty("s")] public ICorePromptState State { get; private set; }
 
 		[JsonProperty("type")]
 		[JsonConverter(typeof(StringEnumConverter))]
 		public CorePromptStateType Type { get; }
 
-		[JsonIgnore]
-		public IClient Client { get; set; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CorePromptState Patch(CorePromptState value)
 		{

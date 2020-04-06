@@ -28,7 +28,6 @@ namespace Skyra.Core
 		internal Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync = default!;
 		internal Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync = default!;
 		internal Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync = default!;
-		internal Func<CorePromptState, object, Task> OnRawPromptAsync = default!;
 		internal Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync = default!;
 
 		public event Action<ReadyDispatch> OnReady = dispatch => { };

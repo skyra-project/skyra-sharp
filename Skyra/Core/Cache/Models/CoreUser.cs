@@ -15,23 +15,17 @@ namespace Skyra.Core.Cache.Models
 			Bot = bot;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; private set; }
+		[JsonProperty("id")] public ulong Id { get; private set; }
 
-		[JsonProperty("b")]
-		public bool Bot { get; private set; }
+		[JsonProperty("b")] public bool Bot { get; private set; }
 
-		[JsonProperty("u")]
-		public string Username { get; private set; }
+		[JsonProperty("u")] public string Username { get; private set; }
 
-		[JsonProperty("d")]
-		public string Discriminator { get; private set; }
+		[JsonProperty("d")] public string Discriminator { get; private set; }
 
-		[JsonProperty("a")]
-		public string? Avatar { get; private set; }
+		[JsonProperty("a")] public string? Avatar { get; private set; }
 
-		[JsonIgnore]
-		public IClient Client { get; set; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreUser Patch(CoreUser value)
 		{

@@ -4,8 +4,7 @@ namespace Skyra.Core.Database.Models
 {
 	public struct GuildPermissionNode
 	{
-		[JsonProperty("i")]
-		public ulong Id { get; set; }
+		[JsonProperty("i")] public ulong Id { get; set; }
 
 		/// <summary>
 		///     The commands to be allowed for this permission node

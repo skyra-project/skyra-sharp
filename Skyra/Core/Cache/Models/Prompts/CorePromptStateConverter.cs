@@ -7,7 +7,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	internal sealed class CorePromptStateConverter : JsonConverter
 	{
-		private Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>> TypeResolvers { get; set; } =
+		private Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>> TypeResolvers { get; } =
 			new Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>>(new[]
 			{
 				new KeyValuePair<CorePromptStateType, Func<JToken, ICorePromptState>>(

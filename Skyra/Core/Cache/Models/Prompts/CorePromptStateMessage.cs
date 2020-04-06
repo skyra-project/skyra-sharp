@@ -24,15 +24,15 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
+		public string ToKey()
+		{
+			return ToKey(ChannelId, AuthorId);
+		}
+
 		public async Task RunAsync(CoreMessage message, CorePromptStateMessage state)
 		{
 			await message.SendAsync(
 				$"Oi there m8 you had a prompt set up, I replied to ya. By the way you once said `{state.Context}`");
-		}
-
-		public string ToKey()
-		{
-			return ToKey(ChannelId, AuthorId);
 		}
 
 		public static string ToKey(CoreMessage message)

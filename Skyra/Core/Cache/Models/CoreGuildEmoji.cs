@@ -13,17 +13,13 @@ namespace Skyra.Core.Cache.Models
 			Animated = animated;
 		}
 
-		[JsonProperty("id")]
-		public ulong Id { get; set; }
+		[JsonProperty("id")] public ulong Id { get; set; }
 
-		[JsonProperty("n")]
-		public string Name { get; set; }
+		[JsonProperty("n")] public string Name { get; set; }
 
-		[JsonProperty("a")]
-		public bool Animated { get; set; }
+		[JsonProperty("a")] public bool Animated { get; set; }
 
-		[JsonIgnore]
-		public IClient Client { get; set; }
+		[JsonIgnore] public IClient Client { get; set; }
 
 		public CoreGuildEmoji Patch(CoreGuildEmoji value)
 		{

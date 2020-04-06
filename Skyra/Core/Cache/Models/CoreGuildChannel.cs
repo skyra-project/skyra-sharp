@@ -19,17 +19,23 @@ namespace Skyra.Core.Cache.Models
 			PermissionOverwrites = permissionOverwrites;
 		}
 
-		[JsonIgnore] public CoreGuild? Guild { get; private set; }
+		[JsonIgnore]
+		public CoreGuild? Guild { get; private set; }
 
-		[JsonProperty("gid")] public ulong GuildId { get; set; }
+		[JsonProperty("gid")]
+		public ulong GuildId { get; set; }
 
-		[JsonProperty("n")] public string Name { get; set; }
+		[JsonProperty("n")]
+		public string Name { get; set; }
 
-		[JsonProperty("rp")] public int? RawPosition { get; set; }
+		[JsonProperty("rp")]
+		public int? RawPosition { get; set; }
 
-		[JsonProperty("pid")] public ulong ParentId { get; set; }
+		[JsonProperty("pid")]
+		public ulong ParentId { get; set; }
 
-		[JsonProperty("po")] public CorePermissionOverwrite[] PermissionOverwrites { get; set; }
+		[JsonProperty("po")]
+		public CorePermissionOverwrite[] PermissionOverwrites { get; set; }
 
 		public CoreGuildChannel Patch(CoreGuildChannel value)
 		{

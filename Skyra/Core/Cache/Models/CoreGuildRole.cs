@@ -18,21 +18,29 @@ namespace Skyra.Core.Cache.Models
 			Position = position;
 		}
 
-		[JsonProperty("id")] public ulong Id { get; set; }
+		[JsonProperty("id")]
+		public ulong Id { get; set; }
 
-		[JsonProperty("n")] public string Name { get; set; }
+		[JsonProperty("n")]
+		public string Name { get; set; }
 
-		[JsonProperty("c")] public uint Color { get; set; }
+		[JsonProperty("c")]
+		public uint Color { get; set; }
 
-		[JsonProperty("md")] public bool Managed { get; set; }
+		[JsonProperty("md")]
+		public bool Managed { get; set; }
 
-		[JsonProperty("me")] public bool Mentionable { get; set; }
+		[JsonProperty("me")]
+		public bool Mentionable { get; set; }
 
-		[JsonProperty("ps")] public Permission Permissions { get; set; }
+		[JsonProperty("ps")]
+		public Permission Permissions { get; set; }
 
-		[JsonProperty("pt")] public uint Position { get; set; }
+		[JsonProperty("pt")]
+		public uint Position { get; set; }
 
-		[JsonIgnore] public IClient Client { get; set; }
+		[JsonIgnore]
+		public IClient Client { get; set; }
 
 		public CoreGuildRole Patch(CoreGuildRole value)
 		{

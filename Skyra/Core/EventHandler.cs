@@ -13,22 +13,22 @@ namespace Skyra.Core
 {
 	public sealed class EventHandler
 	{
-		internal Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync = default!;
-		internal Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync = default!;
-		internal Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync = default!;
-		internal Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync = default!;
-		internal Func<CoreMessage, string, object?[], Task> OnCommandRunAsync = default!;
-		internal Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync = default!;
-		internal Func<CoreMessage, string, Task> OnCommandUnknownAsync = default!;
-		internal Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync = default!;
-		internal Func<CoreMessage, Task> OnMessageCreateAsync = default!;
-		internal Func<MessageDeletePayload, CoreMessage?, Task> OnMessageDeleteAsync = default!;
-		internal Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync = default!;
-		internal Func<Message, Task> OnRawMessageCreateAsync = default!;
-		internal Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync = default!;
-		internal Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync = default!;
-		internal Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync = default!;
-		internal Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync = default!;
+		public Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync = default!;
+		public Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync = default!;
+		public Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync = default!;
+		public Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync = default!;
+		public Func<CoreMessage, string, object?[], Task> OnCommandRunAsync = default!;
+		public Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync = default!;
+		public Func<CoreMessage, string, Task> OnCommandUnknownAsync = default!;
+		public Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync = default!;
+		public Func<CoreMessage, Task> OnMessageCreateAsync = default!;
+		public Func<MessageDeletePayload, CoreMessage?, Task> OnMessageDeleteAsync = default!;
+		public Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync = default!;
+		public Func<Message, Task> OnRawMessageCreateAsync = default!;
+		public Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync = default!;
+		public Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync = default!;
+		public Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync = default!;
+		public Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync = default!;
 
 		public event Action<ReadyDispatch> OnReady = dispatch => { };
 		public event Action<Guild> OnRawGuildCreate = dispatch => { };

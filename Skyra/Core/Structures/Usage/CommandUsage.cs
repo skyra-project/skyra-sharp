@@ -13,7 +13,7 @@ namespace Skyra.Core.Structures.Usage
 		}
 
 		private IClient Client { get; }
-		internal CommandUsageOverload[] Overloads { get; }
+		public CommandUsageOverload[] Overloads { get; }
 
 		private static CommandUsageOverload[] GetOverloads(IClient client, Type instanceType)
 		{

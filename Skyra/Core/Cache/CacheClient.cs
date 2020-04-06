@@ -25,13 +25,13 @@ namespace Skyra.Core.Cache
 			VoiceStates = new VoiceStateStore(this);
 		}
 
-		internal string Prefix { get; }
-		internal IClient Client { get; }
+		public string Prefix { get; }
+		public IClient Client { get; }
 		public ConnectionPool Pool { get; } = new ConnectionPool();
 
-		internal ConnectionMultiplexer BestConnection => Pool.BestConnection;
+		public ConnectionMultiplexer BestConnection => Pool.BestConnection;
 
-		internal IDatabase Database => BestConnection.GetDatabase();
+		public IDatabase Database => BestConnection.GetDatabase();
 
 		public IServer Redis => BestConnection.GetEndPoints().Select(endPoint => BestConnection.GetServer(endPoint))
 			.FirstOrDefault(server => !server.IsSlave);

@@ -14,13 +14,17 @@ namespace Skyra.Core.Cache.Models
 			ChannelId = channelId;
 		}
 
-		[JsonProperty("c")] public string Code { get; set; }
+		[JsonProperty("c")]
+		public string Code { get; set; }
 
-		[JsonProperty("gid")] public ulong GuildId { get; set; }
+		[JsonProperty("gid")]
+		public ulong GuildId { get; set; }
 
-		[JsonProperty("cid")] public ulong ChannelId { get; set; }
+		[JsonProperty("cid")]
+		public ulong ChannelId { get; set; }
 
-		[JsonIgnore] public IClient Client { get; set; }
+		[JsonIgnore]
+		public IClient Client { get; set; }
 
 		public CoreInvite Patch(CoreInvite value)
 		{

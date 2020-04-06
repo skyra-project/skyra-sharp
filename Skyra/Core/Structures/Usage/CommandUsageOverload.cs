@@ -15,8 +15,8 @@ namespace Skyra.Core.Structures.Usage
 				.ToArray();
 		}
 
-		internal MethodBase Method { get; }
-		internal CommandUsageOverloadArgument[] Arguments { get; }
+		public MethodBase Method { get; }
+		public CommandUsageOverloadArgument[] Arguments { get; }
 
 		public override string ToString()
 		{

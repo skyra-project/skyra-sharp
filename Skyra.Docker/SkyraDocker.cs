@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
+﻿using System.Diagnostics;
 
 namespace Skyra.Docker
 {
@@ -9,7 +6,6 @@ namespace Skyra.Docker
 	{
 		private static void Main()
 		{
-
 			var processInfo = new ProcessStartInfo("powershell.exe",
 				"-File " + "ps-skyra.ps1")
 			{

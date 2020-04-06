@@ -6,6 +6,7 @@ using Skyra.Core.Cache.Models;
 using Skyra.Core.Services;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Core.Utils;
 
 namespace Skyra.Commands
 {
@@ -25,7 +26,11 @@ namespace Skyra.Commands
 			try
 			{
 				var result = await _eval.EvaluateAsync(code, globals);
-				if (result != null) await message.SendAsync(result.ToString()!);
+
+				// TODO(kyranet): hasteb.in upload
+				// TODO(kyranet): Retrieve type
+				// TODO(kyranet): CodeBlock utility
+				await message.SendAsync($"```js\n{new InspectionFormatter(result)}```");
 			}
 			catch (CompilationErrorException e)
 			{

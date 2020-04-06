@@ -17,17 +17,23 @@ namespace Skyra.Core.Cache.Models
 			Emoji = emoji;
 		}
 
-		[JsonProperty("mid")] public ulong MessageId { get; private set; }
+		[JsonProperty("mid")]
+		public ulong MessageId { get; private set; }
 
-		[JsonProperty("cid")] public ulong ChannelId { get; private set; }
+		[JsonProperty("cid")]
+		public ulong ChannelId { get; private set; }
 
-		[JsonProperty("gid")] public ulong GuildId { get; private set; }
+		[JsonProperty("gid")]
+		public ulong GuildId { get; private set; }
 
-		[JsonProperty("uid")] public ulong UserId { get; private set; }
+		[JsonProperty("uid")]
+		public ulong UserId { get; private set; }
 
-		[JsonProperty("e")] public Emoji Emoji { get; private set; }
+		[JsonProperty("e")]
+		public Emoji Emoji { get; private set; }
 
-		[JsonIgnore] public IClient Client { get; set; }
+		[JsonIgnore]
+		public IClient Client { get; set; }
 
 		public CoreMessageReaction Patch(CoreMessageReaction value)
 		{

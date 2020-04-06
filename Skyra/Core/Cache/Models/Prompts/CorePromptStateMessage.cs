@@ -12,11 +12,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 			Context = context;
 		}
 
-		[JsonProperty("aid")] public ulong AuthorId { get; }
+		[JsonProperty("aid")]
+		public ulong AuthorId { get; }
 
-		[JsonProperty("cid")] public ulong ChannelId { get; }
+		[JsonProperty("cid")]
+		public ulong ChannelId { get; }
 
-		[JsonProperty("ctx")] public object Context { get; private set; }
+		[JsonProperty("ctx")]
+		public object Context { get; private set; }
 
 		public ICorePromptState Patch(ICorePromptState value)
 		{

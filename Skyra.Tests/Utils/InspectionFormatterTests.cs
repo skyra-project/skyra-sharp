@@ -338,6 +338,7 @@ namespace Skyra.Tests.Utils
 		}
 
 		private delegate string DelegateSingleArgument(string name);
+
 		private delegate int DelegateMultipleArguments(int a, int b);
 	}
 

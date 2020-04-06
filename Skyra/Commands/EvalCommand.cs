@@ -1,6 +1,10 @@
+using System;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
+using Newtonsoft.Json;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Services;
@@ -22,25 +26,66 @@ namespace Skyra.Commands
 
 		public async Task RunAsync(CoreMessage message, string code)
 		{
-			var globals = new ScriptGlobals {Message = message};
-			try
+			var (threw, result, exception) = await ExecuteAsync(message, code);
+			var output = Format(threw ? exception : result);
+			if (output.Length > 1900)
 			{
-				var result = await _eval.EvaluateAsync(code, globals);
-
-				// TODO(kyranet): hasteb.in upload
-				// TODO(kyranet): Retrieve type
-				// TODO(kyranet): CodeBlock utility
-				await message.SendAsync($"```js\n{new InspectionFormatter(result)}```");
+				var content = new StringContent(output, Encoding.UTF8, "text/plain");
+				var response = await Client.HttpClient.PostAsync("https://hasteb.in/documents", content);
+				if (response.IsSuccessStatusCode)
+				{
+					var parsed = HastebinResponse.FromJson(await response.Content.ReadAsStringAsync());
+					await message.SendAsync($"Message too long, sent at <https://hasteb.in/{parsed.Key}.cs>");
+				}
+				else
+				{
+					await message.SendAsync($"Failed to send message via https://hasteb.in...");
+				}
 			}
-			catch (CompilationErrorException e)
+			else
 			{
-				await message.SendAsync(string.Join("\n", e.Diagnostics.Select(x => x.ToString())));
+				var codeBlock = Utilities.CodeBlock("js", output);
+				await message.SendAsync(codeBlock);
 			}
 		}
 
-		public class ScriptGlobals
+		private async Task<(bool, object?, Exception?)> ExecuteAsync(CoreMessage message, string code)
 		{
-			public CoreMessage? Message { get; set; }
+			var globals = new ScriptGlobals {Message = message, Client = Client};
+			try
+			{
+				var result = await _eval.EvaluateAsync(code, globals);
+				return (false, result, null);
+			}
+			catch (Exception exception)
+			{
+				return (true, null, exception);
+			}
+		}
+
+		private string Format(object? result)
+		{
+			return result switch
+			{
+				string value => value,
+				CompilationErrorException value => string.Join("\n", value.Diagnostics.Select(x => x.ToString())),
+				Exception value => $"{value.GetType().Name}: {value.InnerException?.Message ?? value.Message}",
+				_ => new InspectionFormatter(result).ToString()
+			};
+		}
+
+		public sealed class ScriptGlobals
+		{
+			public CoreMessage Message { get; set; } = null!;
+			public IClient Client { get; set; } = null!;
+		}
+
+		private sealed class HastebinResponse
+		{
+			[JsonProperty("key", Required = Required.Always)]
+			public string Key { get; set; } = null!;
+
+			public static HastebinResponse FromJson(string json) => JsonConvert.DeserializeObject<HastebinResponse>(json);
 		}
 	}
 }

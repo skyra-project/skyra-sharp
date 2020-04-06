@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,7 @@ namespace Skyra.Core
 				Broker.Ack(args.Event, args.DeliveryTag);
 			};
 
+			HttpClient = new HttpClient();
 			ServiceProvider = new ServiceCollection()
 				.AddSingleton<IClient>(this)
 				.AddSingleton(new EvalService(ScriptOptions.Default))
@@ -70,6 +72,7 @@ namespace Skyra.Core
 		public Dictionary<string, MonitorInfo> Monitors { get; }
 		public Dictionary<Type, ResolverInfo> Resolvers { get; }
 		public ServiceProvider ServiceProvider { get; }
+		public HttpClient HttpClient { get; }
 
 		public ulong? Id { get; set; }
 		public ulong[] Owners { get; set; }

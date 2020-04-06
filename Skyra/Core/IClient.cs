@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
@@ -19,6 +20,7 @@ namespace Skyra.Core
 		Dictionary<string, MonitorInfo> Monitors { get; }
 		Dictionary<Type, ResolverInfo> Resolvers { get; }
 		ServiceProvider ServiceProvider { get; }
+		HttpClient HttpClient { get; }
 		ulong? Id { get; set; }
 		ulong[] Owners { get; set; }
 		RestClient Rest { get; }

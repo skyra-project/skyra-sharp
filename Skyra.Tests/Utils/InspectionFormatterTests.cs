@@ -183,6 +183,13 @@ namespace Skyra.Tests.Utils
 		}
 
 		[Test]
+		public void InspectionFormatter_Formats_ArrayOfIntsNoDepth()
+		{
+			var formatter = new InspectionFormatter(new[] {4, 6, 3, 7}, 0);
+			Assert.AreEqual("Int32[4]", formatter.ToString());
+		}
+
+		[Test]
 		public void InspectionFormatter_Formats_ArrayOfInts()
 		{
 			var formatter = new InspectionFormatter(new[] {4, 6, 3, 7});
@@ -197,13 +204,54 @@ namespace Skyra.Tests.Utils
 		}
 
 		[Test]
-		public void InspectionFormatter_Formats_Dictionary()
+		public void InspectionFormatter_Formats_DictionaryEmptyNoDepth()
+		{
+			var dictionary = new Dictionary<char, string>();
+			var formatter = new InspectionFormatter(dictionary, 0);
+			Assert.AreEqual("[Dictionary<Char, String>]", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_DictionaryEmpty()
+		{
+			var dictionary = new Dictionary<char, string>();
+			var formatter = new InspectionFormatter(dictionary);
+			Assert.AreEqual("Dictionary<Char, String> {}", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_DictionaryPopulated()
 		{
 			var dictionary = new Dictionary<char, string> {{'a', "An amazing \"flute\"!"}, {'b', "Boom!"}};
 			var formatter = new InspectionFormatter(dictionary);
 			Assert.AreEqual(@"Dictionary<Char, String> {
   'a' => ""An amazing \""flute\""!"",
   'b' => ""Boom!"" }", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_ExtendedDictionaryEmpty()
+		{
+			var dictionary = new ExtendedDictionaryTest();
+			var formatter = new InspectionFormatter(dictionary);
+			Assert.AreEqual(@"ExtendedDictionaryTest [Dictionary] {}", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_ExtendedDictionaryPopulated()
+		{
+			var dictionary = new ExtendedDictionaryTest {{1, 4}, {6, 12}};
+			var formatter = new InspectionFormatter(dictionary);
+			Assert.AreEqual(@"ExtendedDictionaryTest [Dictionary] {
+  1 => 4,
+  6 => 12 }", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_EmptyStruct()
+		{
+			var formatter = new InspectionFormatter(new TestEmptyStruct());
+			Assert.AreEqual("TestEmptyStruct {}", formatter.ToString());
 		}
 
 		[Test]
@@ -274,6 +322,27 @@ namespace Skyra.Tests.Utils
 			Assert.AreEqual(@"ReferenceTest {
   Pointer: [Circular] }", formatter.ToString());
 		}
+
+		[Test]
+		public void InspectionFormatter_Formats_DelegateSingleArgument()
+		{
+			var formatter = new InspectionFormatter(new DelegateSingleArgument(name => name));
+			Assert.AreEqual("DelegateSingleArgument(String name)", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_DelegateMultipleArguments()
+		{
+			var formatter = new InspectionFormatter(new DelegateMultipleArguments((a, b) => a + b));
+			Assert.AreEqual("DelegateMultipleArguments(Int32 a, Int32 b)", formatter.ToString());
+		}
+
+		private delegate string DelegateSingleArgument(string name);
+		private delegate int DelegateMultipleArguments(int a, int b);
+	}
+
+	internal struct TestEmptyStruct
+	{
 	}
 
 	internal struct TestStruct
@@ -294,8 +363,12 @@ namespace Skyra.Tests.Utils
 		public TestStruct Data { get; set; }
 	}
 
-	internal class ReferenceTest
+	internal sealed class ReferenceTest
 	{
 		public ReferenceTest? Pointer { get; set; }
+	}
+
+	internal sealed class ExtendedDictionaryTest : Dictionary<int, int>
+	{
 	}
 }

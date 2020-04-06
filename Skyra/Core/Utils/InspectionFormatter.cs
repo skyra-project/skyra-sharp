@@ -35,7 +35,9 @@ namespace Skyra.Core.Utils
 		private InspectionFormatter? Parent { get; }
 		private uint Depth { get; }
 		private uint NextDepth => Depth == 0U ? 0U : Depth - 1;
-		[NotNull] private string Padding { get; }
+
+		[NotNull]
+		private string Padding { get; }
 
 		public override string ToString()
 		{
@@ -174,9 +176,14 @@ namespace Skyra.Core.Utils
 				header = $"{CleanName(type.Name)} [Dictionary]";
 			}
 
-			if (Depth == 0 || value.Count == 0)
+			if (Depth == 0)
 			{
 				return $"[{header}]";
+			}
+
+			if (value.Count == 0)
+			{
+				return $"{header} {{}}";
 			}
 
 			var sb = new StringBuilder();
@@ -231,9 +238,10 @@ namespace Skyra.Core.Utils
 
 		private string Inspect([NotNull] Delegate value)
 		{
+			var type = value.GetType();
 			var sb = new StringBuilder();
 
-			sb.Append(value.Method.Name);
+			sb.Append(type.Name);
 			sb.Append("(");
 
 			var parameters = value.Method.GetParameters();
@@ -260,17 +268,22 @@ namespace Skyra.Core.Utils
 		private string Inspect([NotNull] object value)
 		{
 			var type = value.GetType();
+			var header = CleanName(type.Name);
 
 			if (Depth == 0)
 			{
-				return $"[{CleanName(type.Name)}]";
+				return $"[{header}]";
+			}
+
+			var properties = type.GetProperties();
+			if (properties.Length == 0)
+			{
+				return $"{header} {{}}";
 			}
 
 			var sb = new StringBuilder();
 			sb.Append(CleanName(type.Name));
 			sb.Append(" {\n");
-
-			var properties = type.GetProperties();
 			var count = properties.Length;
 			var index = 0;
 			foreach (var property in properties)

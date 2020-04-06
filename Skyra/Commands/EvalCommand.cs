@@ -30,7 +30,7 @@ namespace Skyra.Commands
 				// TODO(kyranet): hasteb.in upload
 				// TODO(kyranet): Retrieve type
 				// TODO(kyranet): CodeBlock utility
-				await message.SendAsync($"```js\n{new InspectionFormatter(result, 1)}```");
+				await message.SendAsync($"```js\n{new InspectionFormatter(result)}```");
 			}
 			catch (CompilationErrorException e)
 			{

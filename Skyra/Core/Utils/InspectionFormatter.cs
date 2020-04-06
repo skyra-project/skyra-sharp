@@ -6,7 +6,6 @@ using System.Text;
 
 namespace Skyra.Core.Utils
 {
-	// TODO(kyranet): Add *more* tests
 	public sealed class InspectionFormatter
 	{
 		public InspectionFormatter(object? value, uint depth = 1U, InspectionFormatter? parent = null)

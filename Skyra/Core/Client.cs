@@ -4,12 +4,14 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
 using Serilog.Exceptions;
 using Skyra.Core.Cache;
 using Skyra.Core.Models;
+using Skyra.Core.Services;
 using Skyra.Core.Structures;
 using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
@@ -47,6 +49,7 @@ namespace Skyra.Core
 
 			ServiceProvider = new ServiceCollection()
 				.AddSingleton<IClient>(this)
+				.AddSingleton(new EvalService(ScriptOptions.Default))
 				.BuildServiceProvider();
 
 			Inhibitors = loader.LoadInhibitors();

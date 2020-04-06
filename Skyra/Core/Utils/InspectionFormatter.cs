@@ -1,31 +1,52 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 
 namespace Skyra.Core.Utils
 {
 	// TODO(kyranet): Tests
-	// TODO(kyranet): Circular detection
-	// TODO(kyranet): Nested spaces for nested values
 	public sealed class InspectionFormatter
 	{
-		private uint Depth { get; }
-		private object? Value { get; }
+		public bool Circular
+		{
+			get
+			{
+				var parent = Parent;
+				while (parent != null)
+				{
+					if (parent == this) return true;
+					parent = parent.Parent;
+				}
 
-		public InspectionFormatter(object? value, uint depth)
+				return false;
+			}
+		}
+
+		private object? Value { get; }
+		private InspectionFormatter? Parent { get; }
+		private uint Depth { get; }
+		[NotNull] private string Padding { get; }
+
+		public InspectionFormatter(object? value, uint depth = 1U, InspectionFormatter? parent = null)
 		{
 			Value = value;
 			Depth = depth;
+			Parent = parent;
+			Padding = $"{parent?.Padding}  ";
 		}
 
 		public override string ToString()
 		{
 			if (Value == null) return "null";
-
+			if (Circular) return "[Circular]";
 			return Value switch
 			{
+				bool value => Inspect(value),
+				char value => Inspect(value),
 				string value => Inspect(value),
+				sbyte value => Inspect(value),
 				byte value => Inspect(value),
 				short value => Inspect(value),
 				ushort value => Inspect(value),
@@ -38,84 +59,121 @@ namespace Skyra.Core.Utils
 				decimal value => Inspect(value),
 				DateTime value => Inspect(value),
 				TimeSpan value => Inspect(value),
-				Dictionary<object, object> value => Inspect(value, Depth),
-				object[] value => Inspect(value, Depth),
-				_ => Inspect(Value, Depth)
+				Type value => Inspect(value),
+				Delegate value => Inspect(value),
+				Enum value => Inspect(value),
+				Array value => Inspect(value),
+				DictionaryBase value => Inspect(value),
+				IEnumerable value => Inspect(value),
+				_ => Inspect(Value)
 			};
 		}
 
-		internal static string Inspect(string value)
+		internal string Inspect(bool value)
+		{
+			return value ? "true" : "false";
+		}
+
+		internal string Inspect(char value)
+		{
+			return $"'{value.ToString()}'";
+		}
+
+		internal string Inspect(string value)
 		{
 			return $"\"{value.Replace(@"""", @"\""")}\"";
 		}
 
-		internal static string Inspect(short value)
+		internal string Inspect(sbyte value)
 		{
 			return value.ToString();
 		}
 
-		internal static string Inspect(ushort value)
+		internal string Inspect(byte value)
 		{
 			return $"{value.ToString()}U";
 		}
 
-		internal static string Inspect(int value)
+		internal string Inspect(short value)
 		{
 			return value.ToString();
 		}
 
-		internal static string Inspect(uint value)
+		internal string Inspect(ushort value)
 		{
 			return $"{value.ToString()}U";
 		}
 
-		internal static string Inspect(long value)
+		internal string Inspect(int value)
+		{
+			return value.ToString();
+		}
+
+		internal string Inspect(uint value)
+		{
+			return $"{value.ToString()}U";
+		}
+
+		internal string Inspect(long value)
 		{
 			return $"{value.ToString()}L";
 		}
 
-		internal static string Inspect(ulong value)
+		internal string Inspect(ulong value)
 		{
 			return $"{value.ToString()}UL";
 		}
 
-		internal static string Inspect(float value)
+		internal string Inspect(float value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}F";
 		}
 
-		internal static string Inspect(double value)
+		internal string Inspect(double value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}D";
 		}
 
-		internal static string Inspect(decimal value)
+		internal string Inspect(decimal value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}M";
 		}
 
-		internal static string Inspect(DateTime value)
+		internal string Inspect(DateTime value)
 		{
 			var utc = value.ToUniversalTime();
 			return
 				$"{utc.Year:0000}-{utc.Month:00}-{utc.Day:00}T{utc.Hour:00}:{utc.Minute:00}:{utc.Second:00}.{utc.Millisecond:0000}Z";
 		}
 
-		internal static string Inspect(TimeSpan value)
+		internal string Inspect(TimeSpan value)
 		{
 			return value.ToString();
 		}
 
-		internal static string Inspect<TKey, TValue>(Dictionary<TKey, TValue> value, uint depth) where TKey : notnull
+		internal string Inspect([NotNull] Type value)
+		{
+			return value.FullName!;
+		}
+
+		internal string Inspect([NotNull] DictionaryBase value)
 		{
 			var type = value.GetType();
-			var generics = type.GetGenericArguments();
-			var keyType = generics[0];
-			var valueType = generics[1];
-			var isSubclass = IsSubclassOfRawGeneric(typeof(Dictionary<object, object>), type);
-			var header = isSubclass ? $"{type.Name} [Dictionary]" : $"Dictionary<{keyType}, {valueType}>";
 
-			if (depth == 0)
+			string header;
+			if (type.IsConstructedGenericType)
+			{
+				var generics = type.GetGenericArguments();
+				var keyType = generics[0];
+				var valueType = generics[1];
+				header = $"{type.Name}<{keyType}, {valueType}>";
+			}
+			else
+			{
+				header = $"{type.Name} [Dictionary]";
+			}
+
+			if (Depth == 0 || value.Count == 0)
 			{
 				return $"[{header}]";
 			}
@@ -123,46 +181,82 @@ namespace Skyra.Core.Utils
 			var sb = new StringBuilder();
 			var count = value.Count;
 			var index = 0;
-			foreach (var (innerKey, innerValue) in value)
+
+#pragma warning disable CS8605
+			foreach (DictionaryEntry pair in value)
+#pragma warning restore CS8605
 			{
-				sb.Append("  ");
-				sb.Append(new InspectionFormatter(innerKey, depth - 1));
+				sb.Append(Padding);
+				sb.Append(new InspectionFormatter(pair.Key, Depth - 1));
 				sb.Append(" => ");
-				sb.Append(new InspectionFormatter(innerValue, depth - 1));
+				sb.Append(new InspectionFormatter(pair.Value, Depth - 1));
 				if (++index < count) sb.Append(",\n");
 			}
 
 			return sb.ToString();
 		}
 
-		internal static string Inspect<TValue>(TValue[] value, uint depth)
+		internal string Inspect([NotNull] Array value)
 		{
 			var type = value.GetType();
 			var valueType = type.GetElementType()!;
 
-			if (depth == 0)
+			// ReSharper disable once PossibleNullReferenceException
+			var header = $"{valueType.Name}[{value.Length}]";
+			if (Depth == 0)
 			{
-				// ReSharper disable once PossibleNullReferenceException
-				return $"{valueType.Name}[{value.Length}]";
+				return header;
 			}
 
 			var sb = new StringBuilder();
+			sb.Append(header);
+			sb.Append(" { ");
+
 			var count = value.Length;
 			var index = 0;
 			foreach (var innerValue in value)
 			{
-				sb.Append(new InspectionFormatter(innerValue, depth - 1));
+				sb.Append(new InspectionFormatter(innerValue, Depth - 1));
 				if (++index < count) sb.Append(", ");
 			}
 
+			sb.Append(" }");
 			return sb.ToString();
 		}
 
-		internal static string Inspect(object value, uint depth)
+		internal string Inspect([NotNull] Delegate value)
+		{
+			var sb = new StringBuilder();
+
+			sb.Append(value.Method.Name);
+			sb.Append("(");
+
+			var parameters = value.Method.GetParameters();
+			var count = parameters.Length;
+			var index = 0;
+			foreach (var parameter in parameters)
+			{
+				sb.Append(parameter.ParameterType.Name);
+				sb.Append(" ");
+				sb.Append(parameter.Name);
+				if (++index < count) sb.Append(", ");
+			}
+
+			sb.Append(")");
+			return sb.ToString();
+		}
+
+		internal string Inspect(Enum value)
+		{
+			var type = value.GetType();
+			return $"{type.Name}.{value.ToString()}";
+		}
+
+		internal string Inspect(object value)
 		{
 			var type = value.GetType();
 
-			if (depth == 0)
+			if (Depth == 0)
 			{
 				return $"[{type.Name}]";
 			}
@@ -176,31 +270,15 @@ namespace Skyra.Core.Utils
 			var index = 0;
 			foreach (var property in properties)
 			{
-				sb.Append("  ");
+				sb.Append(Padding);
 				sb.Append(property.Name);
 				sb.Append(": ");
-				sb.Append(new InspectionFormatter(property.GetValue(value), depth - 1));
+				sb.Append(new InspectionFormatter(property.GetValue(value), Depth - 1));
 				if (++index < count) sb.Append(",\n");
 			}
 
 			sb.Append(" }");
 			return sb.ToString();
-		}
-
-		internal static bool IsSubclassOfRawGeneric(Type generic, Type? toCheck)
-		{
-			while (toCheck != null && toCheck != typeof(object))
-			{
-				var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-				if (generic == cur)
-				{
-					return true;
-				}
-
-				toCheck = toCheck.BaseType;
-			}
-
-			return false;
 		}
 	}
 }

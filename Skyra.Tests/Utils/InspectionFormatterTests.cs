@@ -11,112 +11,112 @@ namespace Skyra.Tests.Utils
 		public void InspectionFormatter_Formats_BoolTrue()
 		{
 			var formatter = new InspectionFormatter(true);
-			Assert.AreEqual(formatter.ToString(), "true");
+			Assert.AreEqual("true", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_BoolFalse()
 		{
 			var formatter = new InspectionFormatter(false);
-			Assert.AreEqual(formatter.ToString(), "false");
+			Assert.AreEqual("false", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_LetterChar()
 		{
 			var formatter = new InspectionFormatter('a');
-			Assert.AreEqual(formatter.ToString(), "'a'");
+			Assert.AreEqual("'a'", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_SymbolChar()
 		{
 			var formatter = new InspectionFormatter('$');
-			Assert.AreEqual(formatter.ToString(), "'$'");
+			Assert.AreEqual("'$'", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_UnicodeChar()
 		{
 			var formatter = new InspectionFormatter('ア');
-			Assert.AreEqual(formatter.ToString(), "'ア'");
+			Assert.AreEqual("'ア'", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_ControlChar()
 		{
 			var formatter = new InspectionFormatter('\u0000');
-			Assert.AreEqual(formatter.ToString(), "'\\u0000'");
+			Assert.AreEqual("'\\u0000'", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_UnicodePart()
 		{
 			var formatter = new InspectionFormatter("😊"[0]);
-			Assert.AreEqual(formatter.ToString(), "'\\uD83D'");
+			Assert.AreEqual("'\\uD83D'", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_BasicString()
 		{
 			var formatter = new InspectionFormatter("Hello world");
-			Assert.AreEqual(formatter.ToString(), @"""Hello world""");
+			Assert.AreEqual(@"""Hello world""", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_QuotedString()
 		{
 			var formatter = new InspectionFormatter(@"Hello ""world""");
-			Assert.AreEqual(formatter.ToString(), @"""Hello \""world\""""");
+			Assert.AreEqual(@"""Hello \""world\""""", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_SignedByte()
 		{
 			var formatter = new InspectionFormatter((sbyte) 0x14);
-			Assert.AreEqual(formatter.ToString(), "0x14");
+			Assert.AreEqual("0x14", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_SignedBytePadded()
 		{
 			var formatter = new InspectionFormatter((sbyte) 0x04);
-			Assert.AreEqual(formatter.ToString(), "0x04");
+			Assert.AreEqual("0x04", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_Byte()
 		{
 			var formatter = new InspectionFormatter((byte) 0x14);
-			Assert.AreEqual(formatter.ToString(), "0x14U");
+			Assert.AreEqual("0x14U", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_BytePadded()
 		{
 			var formatter = new InspectionFormatter((byte) 0x04);
-			Assert.AreEqual(formatter.ToString(), "0x04U");
+			Assert.AreEqual("0x04U", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_Short()
 		{
 			var formatter = new InspectionFormatter((short) 256);
-			Assert.AreEqual(formatter.ToString(), "256");
+			Assert.AreEqual("256", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_UnsignedShort()
 		{
 			var formatter = new InspectionFormatter((ushort) 256);
-			Assert.AreEqual(formatter.ToString(), "256U");
+			Assert.AreEqual("256U", formatter.ToString());
 		}
 
 		[Test]
 		public void InspectionFormatter_Formats_Int()
 		{
 			var formatter = new InspectionFormatter(5500000);
-			Assert.AreEqual(formatter.ToString(), "5500000");
+			Assert.AreEqual("5500000", formatter.ToString());
 		}
 
 		[Test]
@@ -247,6 +247,33 @@ namespace Skyra.Tests.Utils
     Char: 'a',
     Code: 0x61 } }", formatter.ToString());
 		}
+
+		[Test]
+		public void InspectionFormatter_Formats_Class()
+		{
+			var formatter = new InspectionFormatter(new ReferenceTest());
+			Assert.AreEqual(@"ReferenceTest {
+  Pointer: null }", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_ClassReference()
+		{
+			var data = new ReferenceTest {Pointer = new ReferenceTest()};
+			var formatter = new InspectionFormatter(data);
+			Assert.AreEqual(@"ReferenceTest {
+  Pointer: [ReferenceTest] }", formatter.ToString());
+		}
+
+		[Test]
+		public void InspectionFormatter_Formats_ClassCircular()
+		{
+			var data = new ReferenceTest();
+			data.Pointer = data;
+			var formatter = new InspectionFormatter(data);
+			Assert.AreEqual(@"ReferenceTest {
+  Pointer: [Circular] }", formatter.ToString());
+		}
 	}
 
 	internal struct TestStruct
@@ -265,5 +292,10 @@ namespace Skyra.Tests.Utils
 		public IdentifierType Identifier { get; set; }
 		public string Name { get; set; }
 		public TestStruct Data { get; set; }
+	}
+
+	internal class ReferenceTest
+	{
+		public ReferenceTest? Pointer { get; set; }
 	}
 }

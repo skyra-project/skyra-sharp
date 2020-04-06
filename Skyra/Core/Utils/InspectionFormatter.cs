@@ -24,7 +24,7 @@ namespace Skyra.Core.Utils
 				var parent = Parent;
 				while (parent != null)
 				{
-					if (parent == this) return true;
+					if (parent.Value == Value) return true;
 					parent = parent.Parent;
 				}
 

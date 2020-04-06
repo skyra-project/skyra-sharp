@@ -6,9 +6,17 @@ using System.Text;
 
 namespace Skyra.Core.Utils
 {
-	// TODO(kyranet): Tests
+	// TODO(kyranet): Add *more* tests
 	public sealed class InspectionFormatter
 	{
+		public InspectionFormatter(object? value, uint depth = 1U, InspectionFormatter? parent = null)
+		{
+			Value = value;
+			Depth = depth;
+			Parent = parent;
+			Padding = $"{parent?.Padding}  ";
+		}
+
 		public bool Circular
 		{
 			get
@@ -27,15 +35,8 @@ namespace Skyra.Core.Utils
 		private object? Value { get; }
 		private InspectionFormatter? Parent { get; }
 		private uint Depth { get; }
+		private uint NextDepth => Depth == 0U ? 0U : Depth - 1;
 		[NotNull] private string Padding { get; }
-
-		public InspectionFormatter(object? value, uint depth = 1U, InspectionFormatter? parent = null)
-		{
-			Value = value;
-			Depth = depth;
-			Parent = parent;
-			Padding = $"{parent?.Padding}  ";
-		}
 
 		public override string ToString()
 		{
@@ -63,8 +64,7 @@ namespace Skyra.Core.Utils
 				Delegate value => Inspect(value),
 				Enum value => Inspect(value),
 				Array value => Inspect(value),
-				DictionaryBase value => Inspect(value),
-				IEnumerable value => Inspect(value),
+				IDictionary value => Inspect(value),
 				_ => Inspect(Value)
 			};
 		}
@@ -76,7 +76,9 @@ namespace Skyra.Core.Utils
 
 		internal string Inspect(char value)
 		{
-			return $"'{value.ToString()}'";
+			return char.IsSurrogate(value) || char.IsControl(value)
+				? $"'\\u{(uint) value:X4}'"
+				: $"'{value.ToString()}'";
 		}
 
 		internal string Inspect(string value)
@@ -86,12 +88,12 @@ namespace Skyra.Core.Utils
 
 		internal string Inspect(sbyte value)
 		{
-			return value.ToString();
+			return $"0x{value:X2}";
 		}
 
 		internal string Inspect(byte value)
 		{
-			return $"{value.ToString()}U";
+			return $"0x{value:X2}U";
 		}
 
 		internal string Inspect(short value)
@@ -143,7 +145,7 @@ namespace Skyra.Core.Utils
 		{
 			var utc = value.ToUniversalTime();
 			return
-				$"{utc.Year:0000}-{utc.Month:00}-{utc.Day:00}T{utc.Hour:00}:{utc.Minute:00}:{utc.Second:00}.{utc.Millisecond:0000}Z";
+				$"{utc.Year:0000}-{utc.Month:00}-{utc.Day:00}T{utc.Hour:00}:{utc.Minute:00}:{utc.Second:00}.{utc.Millisecond:000}Z";
 		}
 
 		internal string Inspect(TimeSpan value)
@@ -156,7 +158,7 @@ namespace Skyra.Core.Utils
 			return value.FullName!;
 		}
 
-		internal string Inspect([NotNull] DictionaryBase value)
+		internal string Inspect([NotNull] IDictionary value)
 		{
 			var type = value.GetType();
 
@@ -164,8 +166,8 @@ namespace Skyra.Core.Utils
 			if (type.IsConstructedGenericType)
 			{
 				var generics = type.GetGenericArguments();
-				var keyType = generics[0];
-				var valueType = generics[1];
+				var keyType = generics[0].Name;
+				var valueType = generics[1].Name;
 				header = $"{type.Name}<{keyType}, {valueType}>";
 			}
 			else
@@ -179,6 +181,9 @@ namespace Skyra.Core.Utils
 			}
 
 			var sb = new StringBuilder();
+			sb.Append(header);
+			sb.Append(" {\n");
+
 			var count = value.Count;
 			var index = 0;
 
@@ -187,12 +192,13 @@ namespace Skyra.Core.Utils
 #pragma warning restore CS8605
 			{
 				sb.Append(Padding);
-				sb.Append(new InspectionFormatter(pair.Key, Depth - 1));
+				sb.Append(new InspectionFormatter(pair.Key, NextDepth, this));
 				sb.Append(" => ");
-				sb.Append(new InspectionFormatter(pair.Value, Depth - 1));
+				sb.Append(new InspectionFormatter(pair.Value, NextDepth, this));
 				if (++index < count) sb.Append(",\n");
 			}
 
+			sb.Append(" }");
 			return sb.ToString();
 		}
 
@@ -216,7 +222,7 @@ namespace Skyra.Core.Utils
 			var index = 0;
 			foreach (var innerValue in value)
 			{
-				sb.Append(new InspectionFormatter(innerValue, Depth - 1));
+				sb.Append(new InspectionFormatter(innerValue, NextDepth, this));
 				if (++index < count) sb.Append(", ");
 			}
 
@@ -246,13 +252,13 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
-		internal string Inspect(Enum value)
+		internal string Inspect([NotNull] Enum value)
 		{
 			var type = value.GetType();
 			return $"{type.Name}.{value.ToString()}";
 		}
 
-		internal string Inspect(object value)
+		internal string Inspect([NotNull] object value)
 		{
 			var type = value.GetType();
 
@@ -273,7 +279,7 @@ namespace Skyra.Core.Utils
 				sb.Append(Padding);
 				sb.Append(property.Name);
 				sb.Append(": ");
-				sb.Append(new InspectionFormatter(property.GetValue(value), Depth - 1));
+				sb.Append(new InspectionFormatter(property.GetValue(value), NextDepth, this));
 				if (++index < count) sb.Append(",\n");
 			}
 

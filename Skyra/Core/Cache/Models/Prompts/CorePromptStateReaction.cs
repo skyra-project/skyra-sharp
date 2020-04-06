@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models.Prompts
@@ -11,14 +12,11 @@ namespace Skyra.Core.Cache.Models.Prompts
 			Context = context;
 		}
 
-		[JsonProperty("aid")]
-		public ulong AuthorId { get; }
+		[JsonProperty("aid")] public ulong AuthorId { get; }
 
-		[JsonProperty("mid")]
-		public ulong MessageId { get; }
+		[JsonProperty("mid")] public ulong MessageId { get; }
 
-		[JsonProperty("ctx")]
-		public object Context { get; private set; }
+		[JsonProperty("ctx")] public object Context { get; private set; }
 
 		public ICorePromptState Patch(ICorePromptState value)
 		{
@@ -26,14 +24,24 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
+		public async Task RunAsync(CoreMessageReaction reaction, CorePromptStateReaction state)
+		{
+			await Task.CompletedTask;
+		}
+
 		public string ToKey()
 		{
-			return $"r:{MessageId.ToString()}:{AuthorId.ToString()}";
+			return ToKey(MessageId, AuthorId);
+		}
+
+		public static string ToKey(ulong messageId, ulong authorId)
+		{
+			return $"r:{messageId.ToString()}:{authorId.ToString()}";
 		}
 
 		public static string ToKey(CoreMessageReaction reaction)
 		{
-			return $"r:{reaction.MessageId.ToString()}:{reaction.UserId.ToString()}";
+			return ToKey(reaction.MessageId, reaction.UserId);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models.Prompts
@@ -11,14 +12,11 @@ namespace Skyra.Core.Cache.Models.Prompts
 			Context = context;
 		}
 
-		[JsonProperty("aid")]
-		public ulong AuthorId { get; }
+		[JsonProperty("aid")] public ulong AuthorId { get; }
 
-		[JsonProperty("cid")]
-		public ulong ChannelId { get; }
+		[JsonProperty("cid")] public ulong ChannelId { get; }
 
-		[JsonProperty("ctx")]
-		public object Context { get; private set; }
+		[JsonProperty("ctx")] public object Context { get; private set; }
 
 		public ICorePromptState Patch(ICorePromptState value)
 		{
@@ -26,9 +24,15 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
+		public async Task RunAsync(CoreMessage message, CorePromptStateMessage state)
+		{
+			await message.SendAsync(
+				$"Oi there m8 you had a prompt set up, I replied to ya. By the way you once said `{state.Context}`");
+		}
+
 		public string ToKey()
 		{
-			return $"m:{ChannelId.ToString()}:{AuthorId.ToString()}";
+			return ToKey(ChannelId, AuthorId);
 		}
 
 		public static string ToKey(CoreMessage message)

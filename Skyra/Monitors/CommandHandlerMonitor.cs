@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
+using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Database;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
@@ -21,10 +23,30 @@ namespace Skyra.Monitors
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message)
+		public async Task RunAsync([NotNull] CoreMessage message)
+		{
+			if (!await RunCommandParsingAsync(message))
+			{
+				await RunPromptAsync(message);
+			}
+		}
+
+		private async Task RunPromptAsync([NotNull] CoreMessage message)
+		{
+			var key = CorePromptStateMessage.ToKey(message);
+			var result = await Client.Cache.Prompts.GetAsync(key);
+			if (result is null) return;
+
+			var state = (result.State as CorePromptStateMessage)!;
+			// ReSharper disable once PossibleNullReferenceException
+			await state.RunAsync(message, state);
+			await Client.Cache.Prompts.DeleteAsync(key);
+		}
+
+		private async Task<bool> RunCommandParsingAsync([NotNull] CoreMessage message)
 		{
 			var (prefix, typeResult) = await GetPrefixAsync(message);
-			if (typeResult == PrefixTypeResult.None) return;
+			if (typeResult == PrefixTypeResult.None) return false;
 
 			var prefixLess = message.Content.Substring(prefix!.Length).TrimStart();
 			if (prefixLess == "" && typeResult == PrefixTypeResult.MentionPrefix)
@@ -32,18 +54,18 @@ namespace Skyra.Monitors
 				await message.SendAsync(message.GuildId == null
 					? $"The prefix for my commands is `{DefaultPrefix}`"
 					: $"The prefix for my commands in this server is `{await RetrieveGuildPrefixAsync((ulong) message.GuildId)}`");
-				return;
+				return true;
 			}
 
 			var commandName = GetCommandName(prefixLess);
 			if (Client.Commands.TryGetValue(commandName.ToLower(), out var command))
 			{
 				await RunInhibitorsAsync(message, command, prefixLess.Substring(commandName.Length));
+				return true;
 			}
-			else
-			{
-				await Client.EventHandler.OnCommandUnknownAsync(message, commandName);
-			}
+
+			await Client.EventHandler.OnCommandUnknownAsync(message, commandName);
+			return false;
 		}
 
 		private async Task RunInhibitorsAsync(CoreMessage message, CommandInfo command, string content)

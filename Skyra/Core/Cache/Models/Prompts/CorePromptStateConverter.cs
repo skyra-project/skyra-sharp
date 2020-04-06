@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -6,6 +7,17 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	internal sealed class CorePromptStateConverter : JsonConverter
 	{
+		private Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>> TypeResolvers { get; set; } =
+			new Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>>(new[]
+			{
+				new KeyValuePair<CorePromptStateType, Func<JToken, ICorePromptState>>(
+					CorePromptStateType.MessageSingleUser,
+					ParseMessageSingleUser),
+				new KeyValuePair<CorePromptStateType, Func<JToken, ICorePromptState>>(
+					CorePromptStateType.ReactionSingleUser,
+					ParseReactionSingleUser)
+			});
+
 		public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
 		{
 			throw new NotImplementedException();
@@ -15,30 +27,26 @@ namespace Skyra.Core.Cache.Models.Prompts
 			JsonSerializer serializer)
 		{
 			var jo = JObject.Load(reader);
-			var rawType = (string) jo["type"]!;
-			var rawState = jo["s"]!;
-
-			CorePromptStateType type;
-			ICorePromptState state;
-			if (rawType == "MessageSingleUser")
-			{
-				type = CorePromptStateType.MessageSingleUser;
-				state = new CorePromptStateMessage((ulong) rawState["aid"]!, (ulong) rawState["cid"]!,
-					rawState["ctx"]!);
-			}
-			else
-			{
-				type = CorePromptStateType.ReactionSingleUser;
-				state = new CorePromptStateReaction((ulong) rawState["aid"]!, (ulong) rawState["mid"]!,
-					rawState["ctx"]!);
-			}
-
+			var type = Enum.Parse<CorePromptStateType>((string) jo["type"]!);
+			var state = TypeResolvers[type](jo["s"]!);
 			return new CorePromptState(null!, type, state);
 		}
 
 		public override bool CanConvert(Type objectType)
 		{
 			return typeof(CorePromptState).IsAssignableFrom(objectType);
+		}
+
+		private static ICorePromptState ParseMessageSingleUser(JToken state)
+		{
+			return new CorePromptStateMessage((ulong) state["aid"]!, (ulong) state["cid"]!,
+				state["ctx"]!);
+		}
+
+		private static ICorePromptState ParseReactionSingleUser(JToken state)
+		{
+			return new CorePromptStateReaction((ulong) state["aid"]!, (ulong) state["mid"]!,
+				state["ctx"]!);
 		}
 	}
 }

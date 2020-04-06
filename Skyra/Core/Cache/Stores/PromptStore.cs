@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Cache.Stores.Base;
 
@@ -17,6 +19,12 @@ namespace Skyra.Core.Cache.Stores
 			var id = FormatKeyName(parent, GetKey(entry));
 			await Database.StringSetAsync(id, SerializeValue(entry));
 			await Database.KeyExpireAsync(id, duration);
+		}
+
+		public override async Task<CorePromptState?> GetAsync(string id, string? parent = null)
+		{
+			var result = await Database.StringGetAsync(FormatKeyName(parent, id));
+			return result.IsNull ? null : DeserializeValue(result.ToString());
 		}
 
 		protected override string GetKey(CorePromptState value)

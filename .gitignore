@@ -10,3 +10,5 @@
 
 # Ignore log files
 *.log
+
+Skyra/Migrations/

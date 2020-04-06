@@ -16,7 +16,7 @@ namespace Skyra.Core.Utils
 			Padding = $"{parent?.Padding}  ";
 		}
 
-		public bool Circular
+		private bool Circular
 		{
 			get
 			{
@@ -68,96 +68,96 @@ namespace Skyra.Core.Utils
 			};
 		}
 
-		internal string Inspect(bool value)
+		private string Inspect(bool value)
 		{
 			return value ? "true" : "false";
 		}
 
-		internal string Inspect(char value)
+		private string Inspect(char value)
 		{
 			return char.IsSurrogate(value) || char.IsControl(value)
 				? $"'\\u{(uint) value:X4}'"
 				: $"'{value.ToString()}'";
 		}
 
-		internal string Inspect(string value)
+		private string Inspect(string value)
 		{
 			return $"\"{value.Replace(@"""", @"\""")}\"";
 		}
 
-		internal string Inspect(sbyte value)
+		private string Inspect(sbyte value)
 		{
 			return $"0x{value:X2}";
 		}
 
-		internal string Inspect(byte value)
+		private string Inspect(byte value)
 		{
 			return $"0x{value:X2}U";
 		}
 
-		internal string Inspect(short value)
+		private string Inspect(short value)
 		{
 			return value.ToString();
 		}
 
-		internal string Inspect(ushort value)
+		private string Inspect(ushort value)
 		{
 			return $"{value.ToString()}U";
 		}
 
-		internal string Inspect(int value)
+		private string Inspect(int value)
 		{
 			return value.ToString();
 		}
 
-		internal string Inspect(uint value)
+		private string Inspect(uint value)
 		{
 			return $"{value.ToString()}U";
 		}
 
-		internal string Inspect(long value)
+		private string Inspect(long value)
 		{
 			return $"{value.ToString()}L";
 		}
 
-		internal string Inspect(ulong value)
+		private string Inspect(ulong value)
 		{
 			return $"{value.ToString()}UL";
 		}
 
-		internal string Inspect(float value)
+		private string Inspect(float value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}F";
 		}
 
-		internal string Inspect(double value)
+		private string Inspect(double value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}D";
 		}
 
-		internal string Inspect(decimal value)
+		private string Inspect(decimal value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}M";
 		}
 
-		internal string Inspect(DateTime value)
+		private string Inspect(DateTime value)
 		{
 			var utc = value.ToUniversalTime();
 			return
 				$"{utc.Year:0000}-{utc.Month:00}-{utc.Day:00}T{utc.Hour:00}:{utc.Minute:00}:{utc.Second:00}.{utc.Millisecond:000}Z";
 		}
 
-		internal string Inspect(TimeSpan value)
+		private string Inspect(TimeSpan value)
 		{
 			return value.ToString();
 		}
 
-		internal string Inspect([NotNull] Type value)
+		private string Inspect([NotNull] Type value)
 		{
 			return value.FullName!;
 		}
 
-		internal string Inspect([NotNull] IDictionary value)
+		private string Inspect([NotNull] IDictionary value)
 		{
 			var type = value.GetType();
 
@@ -201,7 +201,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
-		internal string Inspect([NotNull] Array value)
+		private string Inspect([NotNull] Array value)
 		{
 			var type = value.GetType();
 			var valueType = type.GetElementType()!;
@@ -229,7 +229,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
-		internal string Inspect([NotNull] Delegate value)
+		private string Inspect([NotNull] Delegate value)
 		{
 			var sb = new StringBuilder();
 
@@ -251,13 +251,13 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
-		internal string Inspect([NotNull] Enum value)
+		private string Inspect([NotNull] Enum value)
 		{
 			var type = value.GetType();
 			return $"{CleanName(type.Name)}.{value.ToString()}";
 		}
 
-		internal string Inspect([NotNull] object value)
+		private string Inspect([NotNull] object value)
 		{
 			var type = value.GetType();
 
@@ -286,7 +286,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
-		internal string CleanName([NotNull] string name)
+		private static string CleanName([NotNull] string name)
 		{
 			var index = name.IndexOf("`", StringComparison.InvariantCulture);
 			return index == -1 ? name : name.Substring(0, index);

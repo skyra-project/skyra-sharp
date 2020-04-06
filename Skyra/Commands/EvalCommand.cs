@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using Newtonsoft.Json;
@@ -30,14 +28,13 @@ namespace Skyra.Commands
 			var output = Format(threw ? exception : result);
 			if (output.Length > 1900)
 			{
-				var content = new StringContent(output, Encoding.UTF8, "text/plain");
-				var response = await Client.HttpClient.PostAsync("https://hasteb.in/documents", content);
-				if (response.IsSuccessStatusCode)
+				try
 				{
-					var parsed = HastebinResponse.FromJson(await response.Content.ReadAsStringAsync());
-					await message.SendAsync($"Message too long, sent at <https://hasteb.in/{parsed.Key}.cs>");
+					var response =
+						await Client.HttpClient.PostTextAsync<HastebinResponse>("https://hasteb.in/documents", output);
+					await message.SendAsync($"Message too long, sent at <https://hasteb.in/{response.Key}.cs>");
 				}
-				else
+				catch
 				{
 					await message.SendAsync($"Failed to send message via https://hasteb.in...");
 				}
@@ -85,7 +82,8 @@ namespace Skyra.Commands
 			[JsonProperty("key", Required = Required.Always)]
 			public string Key { get; set; } = null!;
 
-			public static HastebinResponse FromJson(string json) => JsonConvert.DeserializeObject<HastebinResponse>(json);
+			public static HastebinResponse FromJson(string json) =>
+				JsonConvert.DeserializeObject<HastebinResponse>(json);
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace Skyra.Core.Utils
 	public static class HttpClientExtensions
 	{
 		[NotNull]
-		public static Task<TReturn> GetJsonAsync<TReturn>(this HttpClient client, string uri)
+		public static Task<TReturn> GetJsonAsync<TReturn>([NotNull] this HttpClient client, string uri)
 		{
 			return client.GetJsonAsync<TReturn>(new Uri(uri));
 		}
@@ -23,7 +23,7 @@ namespace Skyra.Core.Utils
 		}
 
 		[NotNull]
-		public static Task<string> PostJsonAsync<TValue>(this HttpClient client, string uri, TValue value)
+		public static Task<string> PostJsonAsync<TValue>([NotNull] this HttpClient client, string uri, TValue value)
 		{
 			return client.PostJsonAsync(new Uri(uri), value);
 		}
@@ -37,7 +37,7 @@ namespace Skyra.Core.Utils
 		}
 
 		[NotNull]
-		public static Task<TReturn> PostJsonAsync<TReturn, TValue>(this HttpClient client, string uri, TValue value)
+		public static Task<TReturn> PostJsonAsync<TReturn, TValue>([NotNull] this HttpClient client, string uri, TValue value)
 		{
 			return client.PostJsonAsync<TReturn, TValue>(new Uri(uri), value);
 		}
@@ -49,7 +49,7 @@ namespace Skyra.Core.Utils
 		}
 
 		[NotNull]
-		public static Task<string> PostTextAsync(this HttpClient client, string uri, string value)
+		public static Task<string> PostTextAsync([NotNull] this HttpClient client, string uri, string value)
 		{
 			return client.PostTextAsync(new Uri(uri), value);
 		}
@@ -63,7 +63,7 @@ namespace Skyra.Core.Utils
 		}
 
 		[NotNull]
-		public static Task<TReturn> PostTextAsync<TReturn>(this HttpClient client, string uri, string value)
+		public static Task<TReturn> PostTextAsync<TReturn>([NotNull] this HttpClient client, string uri, string value)
 		{
 			return client.PostTextAsync<TReturn>(new Uri(uri), value);
 		}

@@ -11,6 +11,7 @@ namespace Skyra.Core.Utils
 	{
 		private static readonly Regex EscapeRegex = new Regex(@"[-/\\^$*+?.()|[\]{}]");
 
+		[Pure]
 		[NotNull]
 		public static string Replace([NotNull] this string value, [NotNull] Regex pattern,
 			Func<Group[], string> callback)
@@ -20,7 +21,7 @@ namespace Skyra.Core.Utils
 			var lastIndex = 0;
 
 			var builder = new StringBuilder();
-			foreach (var match in pattern.Matches(value, 0) as IReadOnlyList<Match>)
+			foreach (var match in value.Matches(pattern))
 			{
 				var index = match.Index;
 				builder.Append(source.Substring(lastIndex, index));
@@ -35,6 +36,14 @@ namespace Skyra.Core.Utils
 			return builder.ToString();
 		}
 
+		[Pure]
+		[NotNull]
+		public static IEnumerable<Match> Matches([NotNull] this string value, [NotNull] Regex pattern)
+		{
+			return pattern.Matches(value, 0);
+		}
+
+		[Pure]
 		[NotNull]
 		public static string EscapeRegexPatterns([NotNull] this string value)
 		{

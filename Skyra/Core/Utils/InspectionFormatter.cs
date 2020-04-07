@@ -39,6 +39,7 @@ namespace Skyra.Core.Utils
 		[NotNull]
 		private string Padding { get; }
 
+		[Pure]
 		[NotNull]
 		public override string ToString()
 		{
@@ -71,12 +72,14 @@ namespace Skyra.Core.Utils
 			};
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(bool value)
 		{
 			return value ? "true" : "false";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(char value)
 		{
@@ -85,78 +88,91 @@ namespace Skyra.Core.Utils
 				: $"'{value.ToString()}'";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] string value)
 		{
 			return $"\"{value.Replace(@"""", @"\""")}\"";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(sbyte value)
 		{
 			return $"0x{value:X2}";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(byte value)
 		{
 			return $"0x{value:X2}U";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(short value)
 		{
 			return value.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(ushort value)
 		{
 			return $"{value.ToString()}U";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(int value)
 		{
 			return value.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(uint value)
 		{
 			return $"{value.ToString()}U";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(long value)
 		{
 			return $"{value.ToString()}L";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(ulong value)
 		{
 			return $"{value.ToString()}UL";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(float value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}F";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(double value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}D";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(decimal value)
 		{
 			return $"{value.ToString(CultureInfo.InvariantCulture)}M";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(DateTime value)
 		{
@@ -165,18 +181,21 @@ namespace Skyra.Core.Utils
 				$"{utc.Year:0000}-{utc.Month:00}-{utc.Day:00}T{utc.Hour:00}:{utc.Minute:00}:{utc.Second:00}.{utc.Millisecond:000}Z";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect(TimeSpan value)
 		{
 			return value.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] Type value)
 		{
 			return value.FullName! ?? "{INVALID}";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] IDictionary value)
 		{
@@ -227,6 +246,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] Array value)
 		{
@@ -256,6 +276,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] Delegate value)
 		{
@@ -282,6 +303,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] Enum value)
 		{
@@ -289,6 +311,7 @@ namespace Skyra.Core.Utils
 			return $"{CleanName(type.Name)}.{value.ToString()}";
 		}
 
+		[Pure]
 		[NotNull]
 		private string Inspect([NotNull] object value)
 		{
@@ -324,6 +347,7 @@ namespace Skyra.Core.Utils
 			return sb.ToString();
 		}
 
+		[Pure]
 		[NotNull]
 		private static string CleanName([NotNull] string name)
 		{

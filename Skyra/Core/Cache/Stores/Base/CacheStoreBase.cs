@@ -54,9 +54,11 @@ namespace Skyra.Core.Cache.Stores.Base
 		[ItemNotNull]
 		public async Task<T[]> GetAsync([NotNull] IEnumerable<string> ids, string? parent = null)
 		{
-#pragma warning disable 8603
-			return (await Task.WhenAll(ids.Select(id => GetAsync(id, parent)))).Where(x => x != null).ToArray();
-#pragma warning restore 8603
+			var results = await Task.WhenAll(ids.Select(id => GetAsync(id, parent)));
+
+#pragma warning disable 8619
+			return results.Where(x => x != null).ToArray();
+#pragma warning restore 8619
 		}
 
 		/// <summary>

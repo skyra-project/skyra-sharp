@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
@@ -91,6 +92,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="LevelRoles" />
 		/// </summary>
 		[Column("level_roles", TypeName = "JSONB")]
+		[NotNull]
 		public string LevelRolesRaw
 		{
 			get => JsonConvert.SerializeObject(LevelRoles);
@@ -107,6 +109,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="MessageReactions" />
 		/// </summary>
 		[Column("message_reactions", TypeName = "JSONB")]
+		[NotNull]
 		public string MessageReactionsRaw
 		{
 			get => JsonConvert.SerializeObject(MessageReactions);
@@ -123,6 +126,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="UniqueRoleSets" />
 		/// </summary>
 		[Column("unique_role_sets", TypeName = "JSONB")]
+		[NotNull]
 		public string UniqueRoleSetsRaw
 		{
 			get => JsonConvert.SerializeObject(UniqueRoleSets);

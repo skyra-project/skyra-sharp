@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Stores;
 using Spectacles.NET.Rest.Redis;
 using StackExchange.Redis;
@@ -33,6 +34,7 @@ namespace Skyra.Core.Cache
 
 		public IDatabase Database => BestConnection.GetDatabase();
 
+		[CanBeNull]
 		public IServer Redis => BestConnection.GetEndPoints().Select(endPoint => BestConnection.GetServer(endPoint))
 			.FirstOrDefault(server => !server.IsSlave);
 

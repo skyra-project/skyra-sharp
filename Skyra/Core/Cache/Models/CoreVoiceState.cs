@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -51,7 +52,8 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreVoiceState Patch(CoreVoiceState value)
+		[NotNull]
+		public CoreVoiceState Patch([NotNull] CoreVoiceState value)
 		{
 			SessionId = value.SessionId;
 			Deaf = value.Deaf;
@@ -63,6 +65,7 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[NotNull]
 		public CoreVoiceState Clone()
 		{
 			return new CoreVoiceState(Client,
@@ -77,22 +80,26 @@ namespace Skyra.Core.Cache.Models
 				SelfMute);
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreGuild?> GetGuildAsync()
 		{
 			return await Client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreGuildChannel?> GetChannelAsync()
 		{
 			return await Client.Cache.GuildChannels.GetAsync(GuildId.ToString());
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreUser?> GetUserAsync()
 		{
 			return await Client.Cache.Users.GetAsync(UserId.ToString());
 		}
 
-		public static CoreVoiceState From(IClient client, VoiceState voiceState)
+		[NotNull]
+		public static CoreVoiceState From(IClient client, [NotNull] VoiceState voiceState)
 		{
 			return new CoreVoiceState(client, voiceState.SessionId, voiceState.Deaf, voiceState.Mute,
 				voiceState.Suppress,

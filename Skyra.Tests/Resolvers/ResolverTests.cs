@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Skyra.Resolvers;
 
@@ -10,7 +11,7 @@ namespace Skyra.Tests.Resolvers
 	{
 		[Test]
 		public async Task BoolResolver_Resolves_TruthfulBools(
-			[Values("1", "t", "true", "+", "y", "yes")]
+			[Values("1", "t", "true", "+", "y", "yes")] [NotNull]
 			string argument)
 		{
 			// Assign

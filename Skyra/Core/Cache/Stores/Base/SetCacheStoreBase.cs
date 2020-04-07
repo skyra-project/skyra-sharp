@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 
 namespace Skyra.Core.Cache.Stores.Base
@@ -12,6 +13,7 @@ namespace Skyra.Core.Cache.Stores.Base
 		{
 		}
 
+		[ItemCanBeNull]
 		public override async Task<T?> GetAsync(string id, string? parent = null)
 		{
 			var result = await Database.StringGetAsync(FormatKeyName(parent, id));
@@ -28,7 +30,7 @@ namespace Skyra.Core.Cache.Stores.Base
 			await Database.StringSetAsync(FormatKeyName(parent, GetKey(entry)), SerializeValue(entry));
 		}
 
-		public override async Task SetAsync(IEnumerable<T> entries, string? parent = null)
+		public override async Task SetAsync([NotNull] IEnumerable<T> entries, string? parent = null)
 		{
 			var transaction = Database.CreateTransaction();
 			await Task.WhenAll(entries.Select(entry =>
@@ -41,7 +43,8 @@ namespace Skyra.Core.Cache.Stores.Base
 			await Database.KeyDeleteAsync(FormatKeyName(parent, id));
 		}
 
-		protected string FormatKeyName(string? parent, string? id)
+		[NotNull]
+		protected string FormatKeyName(string? parent, [CanBeNull] string? id)
 		{
 			return id == null ? FormatKeyName(parent) : $"{FormatKeyName(parent)}:{parent}";
 		}

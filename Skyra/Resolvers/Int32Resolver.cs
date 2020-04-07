@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,6 +16,7 @@ namespace Skyra.Resolvers
 		{
 		}
 
+		[NotNull]
 		public Task<int> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument, string content)
 		{
 			if (!int.TryParse(content, out var resolved))

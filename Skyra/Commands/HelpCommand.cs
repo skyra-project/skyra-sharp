@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -14,11 +15,12 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message, CommandInfo command)
+		public async Task RunAsync([NotNull] CoreMessage message, CommandInfo command)
 		{
 			await message.SendLocaleAsync("UsageCommand", command.Name, GetUsage(command));
 		}
 
+		[NotNull]
 		private static string GetUsage(CommandInfo command)
 		{
 			return string.Join("\n", command.Usage.Overloads.Select(o => $"- `Skyra, {command.Name} {o}`"));

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Stores.Base;
 
@@ -18,7 +19,8 @@ namespace Skyra.Core.Cache.Stores
 			await Database.KeyExpireAsync(id, TimeSpan.FromMinutes(20));
 		}
 
-		protected override string GetKey(CoreMessage value)
+		[NotNull]
+		protected override string GetKey([NotNull] CoreMessage value)
 		{
 			return value.Id.ToString();
 		}

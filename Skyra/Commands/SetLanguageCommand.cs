@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
@@ -17,7 +18,7 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message, CultureInfo language)
+		public async Task RunAsync([NotNull] CoreMessage message, [NotNull] CultureInfo language)
 		{
 			await using var db = new SkyraDatabaseContext();
 			await db.Guilds.UpdateOrCreateAsync((ulong) message.GuildId!, guild => { guild.Language = language.Name; },

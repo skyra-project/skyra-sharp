@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -40,12 +41,14 @@ namespace Skyra.Core.Cache.Models
 			throw new NotImplementedException();
 		}
 
+		[NotNull]
 		public CoreMessageReaction Clone()
 		{
 			return new CoreMessageReaction(Client, MessageId, ChannelId, GuildId, UserId, Emoji);
 		}
 
-		public CoreMessageReaction From(IClient client, MessageReactionAddPayload reaction)
+		[NotNull]
+		public CoreMessageReaction From(IClient client, [NotNull] MessageReactionAddPayload reaction)
 		{
 			return new CoreMessageReaction(client, ulong.Parse(reaction.MessageId), ulong.Parse(reaction.ChannelId),
 				ulong.Parse(reaction.GuildId), ulong.Parse(reaction.UserId), reaction.Emoji);

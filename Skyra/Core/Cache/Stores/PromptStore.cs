@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Cache.Stores.Base;
@@ -25,11 +26,13 @@ namespace Skyra.Core.Cache.Stores
 			return result.IsNull ? null : DeserializeValue(result.ToString());
 		}
 
-		protected override string GetKey(CorePromptState value)
+		[NotNull]
+		protected override string GetKey([NotNull] CorePromptState value)
 		{
 			return value.State.ToKey();
 		}
 
+		[NotNull]
 		private new CorePromptState DeserializeValue(string value)
 		{
 			var deserialized = JsonConvert.DeserializeObject<CorePromptState>(value, new CorePromptStateConverter())!;

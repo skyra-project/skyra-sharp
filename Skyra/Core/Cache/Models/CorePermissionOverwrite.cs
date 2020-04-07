@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Spectacles.NET.Types;
@@ -6,7 +7,7 @@ namespace Skyra.Core.Cache.Models
 {
 	public struct CorePermissionOverwrite
 	{
-		public static CorePermissionOverwrite From(PermissionOverwrite overwrite)
+		public static CorePermissionOverwrite From([NotNull] PermissionOverwrite overwrite)
 		{
 			return new CorePermissionOverwrite(ulong.Parse(overwrite.Id),
 				overwrite.Type == "role" ? CorePermissionOverwriteType.Role : CorePermissionOverwriteType.Member,

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Stores.Base;
 
@@ -9,7 +10,8 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		protected override string GetKey(CoreEditableMessage value)
+		[NotNull]
+		protected override string GetKey([NotNull] CoreEditableMessage value)
 		{
 			return value.Id.ToString();
 		}

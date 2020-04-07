@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -31,7 +32,7 @@ namespace Skyra.Events
 			}
 		}
 
-		private bool ShouldRunMonitor(CoreMessage message, MonitorInfo monitor)
+		private bool ShouldRunMonitor([NotNull] CoreMessage message, MonitorInfo monitor)
 		{
 			return monitor.AllowedTypes.Contains(message.Type)
 			       && !(monitor.IgnoreBots && message.Author!.Bot)

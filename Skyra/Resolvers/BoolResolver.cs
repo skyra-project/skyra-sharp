@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -19,7 +20,9 @@ namespace Skyra.Resolvers
 		{
 		}
 
-		public Task<bool> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument, string content)
+		[NotNull]
+		public Task<bool> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument,
+			[NotNull] string content)
 		{
 			var boolean = content.ToLower();
 			if (Truths.Contains(boolean)) return Task.FromResult(true);

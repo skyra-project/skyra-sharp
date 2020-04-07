@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.Scripting;
 using Newtonsoft.Json;
 using Skyra.Core;
@@ -9,6 +10,8 @@ using Skyra.Core.Services;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Utils;
+
+// ReSharper disable All
 
 namespace Skyra.Commands
 {
@@ -22,7 +25,7 @@ namespace Skyra.Commands
 			_eval = eval;
 		}
 
-		public async Task RunAsync(CoreMessage message, string code)
+		public async Task RunAsync([NotNull] CoreMessage message, string code)
 		{
 			var (threw, result, exception) = await ExecuteAsync(message, code);
 			var output = Format(threw ? exception : result);
@@ -36,7 +39,7 @@ namespace Skyra.Commands
 				}
 				catch
 				{
-					await message.SendAsync($"Failed to send message via https://hasteb.in...");
+					await message.SendAsync("Failed to send message via https://hasteb.in...");
 				}
 			}
 			else
@@ -60,6 +63,7 @@ namespace Skyra.Commands
 			}
 		}
 
+		[NotNull]
 		private string Format(object? result)
 		{
 			return result switch
@@ -71,6 +75,7 @@ namespace Skyra.Commands
 			};
 		}
 
+		[UsedImplicitly]
 		public sealed class ScriptGlobals
 		{
 			public CoreMessage Message { get; set; } = null!;
@@ -81,9 +86,6 @@ namespace Skyra.Commands
 		{
 			[JsonProperty("key", Required = Required.Always)]
 			public string Key { get; set; } = null!;
-
-			public static HastebinResponse FromJson(string json) =>
-				JsonConvert.DeserializeObject<HastebinResponse>(json);
 		}
 	}
 }

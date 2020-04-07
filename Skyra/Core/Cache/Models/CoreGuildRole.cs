@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -42,7 +43,8 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreGuildRole Patch(CoreGuildRole value)
+		[NotNull]
+		public CoreGuildRole Patch([NotNull] CoreGuildRole value)
 		{
 			Name = value.Name;
 			Color = value.Color;
@@ -52,6 +54,7 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[NotNull]
 		public CoreGuildRole Clone()
 		{
 			return new CoreGuildRole(Client,
@@ -64,7 +67,8 @@ namespace Skyra.Core.Cache.Models
 				Position);
 		}
 
-		public static CoreGuildRole From(IClient client, Role role)
+		[NotNull]
+		public static CoreGuildRole From(IClient client, [NotNull] Role role)
 		{
 			return new CoreGuildRole(client, ulong.Parse(role.Id), role.Name, (uint) role.Color, role.Managed,
 				role.Mentionable,

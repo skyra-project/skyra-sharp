@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -41,7 +42,8 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreGuildMember Patch(CoreGuildMember value)
+		[NotNull]
+		public CoreGuildMember Patch([NotNull] CoreGuildMember value)
 		{
 			Roles = value.Roles;
 			Nickname = value.Nickname;
@@ -51,6 +53,7 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[NotNull]
 		public CoreGuildMember Clone()
 		{
 			return new CoreGuildMember(Client,
@@ -62,12 +65,14 @@ namespace Skyra.Core.Cache.Models
 				Mute);
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreUser?> GetUserAsync()
 		{
 			return await Client.Cache.Users.GetAsync(Id.ToString());
 		}
 
-		public static CoreGuildMember From(IClient client, GuildMember guildMember, User? user = null)
+		[NotNull]
+		public static CoreGuildMember From(IClient client, [NotNull] GuildMember guildMember, User? user = null)
 		{
 			DateTime? joinedAt;
 			if (DateTime.TryParse(guildMember.JoinedAt, out var result))

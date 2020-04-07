@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models.Prompts
@@ -21,12 +22,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[JsonProperty("ctx")]
 		public object Context { get; private set; }
 
-		public ICorePromptState Patch(ICorePromptState value)
+		[NotNull]
+		public ICorePromptState Patch([NotNull] ICorePromptState value)
 		{
 			Context = value.Context;
 			return this;
 		}
 
+		[NotNull]
 		public string ToKey()
 		{
 			return ToKey(MessageId, AuthorId);
@@ -37,12 +40,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 			await Task.CompletedTask;
 		}
 
+		[NotNull]
 		public static string ToKey(ulong messageId, ulong authorId)
 		{
 			return $"r:{messageId.ToString()}:{authorId.ToString()}";
 		}
 
-		public static string ToKey(CoreMessageReaction reaction)
+		[NotNull]
+		public static string ToKey([NotNull] CoreMessageReaction reaction)
 		{
 			return ToKey(reaction.MessageId, reaction.UserId);
 		}

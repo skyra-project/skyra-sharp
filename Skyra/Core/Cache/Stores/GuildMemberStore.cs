@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Stores.Base;
 using Spectacles.NET.Types;
@@ -12,7 +13,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public async Task SetAsync(IEnumerable<GuildMember> entries, string? parent = null)
+		public async Task SetAsync([NotNull] IEnumerable<GuildMember> entries, string? parent = null)
 		{
 			var users = new List<CoreUser>();
 			var members = new List<CoreGuildMember>();
@@ -25,7 +26,8 @@ namespace Skyra.Core.Cache.Stores
 			await Task.WhenAll(Context.Users.SetAsync(users), SetAsync(members, parent));
 		}
 
-		protected override string GetKey(CoreGuildMember value)
+		[NotNull]
+		protected override string GetKey([NotNull] CoreGuildMember value)
 		{
 			return value.Id.ToString();
 		}

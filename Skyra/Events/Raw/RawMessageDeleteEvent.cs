@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
@@ -14,7 +15,7 @@ namespace Skyra.Events.Raw
 			Client.EventHandler.OnRawMessageDeleteAsync += RunAsync;
 		}
 
-		private async Task RunAsync(MessageDeletePayload messageDeletePayload)
+		private async Task RunAsync([NotNull] MessageDeletePayload messageDeletePayload)
 		{
 			var message = await Client.Cache.Messages.GetAsync(messageDeletePayload.Id, messageDeletePayload.ChannelId);
 			if (message == null)

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,7 +16,7 @@ namespace Skyra.Events.Raw
 			Client.EventHandler.OnRawMessageUpdateAsync += RunAsync;
 		}
 
-		private async Task RunAsync(MessageUpdatePayload messageUpdate)
+		private async Task RunAsync([NotNull] MessageUpdatePayload messageUpdate)
 		{
 			// Instantiate CoreMessage for usage everywhere
 			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id, messageUpdate.ChannelId);

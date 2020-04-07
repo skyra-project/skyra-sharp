@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -25,13 +26,15 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreGuildEmoji Patch(CoreGuildEmoji value)
+		[NotNull]
+		public CoreGuildEmoji Patch([NotNull] CoreGuildEmoji value)
 		{
 			Animated = value.Animated;
 			Name = value.Name;
 			return this;
 		}
 
+		[NotNull]
 		public CoreGuildEmoji Clone()
 		{
 			return new CoreGuildEmoji(Client,
@@ -40,7 +43,8 @@ namespace Skyra.Core.Cache.Models
 				Animated);
 		}
 
-		public static CoreGuildEmoji From(IClient client, Emoji emoji)
+		[NotNull]
+		public static CoreGuildEmoji From(IClient client, [NotNull] Emoji emoji)
 		{
 			return new CoreGuildEmoji(client, ulong.Parse(emoji.Id), emoji.Name, emoji.Animated ?? false);
 		}

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
@@ -16,7 +16,7 @@ namespace Skyra.Core
 {
 	internal sealed class Loader
 	{
-		public Loader([NotNull] IClient client, Assembly? assembly = null)
+		public Loader([NotNull] IClient client, [CanBeNull] Assembly? assembly = null)
 		{
 			Client = client;
 			Assembly = assembly ?? Assembly.GetExecutingAssembly();
@@ -30,6 +30,7 @@ namespace Skyra.Core
 			return cultures.ToImmutableDictionary(x => x, x => new CultureInfo(x));
 		}
 
+		[NotNull]
 		public Dictionary<string, InhibitorInfo> LoadInhibitors()
 		{
 			return Assembly
@@ -39,6 +40,7 @@ namespace Skyra.Core
 				.Select(ToInhibitorInfo).ToDictionary(x => x.Name, x => x);
 		}
 
+		[NotNull]
 		public Dictionary<string, CommandInfo> LoadCommands()
 		{
 			return Assembly
@@ -48,6 +50,7 @@ namespace Skyra.Core
 				.Select(ToCommandInfo).ToDictionary(x => x.Name, x => x);
 		}
 
+		[NotNull]
 		public Dictionary<string, EventInfo> LoadEvents()
 		{
 			return Assembly
@@ -57,6 +60,7 @@ namespace Skyra.Core
 				.Select(ToEventInfo).ToDictionary(x => x.Name, x => x);
 		}
 
+		[NotNull]
 		public Dictionary<string, MonitorInfo> LoadMonitors()
 		{
 			return Assembly
@@ -66,6 +70,7 @@ namespace Skyra.Core
 				.Select(ToMonitorInfo).ToDictionary(x => x.Name, x => x);
 		}
 
+		[NotNull]
 		public Dictionary<Type, ResolverInfo> LoadResolvers()
 		{
 			return Assembly
@@ -110,7 +115,7 @@ namespace Skyra.Core
 			};
 		}
 
-		private MonitorInfo ToMonitorInfo(IMonitor monitor)
+		private MonitorInfo ToMonitorInfo([NotNull] IMonitor monitor)
 		{
 			var attribute = monitor.GetType().GetCustomAttribute<MonitorAttribute>()!;
 			return new MonitorInfo
@@ -126,7 +131,7 @@ namespace Skyra.Core
 			};
 		}
 
-		private CommandInfo ToCommandInfo(StructureBase command)
+		private CommandInfo ToCommandInfo([NotNull] StructureBase command)
 		{
 			var t = command.GetType();
 			var commandInfo = t.GetCustomAttribute<CommandAttribute>()!;

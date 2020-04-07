@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,7 +16,8 @@ namespace Skyra.Events
 			Client.EventHandler.OnCommandArgumentExceptionAsync += RunAsync;
 		}
 
-		private async Task RunAsync(CoreMessage message, string command, ArgumentException exception)
+		private async Task RunAsync([NotNull] CoreMessage message, string command,
+			[NotNull] ArgumentException exception)
 		{
 			await message.SendAsync($"Argument Error: {exception.InnerException?.Message ?? exception.Message}");
 		}

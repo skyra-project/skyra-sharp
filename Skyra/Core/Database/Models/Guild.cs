@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
@@ -49,6 +50,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="StickyRoles" />
 		/// </summary>
 		[Column("sticky_roles", TypeName = "JSONB")]
+		[NotNull]
 		public string StickyRolesRaw
 		{
 			get => JsonConvert.SerializeObject(StickyRoles);
@@ -65,6 +67,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="Actions" />
 		/// </summary>
 		[Column("actions", TypeName = "JSONB")]
+		[NotNull]
 		public string ActionsRaw
 		{
 			get => JsonConvert.SerializeObject(Actions);
@@ -81,6 +84,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="CommandAutoDelete" />
 		/// </summary>
 		[Column("command_auto_delete", TypeName = "JSONB")]
+		[NotNull]
 		public string CommandAutoDeleteRaw
 		{
 			get => JsonConvert.SerializeObject(CommandAutoDelete);
@@ -97,6 +101,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="DisabledCommandChannels" />
 		/// </summary>
 		[Column("disabled_command_channels", TypeName = "JSONB")]
+		[NotNull]
 		public string DisabledCommandChannelsRaw
 		{
 			get => JsonConvert.SerializeObject(DisabledCommandChannels);
@@ -114,6 +119,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="Tags" />
 		/// </summary>
 		[Column("tags", TypeName = "JSONB")]
+		[NotNull]
 		public string TagsRaw
 		{
 			get => JsonConvert.SerializeObject(Tags);

@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Skyra.Core.Database.Models;
@@ -11,7 +12,7 @@ namespace Skyra.Core.Database
 		{
 		}
 
-		public SkyraDatabaseContext(DbContextOptions options)
+		public SkyraDatabaseContext([NotNull] DbContextOptions options)
 			: base(options)
 		{
 		}
@@ -27,7 +28,7 @@ namespace Skyra.Core.Database
 		public DbSet<Starboard> Starboard { get; set; } = null!;
 		public DbSet<User> Users { get; set; } = null!;
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring([NotNull] DbContextOptionsBuilder optionsBuilder)
 		{
 			if (optionsBuilder.IsConfigured) return;
 
@@ -42,7 +43,7 @@ namespace Skyra.Core.Database
 				options => options.EnableRetryOnFailure());
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Giveaway>(entity =>
 				entity.HasKey(e => new {e.GuildId, e.MessageId}));

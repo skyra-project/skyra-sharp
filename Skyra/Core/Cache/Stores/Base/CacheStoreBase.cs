@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Skyra.Core.Cache.Models;
 using StackExchange.Redis;
@@ -29,6 +29,7 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// <summary>
 		///     The <see cref="IDatabase" /> instance that handles all queries to Redis.
 		/// </summary>
+		[NotNull]
 		protected IDatabase Database => Context.Database;
 
 		/// <summary>
@@ -50,7 +51,8 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// <param name="ids">An enumerable of string identifiers of the objects to pull.</param>
 		/// <param name="parent">The parent which manages this entry.</param>
 		/// <returns>Returns an array of <see cref="T" />.</returns>
-		public async Task<T[]> GetAsync(IEnumerable<string> ids, string? parent = null)
+		[ItemCanBeNull]
+		public async Task<T[]> GetAsync([NotNull] IEnumerable<string> ids, string? parent = null)
 		{
 #pragma warning disable 8603
 			return (await Task.WhenAll(ids.Select(id => GetAsync(id, parent)))).Where(x => x != null) as T[];
@@ -87,7 +89,7 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// <param name="entry">The entry to write to the Redis database.</param>
 		/// <param name="parent">The parent that will manage this entry, if any.</param>
 		/// <returns>A <see cref="Task" /> that will resolve when the operation is complete.</returns>
-		public async Task SetNullableAsync(T? entry, string? parent = null)
+		public async Task SetNullableAsync([CanBeNull] T? entry, string? parent = null)
 		{
 			if (entry == null) return;
 			await SetAsync(entry, parent);
@@ -127,7 +129,8 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// <param name="ids">The entries' IDs to be deleted.</param>
 		/// <param name="parent">The parent that manages the entries to be deleted.</param>
 		/// <returns>A <see cref="Task" /> that will resolve when the operation is complete.</returns>
-		public Task DeleteAsync(IEnumerable<string> ids, string? parent = null)
+		[NotNull]
+		public Task DeleteAsync([NotNull] IEnumerable<string> ids, string? parent = null)
 		{
 			return Task.WhenAll(ids.Select(id => DeleteAsync(id, parent)));
 		}
@@ -144,7 +147,7 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// </summary>
 		/// <param name="parent">The parent to prefix this key with.</param>
 		/// <returns>The key to be used for all entries in this store.</returns>
-		protected string FormatKeyName(string? parent)
+		protected string FormatKeyName([CanBeNull] string? parent)
 		{
 			return parent == null ? Prefix : $"{Prefix}:{parent}";
 		}
@@ -154,12 +157,14 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// </summary>
 		/// <param name="value">The value to be serialized.</param>
 		/// <returns>A <see cref="string" /> representing the JSON-serialized data.</returns>
+		[NotNull]
 		protected string SerializeValue(T value)
 		{
 			return JsonConvert.SerializeObject(value, Formatting.None,
 				new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
 		}
 
+		[NotNull]
 		protected T DeserializeValue(string value)
 		{
 			var deserialized = JsonConvert.DeserializeObject<T>(value);

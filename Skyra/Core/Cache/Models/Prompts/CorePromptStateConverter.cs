@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -23,6 +24,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 			throw new NotImplementedException();
 		}
 
+		[NotNull]
 		public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue,
 			JsonSerializer serializer)
 		{
@@ -37,13 +39,15 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return typeof(CorePromptState).IsAssignableFrom(objectType);
 		}
 
-		private static ICorePromptState ParseMessageSingleUser(JToken state)
+		[NotNull]
+		private static ICorePromptState ParseMessageSingleUser([NotNull] JToken state)
 		{
 			return new CorePromptStateMessage((ulong) state["aid"]!, (ulong) state["cid"]!,
 				state["ctx"]!);
 		}
 
-		private static ICorePromptState ParseReactionSingleUser(JToken state)
+		[NotNull]
+		private static ICorePromptState ParseReactionSingleUser([NotNull] JToken state)
 		{
 			return new CorePromptStateReaction((ulong) state["aid"]!, (ulong) state["mid"]!,
 				state["ctx"]!);

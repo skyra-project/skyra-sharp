@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -37,7 +38,8 @@ namespace Skyra.Core.Cache.Models
 		[JsonProperty("po")]
 		public CorePermissionOverwrite[] PermissionOverwrites { get; set; }
 
-		public CoreGuildChannel Patch(CoreGuildChannel value)
+		[NotNull]
+		public CoreGuildChannel Patch([NotNull] CoreGuildChannel value)
 		{
 			base.Patch(value);
 			Name = value.Name;
@@ -47,6 +49,7 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[NotNull]
 		public new CoreGuildChannel Clone()
 		{
 			return new CoreGuildChannel(Client,
@@ -60,12 +63,14 @@ namespace Skyra.Core.Cache.Models
 				PermissionOverwrites);
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreGuild?> GetGuildAsync(IClient client)
 		{
 			return Guild ??= await client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
-		public new static CoreGuildChannel From(IClient client, Channel channel)
+		[NotNull]
+		public new static CoreGuildChannel From(IClient client, [NotNull] Channel channel)
 		{
 			return new CoreGuildChannel(client, ulong.Parse(channel.Id), channel.Type, null,
 				ulong.Parse(channel.GuildId),

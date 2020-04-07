@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models
@@ -21,17 +22,20 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreEditableMessage Patch(CoreEditableMessage value)
+		[NotNull]
+		public CoreEditableMessage Patch([NotNull] CoreEditableMessage value)
 		{
 			OwnMessageId = value.OwnMessageId;
 			return this;
 		}
 
+		[NotNull]
 		public CoreEditableMessage Clone()
 		{
 			return new CoreEditableMessage(Client, Id, OwnMessageId);
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreMessage?> GetMessageAsync()
 		{
 			return await Client.Cache.Messages.GetAsync(OwnMessageId.ToString());

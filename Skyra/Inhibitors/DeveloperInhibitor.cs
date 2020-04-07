@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,7 +16,8 @@ namespace Skyra.Inhibitors
 		{
 		}
 
-		public Task<bool> RunAsync(CoreMessage message, CommandInfo command)
+		[NotNull]
+		public Task<bool> RunAsync([NotNull] CoreMessage message, CommandInfo command)
 		{
 			return Task.FromResult(!Client.Owners.Contains(message.AuthorId));
 		}

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using Spectacles.NET.Rest.APIError;
@@ -10,7 +11,7 @@ namespace Skyra.Core.Services
 	{
 		private readonly ScriptOptions _options;
 
-		public EvalService(ScriptOptions options)
+		public EvalService([NotNull] ScriptOptions options)
 		{
 			_options = options
 				.WithImports("System", "System.Collections", "System.Collections.Generic")

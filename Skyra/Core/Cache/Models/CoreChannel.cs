@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -21,18 +22,21 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreChannel Patch(CoreChannel value)
+		[NotNull]
+		public CoreChannel Patch([NotNull] CoreChannel value)
 		{
 			Type = value.Type;
 			return this;
 		}
 
+		[NotNull]
 		public CoreChannel Clone()
 		{
 			return new CoreChannel(Client, Id, Type);
 		}
 
-		public static CoreChannel From(IClient client, Channel channel)
+		[NotNull]
+		public static CoreChannel From(IClient client, [NotNull] Channel channel)
 		{
 			return new CoreChannel(client, ulong.Parse(channel.Id), channel.Type);
 		}

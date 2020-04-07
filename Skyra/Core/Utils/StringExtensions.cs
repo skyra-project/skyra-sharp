@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
 namespace Skyra.Core.Utils
 {
@@ -10,7 +11,9 @@ namespace Skyra.Core.Utils
 	{
 		private static readonly Regex EscapeRegex = new Regex(@"[-/\\^$*+?.()|[\]{}]");
 
-		public static string Replace(this string value, Regex pattern, Func<Group[], string> callback)
+		[NotNull]
+		public static string Replace([NotNull] this string value, [NotNull] Regex pattern,
+			Func<Group[], string> callback)
 		{
 			var source = value;
 			var length = source.Length;
@@ -32,7 +35,8 @@ namespace Skyra.Core.Utils
 			return builder.ToString();
 		}
 
-		public static string EscapeRegexPatterns(this string value)
+		[NotNull]
+		public static string EscapeRegexPatterns([NotNull] this string value)
 		{
 			return value.Replace(EscapeRegex, groups => $"\\{groups[0]}");
 		}

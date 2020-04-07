@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
@@ -11,6 +12,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="Users" />
 		/// </summary>
 		[Column("users", TypeName = "JSONB")]
+		[NotNull]
 		public string UsersRaw
 		{
 			get => JsonConvert.SerializeObject(Users);
@@ -27,6 +29,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="Roles" />
 		/// </summary>
 		[Column("roles", TypeName = "JSONB")]
+		[NotNull]
 		public string RolesRaw
 		{
 			get => JsonConvert.SerializeObject(Roles);

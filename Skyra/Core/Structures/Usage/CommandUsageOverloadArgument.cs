@@ -1,12 +1,13 @@
 using System;
 using System.Reflection;
+using JetBrains.Annotations;
 using Skyra.Core.Structures.Attributes;
 
 namespace Skyra.Core.Structures.Usage
 {
 	public sealed class CommandUsageOverloadArgument
 	{
-		internal CommandUsageOverloadArgument(IClient client, ParameterInfo parameterInfo)
+		internal CommandUsageOverloadArgument(IClient client, [NotNull] ParameterInfo parameterInfo)
 		{
 			ArgumentType = parameterInfo.ParameterType;
 			var innerType = ArgumentType.GetElementType() ?? ArgumentType;
@@ -43,6 +44,7 @@ namespace Skyra.Core.Structures.Usage
 
 		private uint CalculatedMinimumValues => Repeating && !Optional ? 1U : uint.MinValue;
 
+		[NotNull]
 		private string FormattedInternalUsage
 		{
 			get
@@ -56,6 +58,7 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
+		[NotNull]
 		private string RangeString
 		{
 			get
@@ -69,6 +72,7 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
+		[NotNull]
 		private string ArrayRangeString
 		{
 			get
@@ -83,6 +87,7 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
+		[NotNull]
 		public override string ToString()
 		{
 			return Optional ? $"[{FormattedInternalUsage}]" : $"<{FormattedInternalUsage}>";

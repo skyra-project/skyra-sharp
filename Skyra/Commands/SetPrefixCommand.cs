@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
@@ -16,7 +17,7 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message, [Argument(Maximum = 10)] string prefix)
+		public async Task RunAsync([NotNull] CoreMessage message, [Argument(Maximum = 10)] string prefix)
 		{
 			await using var db = new SkyraDatabaseContext();
 			await db.Guilds.UpdateOrCreateAsync((ulong) message.GuildId!, guild => { guild.Prefix = prefix; },

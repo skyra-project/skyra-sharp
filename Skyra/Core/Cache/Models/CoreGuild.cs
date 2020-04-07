@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -43,7 +44,8 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreGuild Patch(CoreGuild value)
+		[NotNull]
+		public CoreGuild Patch([NotNull] CoreGuild value)
 		{
 			Name = value.Name;
 			Region = value.Region;
@@ -54,6 +56,7 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[NotNull]
 		public CoreGuild Clone()
 		{
 			return new CoreGuild(Client,
@@ -66,22 +69,26 @@ namespace Skyra.Core.Cache.Models
 				OwnerId);
 		}
 
+		[ItemNotNull]
 		public async Task<CoreGuildChannel[]> GetChannelsAsync()
 		{
 			return await Client.Cache.GuildChannels.GetAllAsync(Id.ToString());
 		}
 
+		[ItemNotNull]
 		public async Task<CoreGuildRole[]> GetRolesAsync()
 		{
 			return await Client.Cache.GuildRoles.GetAllAsync(Id.ToString());
 		}
 
+		[ItemNotNull]
 		public async Task<CoreGuildMember[]> GetMembersAsync()
 		{
 			return await Client.Cache.GuildMembers.GetAllAsync(Id.ToString());
 		}
 
-		public static CoreGuild From(IClient client, Guild guild)
+		[NotNull]
+		public static CoreGuild From(IClient client, [NotNull] Guild guild)
 		{
 			return new CoreGuild(client, ulong.Parse(guild.Id), guild.Name, guild.Region, guild.Icon, guild.Permissions,
 				guild.MemberCount, guild.OwnerId);

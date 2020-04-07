@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Skyra.Core.Database;
@@ -91,7 +93,8 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreMessage Patch(CoreMessage value)
+		[NotNull]
+		public CoreMessage Patch([NotNull] CoreMessage value)
 		{
 			Content = value.Content;
 			Embeds = value.Embeds;
@@ -99,6 +102,7 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[NotNull]
 		public CoreMessage Clone()
 		{
 			return new CoreMessage(Client,
@@ -121,7 +125,8 @@ namespace Skyra.Core.Cache.Models
 				Language);
 		}
 
-		public CoreMessage Patch(MessageUpdatePayload value)
+		[NotNull]
+		public CoreMessage Patch([NotNull] MessageUpdatePayload value)
 		{
 			Content = value.Content;
 			Embeds = value.Embeds.ToArray();
@@ -129,16 +134,19 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreUser?> GetAuthorAsync()
 		{
 			return Author ??= await Client.Cache.Users.GetAsync(AuthorId.ToString());
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreGuildMember?> GetMemberAsync()
 		{
 			return Member ??= await Client.Cache.GuildMembers.GetAsync(AuthorId.ToString(), GuildId.ToString());
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreChannel?> GetChannelAsync()
 		{
 			return Channel ??= GuildId == null
@@ -146,6 +154,7 @@ namespace Skyra.Core.Cache.Models
 				: await Client.Cache.GuildChannels.GetAsync(ChannelId.ToString(), GuildId.ToString());
 		}
 
+		[ItemCanBeNull]
 		public async Task<CoreGuild?> GetGuildAsync()
 		{
 			if (GuildId == null) return null;
@@ -162,6 +171,7 @@ namespace Skyra.Core.Cache.Models
 			return Language = Client.Cultures[languageId];
 		}
 
+		[ItemNotNull]
 		public async Task<CoreMessage> SendAsync(string content)
 		{
 			return await SendAsync(new SendableMessage
@@ -170,7 +180,8 @@ namespace Skyra.Core.Cache.Models
 			});
 		}
 
-		public async Task<CoreMessage> SendLocaleAsync(string key)
+		[ItemNotNull]
+		public async Task<CoreMessage> SendLocaleAsync([Localizable(true)] string key)
 		{
 			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
@@ -178,7 +189,10 @@ namespace Skyra.Core.Cache.Models
 			return await SendAsync(content);
 		}
 
-		public async Task<CoreMessage> SendLocaleAsync(string key, params object?[] values)
+		[ItemNotNull]
+		[StringFormatMethod("key")]
+		public async Task<CoreMessage> SendLocaleAsync([Localizable(true)] string key,
+			[NotNull] params object?[] values)
 		{
 			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
@@ -186,6 +200,7 @@ namespace Skyra.Core.Cache.Models
 			return await SendAsync(string.Format(content, values));
 		}
 
+		[ItemNotNull]
 		public async Task<CoreMessage> SendAsync(SendableMessage data)
 		{
 			// Cache the string values
@@ -227,6 +242,7 @@ namespace Skyra.Core.Cache.Models
 			return response;
 		}
 
+		[ItemNotNull]
 		public async Task<CoreMessage> EditAsync(string content)
 		{
 			return await EditAsync(new SendableMessage
@@ -235,12 +251,15 @@ namespace Skyra.Core.Cache.Models
 			});
 		}
 
+		[ItemNotNull]
 		public async Task<CoreMessage> EditAsync(SendableMessage data)
 		{
 			return From(Client, await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
 				.PatchAsync<Message>(data));
 		}
 
+		[ItemNotNull]
+		[StringFormatMethod("key")]
 		public async Task<CoreMessage> EditLocaleAsync(string key)
 		{
 			var language = await GetLanguageAsync();
@@ -249,7 +268,9 @@ namespace Skyra.Core.Cache.Models
 			return await EditAsync(content);
 		}
 
-		public async Task<CoreMessage> EditLocaleAsync(string key, params object?[] values)
+		[ItemNotNull]
+		[StringFormatMethod("key")]
+		public async Task<CoreMessage> EditLocaleAsync(string key, [NotNull] params object?[] values)
 		{
 			var language = await GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
@@ -257,6 +278,7 @@ namespace Skyra.Core.Cache.Models
 			return await EditAsync(string.Format(content, values));
 		}
 
+		[ItemNotNull]
 		public async Task<CoreMessage> DeleteAsync(string? reason)
 		{
 			await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()].DeleteAsync(reason);
@@ -274,7 +296,8 @@ namespace Skyra.Core.Cache.Models
 			await Task.WhenAll(channelTask, authorTask, memberTask, messageTask);
 		}
 
-		public static CoreMessage From(IClient client, Message message)
+		[NotNull]
+		public static CoreMessage From(IClient client, [NotNull] Message message)
 		{
 			return new CoreMessage(client, ulong.Parse(message.Id), message.Type, null, ulong.Parse(message.ChannelId),
 				null,
@@ -286,7 +309,8 @@ namespace Skyra.Core.Cache.Models
 				null);
 		}
 
-		public static CoreMessage From(IClient client, MessageUpdatePayload message)
+		[NotNull]
+		public static CoreMessage From(IClient client, [NotNull] MessageUpdatePayload message)
 		{
 			return new CoreMessage(client, ulong.Parse(message.Id), MessageType.DEFAULT, null,
 				ulong.Parse(message.ChannelId),

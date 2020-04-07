@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -16,8 +17,9 @@ namespace Skyra.Resolvers
 		{
 		}
 
+		[NotNull]
 		public Task<CultureInfo> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument,
-			string content)
+			[NotNull] string content)
 		{
 			if (Client.Cultures.TryGetValue(content, out var resolved)) return Task.FromResult(resolved);
 			return Task.FromException<CultureInfo>(

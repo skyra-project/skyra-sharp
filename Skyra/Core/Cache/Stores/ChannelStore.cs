@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Stores.Base;
 using StackExchange.Redis;
@@ -11,13 +12,14 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public override async Task SetAsync(CoreChannel entry, string? parent = null)
+		public override async Task SetAsync([NotNull] CoreChannel entry, [CanBeNull] string? parent = null)
 		{
 			if (parent != null) await Database.StringSetAsync(FormatKeyName(parent), RedisValue.Unbox(entry.Id));
 			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});
 		}
 
-		protected override string GetKey(CoreChannel value)
+		[NotNull]
+		protected override string GetKey([NotNull] CoreChannel value)
 		{
 			return value.Id.ToString();
 		}

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
@@ -14,6 +15,7 @@ namespace Skyra.Core.Database.Models
 		///     The raw value from and for the database. Use <see cref="UserGameIntegrationsFFXIV" />
 		/// </summary>
 		[Column("ffxiv_characters", TypeName = "JSONB")]
+		[NotNull]
 		public string FFXIVCharactersRaw
 		{
 			get => JsonConvert.SerializeObject(FFXIVCharacters);

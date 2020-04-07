@@ -1,8 +1,11 @@
+using JetBrains.Annotations;
+
 namespace Skyra.Core.Utils
 {
 	public static class Utilities
 	{
-		public static string CodeBlock(string language, string content)
+		[NotNull]
+		public static string CodeBlock(string language, [NotNull] string content)
 		{
 			var escaped = content.Replace(@"""""""", @"\""\""\""");
 			return $"```{language}\n{escaped}\n```";

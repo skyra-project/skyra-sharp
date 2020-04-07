@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
@@ -109,7 +109,8 @@ namespace Skyra.Monitors
 			}
 		}
 
-		private async Task RunCommandAsync(CoreMessage message, CommandInfo command, CommandUsageParser parser)
+		private async Task RunCommandAsync(CoreMessage message, CommandInfo command,
+			[NotNull] CommandUsageParser parser)
 		{
 			try
 			{
@@ -135,7 +136,7 @@ namespace Skyra.Monitors
 				: mentionPrefix;
 		}
 
-		private (string?, PrefixTypeResult) GetMentionPrefix(CoreMessage message)
+		private (string?, PrefixTypeResult) GetMentionPrefix([NotNull] CoreMessage message)
 		{
 			// If the content is shorter than the minimum characters needed for a mention prefix, skip
 			if (message.Content.Length < 20)
@@ -163,7 +164,8 @@ namespace Skyra.Monitors
 				: ((string?) null, PrefixTypeResult.None);
 		}
 
-		private static async Task<(string?, PrefixTypeResult)> GetGuildPrefixAsync(CoreMessage message)
+		private static async Task<(string?, PrefixTypeResult)> GetGuildPrefixAsync(
+			[NotNull] CoreMessage message)
 		{
 			Debug.Assert(message.GuildId != null, "message.GuildId != null");
 			var prefix = await RetrieveGuildPrefixAsync((ulong) message.GuildId);
@@ -172,7 +174,7 @@ namespace Skyra.Monitors
 				: ((string?) null, PrefixTypeResult.None);
 		}
 
-		private static (string?, PrefixTypeResult) GetDefaultPrefix(CoreMessage message)
+		private static (string?, PrefixTypeResult) GetDefaultPrefix([NotNull] CoreMessage message)
 		{
 			const string prefix = DefaultPrefix;
 			return message.Content.StartsWith(prefix, StringComparison.Ordinal)
@@ -180,13 +182,15 @@ namespace Skyra.Monitors
 				: ((string?) null, PrefixTypeResult.None);
 		}
 
+		[ItemNotNull]
 		private static async Task<string> RetrieveGuildPrefixAsync(ulong guildId)
 		{
 			await using var db = new SkyraDatabaseContext();
 			return (await db.Guilds.FindAsync(guildId))?.Prefix ?? DefaultPrefix;
 		}
 
-		private static string GetCommandName(string content)
+		[NotNull]
+		private static string GetCommandName([NotNull] string content)
 		{
 			var index = content.IndexOf(" ", StringComparison.Ordinal);
 			return index == -1 ? content : content.Substring(0, index);

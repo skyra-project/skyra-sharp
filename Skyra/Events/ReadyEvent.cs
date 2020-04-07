@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
@@ -14,7 +15,7 @@ namespace Skyra.Events
 			Client.EventHandler.OnReady += Run;
 		}
 
-		private void Run(ReadyDispatch args)
+		private void Run([NotNull] ReadyDispatch args)
 		{
 			Task.Run(() => Client.Cache.SetClientUserAsync(args.User.Id));
 			Client.Id = ulong.Parse(args.User.Id);

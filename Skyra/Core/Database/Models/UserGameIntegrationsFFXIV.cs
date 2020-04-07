@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Skyra.Core.Models.GameIntegrations.FFXIV;
 
@@ -24,10 +25,12 @@ namespace Skyra.Core.Database.Models
 		public string Name { get; set; }
 
 		[JsonIgnore]
+		[NotNull]
 		public string FirstName
 			=> Name.Split(" ")[0];
 
 		[JsonIgnore]
+		[NotNull]
 		public string LastName
 			=> Name.Split(" ")[1];
 

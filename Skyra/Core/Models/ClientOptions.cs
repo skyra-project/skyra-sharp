@@ -1,4 +1,5 @@
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Skyra.Core.Models
 {
@@ -12,7 +13,7 @@ namespace Skyra.Core.Models
 		public ulong[] Owners { get; }
 
 		public ClientOptions(string token, string brokerName, string brokerUri, string redisPrefix, string redisUri,
-			string? owners)
+			[CanBeNull] string? owners)
 		{
 			Token = token;
 			BrokerName = brokerName;

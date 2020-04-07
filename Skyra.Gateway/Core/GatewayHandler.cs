@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Core;
@@ -102,7 +103,7 @@ namespace Skyra.Gateway.Core
 		}
 
 
-		private void OnLog(object? _, LogEventArgs e)
+		private void OnLog(object? _, [NotNull] LogEventArgs e)
 		{
 			if (e.LogLevel <= MinimumLogLevel) return;
 
@@ -129,7 +130,7 @@ namespace Skyra.Gateway.Core
 			}
 		}
 
-		private void OnError(object? _, ExceptionEventArgs e)
+		private void OnError(object? _, [NotNull] ExceptionEventArgs e)
 		{
 			_logger.Error($"[{e.ShardId}] {e.Exception}");
 		}

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -22,16 +23,19 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CorePromptState Patch(CorePromptState value)
+		[NotNull]
+		public CorePromptState Patch([NotNull] CorePromptState value)
 		{
 			return Patch(value.State);
 		}
 
+		[NotNull]
 		public CorePromptState Clone()
 		{
 			return new CorePromptState(Client, Type, State);
 		}
 
+		[NotNull]
 		public CorePromptState Patch(ICorePromptState value)
 		{
 			State = State.Patch(value);

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,7 +16,7 @@ namespace Skyra.Events
 			Client.EventHandler.OnCommandInhibitedAsync += RunAsync;
 		}
 
-		private async Task RunAsync(CoreMessage message, string command, InhibitorException exception)
+		private async Task RunAsync(CoreMessage message, string command, [NotNull] InhibitorException exception)
 		{
 			if (exception.Silent)
 			{

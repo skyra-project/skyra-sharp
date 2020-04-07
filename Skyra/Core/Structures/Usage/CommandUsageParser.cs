@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Utils;
 
@@ -75,6 +76,7 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
+		[CanBeNull]
 		private object? Resolve(string value)
 		{
 			try
@@ -138,6 +140,7 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
+		[NotNull]
 		private IEnumerable ResolveNextArgumentsFromFlags(string argument)
 		{
 			if (!string.IsNullOrEmpty(Command.Delimiter))
@@ -149,7 +152,8 @@ namespace Skyra.Core.Structures.Usage
 			return new[] {value};
 		}
 
-		private static IEnumerable Cast(Type type, object?[] values)
+		[NotNull]
+		private static IEnumerable Cast([NotNull] Type type, [NotNull] object?[] values)
 		{
 			var array = Array.CreateInstance(type, values.Length);
 			Array.Copy(values, array, values.Length);
@@ -192,6 +196,7 @@ namespace Skyra.Core.Structures.Usage
 			return Cast(Argument!.Type, values.ToArray());
 		}
 
+		[NotNull]
 		private IEnumerable ResolveNextArguments()
 		{
 			return Flags.TryGetValue(Argument!.Name, out var argument)
@@ -199,7 +204,7 @@ namespace Skyra.Core.Structures.Usage
 				: ResolveNextArgumentsFromArguments();
 		}
 
-		private void RunOverloadAsync(CommandUsageOverload overload)
+		private void RunOverloadAsync([NotNull] CommandUsageOverload overload)
 		{
 			Parameters = new object?[overload.Arguments.Length + 1];
 			Parameters[0] = Message;
@@ -214,13 +219,14 @@ namespace Skyra.Core.Structures.Usage
 			}
 		}
 
-		private static string[] GetArguments(string content, string? delimiter)
+		[NotNull]
+		private static string[] GetArguments(string content, [CanBeNull] string? delimiter)
 		{
 			var arguments = string.IsNullOrEmpty(delimiter) ? new[] {content} : content.Split(delimiter);
 			return arguments.Length == 1 && string.IsNullOrEmpty(arguments[0]) ? new string[0] : arguments;
 		}
 
-		private static (string, Dictionary<string, string>) GetFlags(string content, string delimiter)
+		private static (string, Dictionary<string, string>) GetFlags(string content, [CanBeNull] string delimiter)
 		{
 			var flags = new Dictionary<string, string>();
 			content = content.Replace(FlagRegExp, captures =>
@@ -244,7 +250,8 @@ namespace Skyra.Core.Structures.Usage
 			return (content, flags);
 		}
 
-		private static string[] GetQuotedStringArgs(string content, string delimiter)
+		[NotNull]
+		private static string[] GetQuotedStringArgs(string content, [CanBeNull] string delimiter)
 		{
 			if (string.IsNullOrEmpty(delimiter)) return new[] {content};
 
@@ -266,8 +273,9 @@ namespace Skyra.Core.Structures.Usage
 			return args.Count == 1 && string.IsNullOrEmpty(args[0]) ? new string[0] : args.ToArray();
 		}
 
-		private static string GetQuotedStringArg(string content, string delimiter, string quote,
-			ref StringBuilder current, ref int i)
+		[NotNull]
+		private static string GetQuotedStringArg([NotNull] string content, string delimiter, [CanBeNull] string quote,
+			[NotNull] ref StringBuilder current, ref int i)
 		{
 			if (string.IsNullOrEmpty(quote))
 			{

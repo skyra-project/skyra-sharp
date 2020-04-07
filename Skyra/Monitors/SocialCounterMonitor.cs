@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -14,7 +15,7 @@ namespace Skyra.Monitors
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message)
+		public async Task RunAsync([NotNull] CoreMessage message)
 		{
 			Client.Logger.Information(
 				"Received Message [{Id}] from {Username} with content '{Content}'.", message.Id,

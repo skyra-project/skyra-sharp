@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
@@ -15,7 +16,7 @@ namespace Skyra.Commands
 		{
 		}
 
-		public async Task RunAsync(CoreMessage message)
+		public async Task RunAsync([NotNull] CoreMessage message)
 		{
 			var state = new CorePromptStateMessage(message.AuthorId, message.ChannelId, message.Content);
 			var prompt = new CorePromptState(Client, CorePromptStateType.MessageSingleUser, state);

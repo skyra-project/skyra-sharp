@@ -84,7 +84,7 @@ namespace Skyra.Tests.Utils.Urls
 			[NotNull]
 			string argument)
 		{
-			var regex = UrlRegex.Create(tlds: false);
+			var regex = UrlRegex.Create(tlds: false, compiled: true);
 			Assert.AreEqual(new[]
 			{
 				"//dolor.sit",

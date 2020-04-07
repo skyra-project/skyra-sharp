@@ -11,7 +11,7 @@ using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Structures.Base;
 
-namespace Skyra.Tests.Loaders
+namespace Skyra.Tests.Core
 {
 	public sealed class LoaderTests
 	{

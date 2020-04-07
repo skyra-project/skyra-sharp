@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Skyra.Core.Utils;
 using Skyra.Core.Utils.Urls;
 
-namespace Skyra.Tests.Utils.Urls
+namespace Skyra.Tests.Core.Utils.Urls
 {
 	public sealed class UrlRegexTests
 	{

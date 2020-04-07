@@ -24,12 +24,9 @@ namespace Skyra.Core.Utils
 			foreach (var match in value.Matches(pattern))
 			{
 				var index = match.Index;
-				builder.Append(source.Substring(lastIndex, index));
+				builder.Append(source.Substring(lastIndex, index - lastIndex));
 				lastIndex = index + match.Length;
 				builder.Append(callback(match.Groups.Values.ToArray()));
-				if (lastIndex != index) continue;
-				if (lastIndex == length) break;
-				builder.Append(source[lastIndex + 1]);
 			}
 
 			if (lastIndex < length) builder.Append(source.Substring(lastIndex, length - lastIndex));

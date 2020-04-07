@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Skyra.Core.Utils;
 
-namespace Skyra.Tests.Utils
+namespace Skyra.Tests.Core.Utils
 {
 	public sealed class InspectionFormatterTests
 	{

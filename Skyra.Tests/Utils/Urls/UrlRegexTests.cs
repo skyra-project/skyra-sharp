@@ -6,7 +6,7 @@ using Skyra.Core.Utils.Urls;
 
 namespace Skyra.Tests.Utils.Urls
 {
-	public class UrlRegexTests
+	public sealed class UrlRegexTests
 	{
 		[Test]
 		public void UrlRegex_MatchExactUrls([Values(
@@ -72,7 +72,7 @@ namespace Skyra.Tests.Utils.Urls
 			[NotNull]
 			string argument)
 		{
-			var regex = UrlRegex.Create(exact: true);
+			var regex = UrlRegex.Create(true);
 			Assert.IsTrue(regex.IsMatch(argument));
 		}
 
@@ -87,7 +87,7 @@ namespace Skyra.Tests.Utils.Urls
 			[NotNull]
 			string argument)
 		{
-			var regex = UrlRegex.Create();
+			var regex = UrlRegex.Create(tlds: false);
 			Assert.AreEqual(new[]
 			{
 				"//dolor.sit",
@@ -146,7 +146,7 @@ namespace Skyra.Tests.Utils.Urls
 			[NotNull]
 			string argument)
 		{
-			var regex = UrlRegex.Create(exact: true);
+			var regex = UrlRegex.Create(true);
 			Assert.IsFalse(regex.IsMatch(argument));
 		}
 
@@ -210,7 +210,7 @@ namespace Skyra.Tests.Utils.Urls
 			[NotNull]
 			string argument)
 		{
-			var regex = UrlRegex.Create(exact: true, requireProtocol: false, tlds: false);
+			var regex = UrlRegex.Create(true, false, false);
 			Assert.IsTrue(regex.IsMatch(argument));
 		}
 	}

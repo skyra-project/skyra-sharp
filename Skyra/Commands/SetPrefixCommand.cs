@@ -23,7 +23,7 @@ namespace Skyra.Commands
 			await db.Guilds.UpdateOrCreateAsync((ulong) message.GuildId!, guild => { guild.Prefix = prefix; },
 				guild => new Guild {Id = (ulong) message.GuildId!});
 			await db.SaveChangesAsync();
-			await message.SendLocaleAsync("SetPrefix", prefix);
+			await message.SendLocaleAsync(@"SetPrefix", prefix);
 		}
 	}
 }

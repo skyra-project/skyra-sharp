@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public class GuildAction
+	public sealed class GuildAction
 	{
 		public GuildAction(GuildActionTypes type, string input, string output)
 		{

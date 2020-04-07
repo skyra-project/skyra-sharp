@@ -7,7 +7,7 @@ using Skyra.Notifi.Core.Models;
 
 namespace Skyra.Notifi
 {
-	public class Startup
+	public sealed class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{

@@ -12,7 +12,7 @@ namespace Skyra.Core.Database.Models
 		public ushort MinimumCharacters { get; set; } = 10;
 
 		/// <summary>
-		///     The percentage of upper-case letters that there needs to be to flag the message as infracting.
+		///     The percentage of upper-case letters that there needs to be to flag the message as inflicting.
 		/// </summary>
 		[Column("percentage_characters")]
 		public ushort PercentageCharacters { get; set; } = 50;

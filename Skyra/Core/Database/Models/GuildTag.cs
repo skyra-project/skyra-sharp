@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public class GuildTag
+	public sealed class GuildTag
 	{
 		public GuildTag(string name, string content)
 		{

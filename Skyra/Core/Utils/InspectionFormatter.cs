@@ -171,10 +171,10 @@ namespace Skyra.Core.Utils
 			return value.ToString();
 		}
 
-		[CanBeNull]
+		[NotNull]
 		private string Inspect([NotNull] Type value)
 		{
-			return value.FullName!;
+			return value.FullName! ?? "{INVALID}";
 		}
 
 		[NotNull]

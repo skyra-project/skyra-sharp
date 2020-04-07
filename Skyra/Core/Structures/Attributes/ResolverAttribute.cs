@@ -3,7 +3,7 @@ using System;
 namespace Skyra.Core.Structures.Attributes
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public class ResolverAttribute : Attribute
+	public sealed class ResolverAttribute : Attribute
 	{
 		public ResolverAttribute(Type type, string displayName)
 		{

@@ -7,7 +7,7 @@ namespace Skyra.Core.Structures.Attributes
 	{
 		public string Delimiter { get; set; } = "";
 		public string? Name { get; set; } = null;
-		public bool FlagSupport { get; set; } = false;
+		public bool FlagSupport { get; set; }
 		public bool QuotedStringSupport { get; set; } = true;
 		public string[] Inhibitors { get; set; } = new string[0];
 	}

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public class GuildCommandAutoDelete
+	public sealed class GuildCommandAutoDelete
 	{
 		public GuildCommandAutoDelete(string command, TimeSpan duration)
 		{

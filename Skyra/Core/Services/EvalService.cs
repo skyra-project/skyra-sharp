@@ -7,7 +7,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Services
 {
-	public class EvalService
+	public sealed class EvalService
 	{
 		private readonly ScriptOptions _options;
 

@@ -4,7 +4,7 @@ using Spectacles.NET.Broker.Amqp;
 
 namespace Skyra.Notifi.Core.Models
 {
-	public class NotifiService
+	public sealed class NotifiService
 	{
 		private readonly Uri _brokerUrl;
 

@@ -16,7 +16,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Skyra.Gateway.Core
 {
-	public class GatewayHandler
+	public sealed class GatewayHandler
 	{
 		private const int DiscordShardingFormula = 22;
 

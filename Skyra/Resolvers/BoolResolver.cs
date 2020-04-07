@@ -11,7 +11,7 @@ using Skyra.Core.Structures.Usage;
 namespace Skyra.Resolvers
 {
 	[Resolver(typeof(bool), "boolean")]
-	public class BoolResolver : StructureBase
+	public sealed class BoolResolver : StructureBase
 	{
 		private static readonly string[] Truths = {"1", "t", "true", "+", "y", "yes"};
 		private static readonly string[] Falses = {"0", "f", "false", "-", "n", "no"};
@@ -25,9 +25,11 @@ namespace Skyra.Resolvers
 			[NotNull] string content)
 		{
 			var boolean = content.ToLower();
-			if (Truths.Contains(boolean)) return Task.FromResult(true);
-			if (Falses.Contains(boolean)) return Task.FromResult(false);
-			return Task.FromException<bool>(new ArgumentException("Gimme a valid boolean!"));
+			return Truths.Contains(boolean)
+				? Task.FromResult(true)
+				: Falses.Contains(boolean)
+					? Task.FromResult(false)
+					: Task.FromException<bool>(new ArgumentException("Gimme a valid boolean!"));
 		}
 	}
 }

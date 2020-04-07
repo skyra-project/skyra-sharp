@@ -13,6 +13,7 @@ namespace Skyra.Core.Utils
 		{
 			var entity = await db.FindAsync(id);
 
+			// ReSharper disable once InvertIf
 			if (entity is null)
 			{
 				entity = fn(id);

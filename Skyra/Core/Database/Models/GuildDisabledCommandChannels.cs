@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Database.Models
 {
-	public class GuildDisabledCommandChannels
+	public sealed class GuildDisabledCommandChannels
 	{
 		public GuildDisabledCommandChannels(ulong channelId, string[] commands)
 		{

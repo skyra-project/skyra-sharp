@@ -9,10 +9,10 @@ namespace Skyra.Core.Database.Models
 	/// </summary>
 	public struct UserGameIntegrationsFFXIV
 	{
-		public UserGameIntegrationsFFXIV(string name, string lodestoneID, DataCenters dc, Servers server, int slot)
+		public UserGameIntegrationsFFXIV(string name, string lodestoneId, DataCenters dc, Servers server, int slot)
 		{
 			Name = name;
-			LodeStoneID = lodestoneID;
+			LodeStoneId = lodestoneId;
 			DataCenter = dc;
 			Server = server;
 			Slot = slot;
@@ -37,8 +37,9 @@ namespace Skyra.Core.Database.Models
 		/// <summary>
 		///     The Lodestone ID associated with the Character.
 		/// </summary>
+		// ReSharper disable once StringLiteralTypo
 		[JsonProperty("lsid")]
-		public string LodeStoneID { get; set; }
+		public string LodeStoneId { get; set; }
 
 		/// <summary>
 		///     The <see cref="DataCenters" /> on which the Character resides

@@ -12,7 +12,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public override async Task SetAsync([NotNull] CoreChannel entry, [CanBeNull] string? parent = null)
+		public override async Task SetAsync(CoreChannel entry, [CanBeNull] string? parent = null)
 		{
 			if (parent != null) await Database.StringSetAsync(FormatKeyName(parent), RedisValue.Unbox(entry.Id));
 			await Database.HashSetAsync(Prefix, new[] {new HashEntry(entry.Id, SerializeValue(entry))});

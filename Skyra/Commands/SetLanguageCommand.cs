@@ -24,7 +24,7 @@ namespace Skyra.Commands
 			await db.Guilds.UpdateOrCreateAsync((ulong) message.GuildId!, guild => { guild.Language = language.Name; },
 				guild => new Guild {Id = (ulong) message.GuildId!});
 			await db.SaveChangesAsync();
-			await message.SendLocaleAsync("SetLanguage", language.Name);
+			await message.SendLocaleAsync(@"SetLanguage", language.Name);
 		}
 	}
 }

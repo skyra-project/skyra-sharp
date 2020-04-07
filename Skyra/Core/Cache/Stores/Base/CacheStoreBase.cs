@@ -51,11 +51,11 @@ namespace Skyra.Core.Cache.Stores.Base
 		/// <param name="ids">An enumerable of string identifiers of the objects to pull.</param>
 		/// <param name="parent">The parent which manages this entry.</param>
 		/// <returns>Returns an array of <see cref="T" />.</returns>
-		[ItemCanBeNull]
+		[ItemNotNull]
 		public async Task<T[]> GetAsync([NotNull] IEnumerable<string> ids, string? parent = null)
 		{
 #pragma warning disable 8603
-			return (await Task.WhenAll(ids.Select(id => GetAsync(id, parent)))).Where(x => x != null) as T[];
+			return (await Task.WhenAll(ids.Select(id => GetAsync(id, parent)))).Where(x => x != null).ToArray();
 #pragma warning restore 8603
 		}
 

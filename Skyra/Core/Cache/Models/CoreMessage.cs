@@ -190,7 +190,6 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		[StringFormatMethod("key")]
 		public async Task<CoreMessage> SendLocaleAsync([Localizable(true)] string key,
 			[NotNull] params object?[] values)
 		{
@@ -259,7 +258,6 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		[StringFormatMethod("key")]
 		public async Task<CoreMessage> EditLocaleAsync(string key)
 		{
 			var language = await GetLanguageAsync();
@@ -269,7 +267,6 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		[StringFormatMethod("key")]
 		public async Task<CoreMessage> EditLocaleAsync(string key, [NotNull] params object?[] values)
 		{
 			var language = await GetLanguageAsync();

@@ -1,7 +1,8 @@
 // ReSharper disable StringLiteralTypo
+
 namespace Skyra.Core.Utils.Urls
 {
-	static class Tlds
+	internal static class Tlds
 	{
 		public static string[] Values { get; } =
 		{

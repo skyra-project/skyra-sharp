@@ -37,7 +37,8 @@ namespace Skyra.Core.Utils
 		}
 
 		[NotNull]
-		public static Task<TReturn> PostJsonAsync<TReturn, TValue>([NotNull] this HttpClient client, string uri, TValue value)
+		public static Task<TReturn> PostJsonAsync<TReturn, TValue>([NotNull] this HttpClient client, string uri,
+			TValue value)
 		{
 			return client.PostJsonAsync<TReturn, TValue>(new Uri(uri), value);
 		}

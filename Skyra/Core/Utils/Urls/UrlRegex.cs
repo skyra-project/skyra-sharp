@@ -9,7 +9,8 @@ namespace Skyra.Core.Utils.Urls
 		private static bool Sorted { get; set; }
 
 		[NotNull]
-		public static Regex Create(bool exact = false, bool requireProtocol = true, bool tlds = true)
+		public static Regex Create(bool exact = false, bool requireProtocol = true, bool tlds = true,
+			bool compiled = false)
 		{
 			if (!Sorted)
 			{
@@ -24,15 +25,16 @@ namespace Skyra.Core.Utils.Urls
 			const string port = @"(?::\d{2,5})?";
 			const string path = @"(?:[/?#][^\s""]*)?";
 
+			var options = compiled
+				? RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled
+				: RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
 			var protocol = $"(?:(?:[a-z]+:)?//){(requireProtocol ? "" : "?")}";
 			var tld =
 				$"(?:\\.{(tlds ? $"(?:{string.Join("|", Tlds.Values)})" : "(?:[a-z\\u00a1-\\uffff]{2,})")})\\.?";
 			var regex =
 				$"(?<protocol>{protocol}|www\\.){auth}(?<hostname>localhost|{ip}|{host}{domain}{tld}){port}{path}";
 
-			return exact
-				? new Regex($"(?:^{regex}$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
-				: new Regex(regex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+			return exact ? new Regex($"(?:^{regex}$)", options) : new Regex(regex, options);
 		}
 	}
 }

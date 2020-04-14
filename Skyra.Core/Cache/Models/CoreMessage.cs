@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Skyra.Core.Database;
-using Skyra.Resources;
 using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
@@ -181,25 +180,6 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		public async Task<CoreMessage> SendLocaleAsync([Localizable(true)] string key)
-		{
-			var language = await GetLanguageAsync();
-			var content = Languages.ResourceManager.GetString(key, language) ??
-			              throw new Exception($"Cannot find key {key}");
-			return await SendAsync(content);
-		}
-
-		[ItemNotNull]
-		public async Task<CoreMessage> SendLocaleAsync([Localizable(true)] string key,
-			[NotNull] params object?[] values)
-		{
-			var language = await GetLanguageAsync();
-			var content = Languages.ResourceManager.GetString(key, language) ??
-			              throw new Exception($"Cannot find key {key}");
-			return await SendAsync(string.Format(content, values));
-		}
-
-		[ItemNotNull]
 		public async Task<CoreMessage> SendAsync(SendableMessage data)
 		{
 			// Cache the string values
@@ -255,24 +235,6 @@ namespace Skyra.Core.Cache.Models
 		{
 			return From(Client, await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
 				.PatchAsync<Message>(data));
-		}
-
-		[ItemNotNull]
-		public async Task<CoreMessage> EditLocaleAsync(string key)
-		{
-			var language = await GetLanguageAsync();
-			var content = Languages.ResourceManager.GetString(key, language) ??
-			              throw new Exception($"Cannot find key {key}");
-			return await EditAsync(content);
-		}
-
-		[ItemNotNull]
-		public async Task<CoreMessage> EditLocaleAsync(string key, [NotNull] params object?[] values)
-		{
-			var language = await GetLanguageAsync();
-			var content = Languages.ResourceManager.GetString(key, language) ??
-			              throw new Exception($"Cannot find key {key}");
-			return await EditAsync(string.Format(content, values));
 		}
 
 		[ItemNotNull]

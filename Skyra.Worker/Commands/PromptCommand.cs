@@ -10,7 +10,7 @@ using Skyra.Core.Structures.Attributes;
 namespace Skyra.Worker.Commands
 {
 	[Command]
-	public class PromptCommand : StructureBase
+	public sealed class PromptCommand : StructureBase
 	{
 		public PromptCommand(IClient client) : base(client)
 		{

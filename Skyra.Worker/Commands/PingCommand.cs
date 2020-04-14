@@ -5,11 +5,12 @@ using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Skyra.Worker.Extensions;
 
 namespace Skyra.Worker.Commands
 {
 	[Command]
-	public class PingCommand : StructureBase
+	public sealed class PingCommand : StructureBase
 	{
 		public PingCommand(IClient client) : base(client)
 		{

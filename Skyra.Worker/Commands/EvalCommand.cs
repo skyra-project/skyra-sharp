@@ -16,7 +16,7 @@ using Skyra.Core.Utils;
 namespace Skyra.Commands
 {
 	[Command(Inhibitors = new[] {"Developer"})]
-	public class EvalCommand : StructureBase
+	public sealed class EvalCommand : StructureBase
 	{
 		private readonly EvalService _eval;
 

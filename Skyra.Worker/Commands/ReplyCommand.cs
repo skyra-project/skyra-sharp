@@ -10,7 +10,7 @@ using Skyra.Core.Structures.Attributes;
 namespace Skyra.Worker.Commands
 {
 	[Command(Delimiter = " ", FlagSupport = true)]
-	public class ReplyCommand : StructureBase
+	public sealed class ReplyCommand : StructureBase
 	{
 		public ReplyCommand(IClient client) : base(client)
 		{

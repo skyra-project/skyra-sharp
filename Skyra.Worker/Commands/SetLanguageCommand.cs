@@ -8,11 +8,12 @@ using Skyra.Core.Database.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Skyra.Core.Utils;
+using Skyra.Worker.Extensions;
 
 namespace Skyra.Worker.Commands
 {
 	[Command(Inhibitors = new[] {"Developer"})]
-	public class SetLanguageCommand : StructureBase
+	public sealed class SetLanguageCommand : StructureBase
 	{
 		public SetLanguageCommand(IClient client) : base(client)
 		{

@@ -28,7 +28,7 @@ namespace Skyra.Core.Database.Models
 		///     The <see cref="Spectacles.NET.Types.User" /> ID for the moderator.
 		/// </summary>
 		/// <remarks>
-		///     This value can be Skyra.Worker herself, this case being on anonymous logs.
+		///     This value can be Skyra herself, this case being on anonymous logs.
 		/// </remarks>
 		[Column("moderator_id")]
 		public ulong ModeratorId { get; set; }

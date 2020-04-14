@@ -22,7 +22,7 @@ namespace Skyra.Core.Database.Models
 		public string Prefix { get; set; } = "s!";
 
 		/// <summary>
-		///     Whether or not "Hey Skyra.Worker" or any other natural prefix option is enabled.
+		///     Whether or not "Hey Skyra" or any other natural prefix option is enabled.
 		/// </summary>
 		[Column("disable_natural_prefix")]
 		public bool DisableNaturalPrefix { get; set; } = false;

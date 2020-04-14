@@ -54,7 +54,7 @@ namespace Skyra.Core.Database.Models
 		public Servers Server { get; set; }
 
 		/// <summary>
-		///     The relative slot in Skyra.Worker on which this Character struct is located.
+		///     The relative slot in Skyra on which this Character struct is located.
 		/// </summary>
 		[JsonProperty("ps")]
 		public int Slot { get; set; }

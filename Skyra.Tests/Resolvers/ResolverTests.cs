@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Skyra.Resolvers;
+using Skyra.Worker.Resolvers;
 
 #pragma warning disable 8625
 

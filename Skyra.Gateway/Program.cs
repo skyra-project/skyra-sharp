@@ -22,7 +22,7 @@ namespace Skyra.Gateway
 				GuildSubscriptions = true,
 				LargeThreshold = 250,
 				Presence = new UpdateStatusDispatch
-					{Game = new Activity {Name = "Skyra, help", Type = ActivityType.LISTENING}}
+					{Game = new Activity {Name = "Skyra.Worker, help", Type = ActivityType.LISTENING}}
 			};
 
 			var gateway = new GatewayHandler(token,

@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Skyra.Core;
 using Skyra.Core.Models;
 
 namespace Skyra.Worker

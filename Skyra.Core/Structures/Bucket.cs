@@ -5,36 +5,36 @@ using JetBrains.Annotations;
 namespace Skyra.Core.Structures
 {
 	/// <summary>
-	/// A leaky bucket implementation with delay, timespan, and limit.
+	///     A leaky bucket implementation with delay, timespan, and limit.
 	/// </summary>
 	/// <typeparam name="TKey">The type in which the internal entries will be stored as.</typeparam>
 	public sealed class Bucket<TKey> where TKey : notnull
 	{
 		/// <summary>
-		/// The "break" time between invocations.
+		///     The "break" time between invocations.
 		/// </summary>
 		public TimeSpan Delay { get; set; }
 
 		/// <summary>
-		/// How long the bucket will apply for.
+		///     How long the bucket will apply for.
 		/// </summary>
 		public TimeSpan TimeSpan { get; set; }
 
 		/// <summary>
-		/// Number of invocations allowed per <seealso cref="TimeSpan"/>.
+		///     Number of invocations allowed per <seealso cref="TimeSpan" />.
 		/// </summary>
 		public uint Limit { get; set; }
 
 		/// <summary>
-		/// The internal cache for this instance.
+		///     The internal cache for this instance.
 		/// </summary>
 		private Dictionary<TKey, BucketEntry> Entries { get; } = new Dictionary<TKey, BucketEntry>();
 
 		/// <summary>
-		/// Gets or inserts an entry for a specific user.
+		///     Gets or inserts an entry for a specific user.
 		/// </summary>
 		/// <param name="key">The key to be used in this bucket.</param>
-		/// <returns>A <seealso cref="TimeSpan"/> defining the amount of time to wait before the entry is unlocked.</returns>
+		/// <returns>A <seealso cref="TimeSpan" /> defining the amount of time to wait before the entry is unlocked.</returns>
 		public TimeSpan Take([NotNull] TKey key)
 		{
 			var time = DateTime.Now;
@@ -71,10 +71,10 @@ namespace Skyra.Core.Structures
 		}
 
 		/// <summary>
-		/// Retrieves an entry from the internal dictionary, creating a new one and inserting it if otherwise.
+		///     Retrieves an entry from the internal dictionary, creating a new one and inserting it if otherwise.
 		/// </summary>
 		/// <param name="key">The key to be used in this bucket.</param>
-		/// <returns>A <seealso cref="BucketEntry"/> entry.</returns>
+		/// <returns>A <seealso cref="BucketEntry" /> entry.</returns>
 		private BucketEntry Upsert([NotNull] TKey key)
 		{
 			if (Entries.TryGetValue(key, out var existingValue)) return existingValue;
@@ -84,22 +84,22 @@ namespace Skyra.Core.Structures
 		}
 
 		/// <summary>
-		/// The internal entry for the <seealso cref="Bucket{TKey}"/> instance.
+		///     The internal entry for the <seealso cref="Bucket{TKey}" /> instance.
 		/// </summary>
 		private sealed class BucketEntry
 		{
 			/// <summary>
-			/// The last time this entry was mutated.
+			///     The last time this entry was mutated.
 			/// </summary>
 			public DateTime LastTime { get; set; }
 
 			/// <summary>
-			/// The last time this entry was reset.
+			///     The last time this entry was reset.
 			/// </summary>
 			public DateTime SetTime { get; set; }
 
 			/// <summary>
-			/// The amount of tickets this entry has. Must always be lower than <seealso cref="Bucket{TKey}.Limit"/>.
+			///     The amount of tickets this entry has. Must always be lower than <seealso cref="Bucket{TKey}.Limit" />.
 			/// </summary>
 			public uint Tickets { get; set; }
 		}

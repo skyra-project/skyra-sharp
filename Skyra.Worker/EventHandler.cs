@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Models;
@@ -12,7 +13,7 @@ using Spectacles.NET.Types;
 
 // ReSharper disable RedundantDefaultMemberInitializer
 
-namespace Skyra.Core
+namespace Skyra.Worker
 {
 	public sealed class EventHandler : IEventHandler
 	{

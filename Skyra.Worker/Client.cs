@@ -19,7 +19,6 @@ using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
 using Spectacles.NET.Types;
-using EventHandler = Skyra.Core.EventHandler;
 
 namespace Skyra.Worker
 {

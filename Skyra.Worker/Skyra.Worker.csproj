@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>Skyra.Worker</AssemblyName>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>Skyra.Worker</RootNamespace>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-preview.2.20159.4" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Serilog.Exceptions" Version="5.4.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+      <PackageReference Include="Spectacles.NET.Broker" Version="0.6.0" />
+      <PackageReference Include="Spectacles.NET.Rest" Version="0.10.5" />
+      <PackageReference Include="Spectacles.NET.Types" Version="0.9.8" />
+      <PackageReference Include="StackExchange.Redis" Version="2.1.30" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Languages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Languages.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Languages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Skyra.Core\Skyra.Core.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra", "Skyra\Skyra.csproj", "{592BD9FB-B9F4-4D33-B344-3D17D48736CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Worker", "Skyra.Worker\Skyra.Worker.csproj", "{592BD9FB-B9F4-4D33-B344-3D17D48736CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Gateway", "Skyra.Gateway\Skyra.Gateway.csproj", "{0D869F1E-8CD0-4E21-A722-4C04798A24AE}"
 EndProject
@@ -9,6 +9,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Notifi", "Skyra.Notifi\Skyra.Notifi.csproj", "{B411C4B4-0A59-4BE9-8584-56C755641C57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Tests", "Skyra.Tests\Skyra.Tests.csproj", "{709BEA73-9F09-4D52-AAD8-57A4876F1FF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Core", "Skyra.Core\Skyra.Core.csproj", "{98EF352F-1228-4C2B-8B07-ADFF45CF86C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyra.Rest", "Skyra.Rest\Skyra.Rest.csproj", "{EA737BD4-5DA4-429A-91E6-D4294DC6964E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +40,13 @@ Global
 		{709BEA73-9F09-4D52-AAD8-57A4876F1FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{709BEA73-9F09-4D52-AAD8-57A4876F1FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{709BEA73-9F09-4D52-AAD8-57A4876F1FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EF352F-1228-4C2B-8B07-ADFF45CF86C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EF352F-1228-4C2B-8B07-ADFF45CF86C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EF352F-1228-4C2B-8B07-ADFF45CF86C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EF352F-1228-4C2B-8B07-ADFF45CF86C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA737BD4-5DA4-429A-91E6-D4294DC6964E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA737BD4-5DA4-429A-91E6-D4294DC6964E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA737BD4-5DA4-429A-91E6-D4294DC6964E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA737BD4-5DA4-429A-91E6-D4294DC6964E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

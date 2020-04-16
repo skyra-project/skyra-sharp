@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ using Spectacles.NET.Broker.Amqp;
 using Spectacles.NET.Rest;
 using Spectacles.NET.Rest.Bucket;
 using Spectacles.NET.Types;
+using EventInfo = Skyra.Core.Structures.EventInfo;
 
 namespace Skyra.Worker
 {
@@ -26,7 +28,7 @@ namespace Skyra.Worker
 	{
 		internal Client(ClientOptions clientOptions)
 		{
-			var loader = new Loader(this);
+			var loader = new Loader(this, Assembly.GetExecutingAssembly());
 			Cultures = loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
 			EventHandler = new EventHandler();
 			Cache = new CacheClient(this, clientOptions.RedisPrefix);

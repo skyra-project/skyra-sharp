@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CorePromptStateReaction : ICorePromptState
+	public class CorePromptStateReaction : ICorePromptState
 	{
 		public CorePromptStateReaction(ulong authorId, ulong messageId, object context)
 		{
@@ -17,7 +17,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 		public ulong AuthorId { get; }
 
 		[JsonProperty("mid")]
-		public ulong MessageId { get; }
+		public ulong MessageId { get; protected set; }
 
 		[JsonProperty("ctx")]
 		public object Context { get; private set; }

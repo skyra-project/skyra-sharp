@@ -16,6 +16,20 @@ namespace Skyra.Worker.Commands
 		{
 		}
 
+		public async Task RunAsync([NotNull] CoreMessage message, uint page)
+		{
+			var richDisplay = new CoreRichDisplay(message.AuthorId, message.Id);
+			foreach (var (key, value) in Client.Commands)
+			{
+				richDisplay.AddPage(embed => embed.SetTitle(key).SetDescription(value.Name));
+			}
+
+			await richDisplay.RunAsync(message, new CoreRichDisplayRunOptions
+			{
+				StartPage = page
+			});
+		}
+
 		public async Task RunAsync([NotNull] CoreMessage message)
 		{
 			var state = new CorePromptStateMessage(message.AuthorId, message.ChannelId, message.Content);

@@ -243,6 +243,13 @@ namespace Skyra.Core.Cache.Models
 			return this;
 		}
 
+		[ItemNotNull]
+		public async Task<object> ReactAsync(string reaction)
+		{
+			return await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()].Reactions[reaction]["@me"]
+				.PutAsync<object>(null);
+		}
+
 		public async Task CacheAsync()
 		{
 			var channelTask = GuildId == null

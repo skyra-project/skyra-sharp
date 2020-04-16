@@ -45,23 +45,21 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[NotNull]
 		private static ICorePromptState ParseMessageSingleUser([NotNull] JToken state)
 		{
-			return new CorePromptStateMessage((ulong) state["aid"], (ulong) state["cid"],
-				state["ctx"]);
+			return new CorePromptStateMessage((ulong) state["aid"]!, (ulong) state["cid"]!);
 		}
 
 		[NotNull]
 		private static ICorePromptState ParseReactionSingleUser([NotNull] JToken state)
 		{
-			return new CorePromptStateReaction((ulong) state["aid"], (ulong) state["mid"],
-				state["ctx"]);
+			return new CorePromptStateReaction((ulong) state["aid"]!, (ulong) state["mid"]!);
 		}
 
 		[NotNull]
 		private static ICorePromptState ParseRichDisplay([NotNull] JToken state)
 		{
-			return new CoreRichDisplay((ulong) state["aid"], (ulong) state["mid"],
-				state["ctx"].Value<CoreMessageEmbed[]>(), state["ip"].Value<CoreMessageEmbed>(),
-				state["e"].Value<CoreRichDisplayEmojis>());
+			return new CoreRichDisplay((ulong) state["aid"]!, (ulong) state["mid"]!,
+				state["ctx"]!.Value<CoreMessageEmbed[]>(), state["ip"]!.Value<CoreMessageEmbed>(),
+				state["e"]!.Value<CoreRichDisplayEmojis>());
 		}
 	}
 }

@@ -12,12 +12,23 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	public sealed class CoreRichDisplay : CorePromptStateReaction
 	{
-		public CoreRichDisplay(ulong authorId, ulong messageId, CoreMessageEmbed[] context = null, CoreMessageEmbed?
-			informationPage = null, CoreRichDisplayEmojis? emojis = null) : base(authorId, messageId, null)
+		public CoreRichDisplay(ulong authorId, ulong messageId) : base(authorId, messageId)
+		{
+			InternalTemplate = new CoreMessageEmbed();
+			InformationPage = null;
+			Emojis = new CoreRichDisplayEmojis();
+			FooterEnabled = false;
+			FooterPrefix = null;
+			FooterSuffix = null;
+			Context = new CoreMessageEmbed[0];
+		}
+
+		public CoreRichDisplay(ulong authorId, ulong messageId, CoreMessageEmbed[] context, CoreMessageEmbed?
+			informationPage, CoreRichDisplayEmojis emojis) : base(authorId, messageId)
 		{
 			InternalTemplate = new CoreMessageEmbed();
 			InformationPage = informationPage;
-			Emojis = emojis ?? new CoreRichDisplayEmojis();
+			Emojis = emojis;
 			FooterEnabled = false;
 			FooterPrefix = null;
 			FooterSuffix = null;
@@ -51,7 +62,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 		public string? FooterSuffix { get; set; }
 
 		[JsonProperty("ctx")]
-		public new CoreMessageEmbed[] Context { get; set; }
+		public CoreMessageEmbed[] Context { get; set; }
 
 		[NotNull]
 		public CoreRichDisplay SetEmojis(CoreRichDisplayEmojis emojis)
@@ -84,9 +95,9 @@ namespace Skyra.Core.Cache.Models.Prompts
 		}
 
 		[NotNull]
-		public CoreRichDisplay AddPage(Embed embed)
+		public CoreRichDisplay AddPage(CoreMessageEmbed embed)
 		{
-			Context.Append(embed);
+			Context = Context.Append(embed).ToArray();
 			return this;
 		}
 
@@ -107,8 +118,9 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		[ItemNotNull]
 		public async Task<CoreRichDisplay> RunAsync([NotNull] CoreMessage message,
-			CoreRichDisplayRunOptions options = new CoreRichDisplayRunOptions())
+			CoreRichDisplayRunOptions? options = null)
 		{
+			options ??= new CoreRichDisplayRunOptions();
 			if (!FooterEnabled) SetFooters();
 
 			if (message.AuthorId == message.Client.Id)
@@ -172,21 +184,21 @@ namespace Skyra.Core.Cache.Models.Prompts
 			{
 				if (firstLast)
 				{
-					yield return Emojis.First;
-					yield return Emojis.Back;
-					yield return Emojis.Forward;
-					yield return Emojis.Last;
+					if (Emojis.First != null) yield return Emojis.First;
+					if (Emojis.Back != null) yield return Emojis.Back;
+					if (Emojis.Forward != null) yield return Emojis.Forward;
+					if (Emojis.Last != null) yield return Emojis.Last;
 				}
 				else
 				{
-					yield return Emojis.Back;
-					yield return Emojis.Forward;
+					if (Emojis.Back != null) yield return Emojis.Back;
+					if (Emojis.Forward != null) yield return Emojis.Forward;
 				}
 			}
 
-			if (InformationPage != null) yield return Emojis.Info;
-			if (stop) yield return Emojis.Stop;
-			if (jump) yield return Emojis.Jump;
+			if (Emojis.Info != null && InformationPage != null) yield return Emojis.Info;
+			if (Emojis.Stop != null && stop) yield return Emojis.Stop;
+			if (Emojis.Jump != null && jump) yield return Emojis.Jump;
 		}
 
 		private void SetFooters()

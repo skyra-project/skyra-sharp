@@ -6,11 +6,10 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	public class CorePromptStateReaction : ICorePromptState
 	{
-		public CorePromptStateReaction(ulong authorId, ulong messageId, object context)
+		public CorePromptStateReaction(ulong authorId, ulong messageId)
 		{
 			AuthorId = authorId;
 			MessageId = messageId;
-			Context = context;
 		}
 
 		[JsonProperty("aid")]
@@ -18,16 +17,6 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		[JsonProperty("mid")]
 		public ulong MessageId { get; protected set; }
-
-		[JsonProperty("ctx")]
-		public object Context { get; private set; }
-
-		[NotNull]
-		public ICorePromptState Patch([NotNull] ICorePromptState value)
-		{
-			Context = value.Context;
-			return this;
-		}
 
 		[NotNull]
 		public string ToKey()

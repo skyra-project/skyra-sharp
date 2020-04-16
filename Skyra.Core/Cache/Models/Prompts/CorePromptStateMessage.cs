@@ -6,11 +6,10 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	public sealed class CorePromptStateMessage : ICorePromptState
 	{
-		public CorePromptStateMessage(ulong authorId, ulong channelId, object context)
+		public CorePromptStateMessage(ulong authorId, ulong channelId)
 		{
 			AuthorId = authorId;
 			ChannelId = channelId;
-			Context = context;
 		}
 
 		[JsonProperty("aid")]
@@ -18,16 +17,6 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		[JsonProperty("cid")]
 		public ulong ChannelId { get; }
-
-		[JsonProperty("ctx")]
-		public object Context { get; private set; }
-
-		[NotNull]
-		public ICorePromptState Patch([NotNull] ICorePromptState value)
-		{
-			Context = value.Context;
-			return this;
-		}
 
 		[NotNull]
 		public string ToKey()
@@ -37,8 +26,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		public async Task RunAsync([NotNull] CoreMessage message, [NotNull] CorePromptStateMessage state)
 		{
-			await message.SendAsync(
-				$"Oi there m8 you had a prompt set up, I replied to ya. By the way you once said `{state.Context}`");
+			await Task.CompletedTask;
 		}
 
 		[NotNull]

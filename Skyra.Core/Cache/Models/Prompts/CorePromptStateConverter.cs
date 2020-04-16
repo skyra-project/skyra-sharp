@@ -58,8 +58,9 @@ namespace Skyra.Core.Cache.Models.Prompts
 		private static ICorePromptState ParseRichDisplay([NotNull] JToken state)
 		{
 			return new CoreRichDisplay((ulong) state["aid"]!, (ulong) state["mid"]!,
-				state["ctx"]!.Value<CoreMessageEmbed[]>(), state["ip"]!.Value<CoreMessageEmbed>(),
-				state["e"]!.Value<CoreRichDisplayEmojis>());
+				state["ctx"]!.ToObject<CoreMessageEmbed[]>()!, state["ip"]?.ToObject<CoreMessageEmbed?>(),
+				(int) state["pp"]!,
+				state["ae"]!.ToObject<(CoreRichDisplayReactionType, string)[]>()!);
 		}
 	}
 }

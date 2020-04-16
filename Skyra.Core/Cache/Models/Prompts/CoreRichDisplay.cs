@@ -10,30 +10,50 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CoreRichDisplay : CorePromptStateReaction
+	public sealed class CoreRichDisplay : ICorePromptState, ICorePromptStateReaction
 	{
-		public CoreRichDisplay(ulong authorId, ulong messageId) : base(authorId, messageId)
+		public CoreRichDisplay(ulong authorId, ulong messageId)
 		{
+			AuthorId = authorId;
+			MessageId = messageId;
 			InternalTemplate = new CoreMessageEmbed();
 			InformationPage = null;
+			AllowedEmojis = new (CoreRichDisplayReactionType, string)[0];
 			Emojis = new CoreRichDisplayEmojis();
 			FooterEnabled = false;
 			FooterPrefix = null;
 			FooterSuffix = null;
 			Context = new CoreMessageEmbed[0];
+			PagePosition = 0;
 		}
 
 		public CoreRichDisplay(ulong authorId, ulong messageId, CoreMessageEmbed[] context, CoreMessageEmbed?
-			informationPage, CoreRichDisplayEmojis emojis) : base(authorId, messageId)
+			informationPage, int pagePosition, (CoreRichDisplayReactionType, string)[] allowedEmojis)
 		{
+			AuthorId = authorId;
+			MessageId = messageId;
+			AllowedEmojis = allowedEmojis;
 			InternalTemplate = new CoreMessageEmbed();
 			InformationPage = informationPage;
-			Emojis = emojis;
+			Emojis = new CoreRichDisplayEmojis();
 			FooterEnabled = false;
 			FooterPrefix = null;
 			FooterSuffix = null;
 			Context = context ?? new CoreMessageEmbed[0];
+			PagePosition = pagePosition;
 		}
+
+		[JsonProperty("ip")]
+		public CoreMessageEmbed? InformationPage { get; set; }
+
+		[JsonProperty("ctx")]
+		public CoreMessageEmbed[] Context { get; set; }
+
+		[JsonProperty("ae")]
+		public (CoreRichDisplayReactionType, string)[] AllowedEmojis { get; set; }
+
+		[JsonProperty("pp")]
+		public int PagePosition { get; set; }
 
 		[JsonIgnore]
 		private CoreMessageEmbed InternalTemplate { get; set; }
@@ -46,10 +66,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 			set => InternalTemplate = value;
 		}
 
-		[JsonProperty("ip")]
-		public CoreMessageEmbed? InformationPage { get; set; }
-
-		[JsonProperty("e")]
+		[JsonIgnore]
 		public CoreRichDisplayEmojis Emojis { get; set; }
 
 		[JsonIgnore]
@@ -61,8 +78,59 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[JsonIgnore]
 		public string? FooterSuffix { get; set; }
 
-		[JsonProperty("ctx")]
-		public CoreMessageEmbed[] Context { get; set; }
+		public string ToKey()
+		{
+			return ICorePromptStateReaction.ToKey(MessageId, AuthorId);
+		}
+
+		[JsonProperty("aid")]
+		public ulong AuthorId { get; }
+
+		[JsonProperty("mid")]
+		public ulong MessageId { get; set; }
+
+		public async Task<TimeSpan?> RunAsync(MessageReactionAddPayload reaction)
+		{
+			var action = RetrieveEntry(Utilities.ResolveEmoji(reaction.Emoji));
+			switch (action)
+			{
+				case CoreRichDisplayReactionType.None:
+					return TimeSpan.Zero;
+				case CoreRichDisplayReactionType.First:
+					if (PagePosition == 0) return TimeSpan.Zero;
+					PagePosition = 0;
+					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
+					return null;
+				case CoreRichDisplayReactionType.Back:
+					if (PagePosition == 0) return TimeSpan.Zero;
+					--PagePosition;
+					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
+					return null;
+				case CoreRichDisplayReactionType.Forward:
+					if (PagePosition == Context.Length - 1) return TimeSpan.Zero;
+					++PagePosition;
+					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
+					return null;
+				case CoreRichDisplayReactionType.Last:
+					if (PagePosition == Context.Length - 1) return TimeSpan.Zero;
+					PagePosition = Context.Length - 1;
+					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
+					return null;
+				case CoreRichDisplayReactionType.Info:
+					if (PagePosition == -1) return TimeSpan.Zero;
+					PagePosition = -1;
+					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
+					return null;
+				case CoreRichDisplayReactionType.Stop:
+					return null;
+				case CoreRichDisplayReactionType.Jump:
+					// TODO(kyranet): Create text prompt to ask for the number
+					// TODO(kyranet): Render
+					return TimeSpan.FromMinutes(10);
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 
 		[NotNull]
 		public CoreRichDisplay SetEmojis(CoreRichDisplayEmojis emojis)
@@ -116,18 +184,54 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
+		private async Task<bool> Render(string channelId)
+		{
+			try
+			{
+				await IClient.Instance.Rest.Channels[channelId].Messages[MessageId.ToString()].PatchAsync<object>(
+					new SendableMessage
+					{
+						Embed = PagePosition == -1 ? InformationPage : Context[PagePosition]
+					});
+
+				return true;
+			}
+			catch (DiscordAPIException exception)
+			{
+				if (exception.ErrorCode is null) throw;
+				return (DiscordApiErrorCodes) exception.ErrorCode! switch
+				{
+					DiscordApiErrorCodes.UnknownMessage => false,
+					DiscordApiErrorCodes.UnknownChannel => false,
+					DiscordApiErrorCodes.UnknownGuild => false,
+					_ => throw exception
+				};
+			}
+		}
+
+		private CoreRichDisplayReactionType RetrieveEntry(string emoji)
+		{
+			foreach (var (type, allowedEmoji) in AllowedEmojis)
+			{
+				if (allowedEmoji == emoji) return type;
+			}
+
+			return CoreRichDisplayReactionType.None;
+		}
+
 		[ItemNotNull]
-		public async Task<CoreRichDisplay> RunAsync([NotNull] CoreMessage message,
+		public async Task<CoreRichDisplay> SetUpAsync([NotNull] CoreMessage message,
 			CoreRichDisplayRunOptions? options = null)
 		{
 			options ??= new CoreRichDisplayRunOptions();
+			PagePosition = options.StartPage;
 			if (!FooterEnabled) SetFooters();
 
 			if (message.AuthorId == message.Client.Id)
 			{
 				await message.EditAsync(new SendableMessage
 				{
-					Embed = Context[options.StartPage]
+					Embed = Context[PagePosition]
 				});
 				MessageId = message.Id;
 			}
@@ -135,7 +239,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 			{
 				var sent = await message.SendAsync(new SendableMessage
 				{
-					Embed = Context[options.StartPage]
+					Embed = Context[PagePosition]
 				});
 				MessageId = sent.Id;
 			}
@@ -148,12 +252,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
-		private async Task<bool> AddReactions([NotNull] CoreMessage message, [NotNull] IEnumerable<string> emojis)
+		private async Task<bool> AddReactions([NotNull] CoreMessage message,
+			[NotNull] IEnumerable<(CoreRichDisplayReactionType, string)> emojis)
 		{
 			var reacted = false;
 			var messageId = MessageId.ToString();
 			var channelId = message.ChannelId.ToString();
-			foreach (var emoji in emojis)
+			AllowedEmojis = emojis.ToArray();
+			foreach (var (_, emoji) in AllowedEmojis)
 			{
 				try
 				{
@@ -178,34 +284,38 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return reacted;
 		}
 
-		private IEnumerable<string> IterateEmojis(bool stop, bool jump, bool firstLast)
+		private IEnumerable<(CoreRichDisplayReactionType, string)> IterateEmojis(bool stop, bool jump, bool firstLast)
 		{
 			if (Context.Length > 1 || InformationPage != null)
 			{
 				if (firstLast)
 				{
-					if (Emojis.First != null) yield return Emojis.First;
-					if (Emojis.Back != null) yield return Emojis.Back;
-					if (Emojis.Forward != null) yield return Emojis.Forward;
-					if (Emojis.Last != null) yield return Emojis.Last;
+					if (Emojis.First != null) yield return (CoreRichDisplayReactionType.First, Emojis.First);
+					if (Emojis.Back != null) yield return (CoreRichDisplayReactionType.Back, Emojis.Back);
+					if (Emojis.Forward != null) yield return (CoreRichDisplayReactionType.Forward, Emojis.Forward);
+					if (Emojis.Last != null) yield return (CoreRichDisplayReactionType.Last, Emojis.Last);
 				}
 				else
 				{
-					if (Emojis.Back != null) yield return Emojis.Back;
-					if (Emojis.Forward != null) yield return Emojis.Forward;
+					if (Emojis.Back != null) yield return (CoreRichDisplayReactionType.Back, Emojis.Back);
+					if (Emojis.Forward != null) yield return (CoreRichDisplayReactionType.Forward, Emojis.Forward);
 				}
 			}
 
-			if (Emojis.Info != null && InformationPage != null) yield return Emojis.Info;
-			if (Emojis.Stop != null && stop) yield return Emojis.Stop;
-			if (Emojis.Jump != null && jump) yield return Emojis.Jump;
+			if (Emojis.Info != null && InformationPage != null)
+			{
+				yield return (CoreRichDisplayReactionType.Info, Emojis.Info);
+			}
+
+			if (Emojis.Stop != null && stop) yield return (CoreRichDisplayReactionType.Stop, Emojis.Stop);
+			if (Emojis.Jump != null && jump) yield return (CoreRichDisplayReactionType.Jump, Emojis.Jump);
 		}
 
 		private void SetFooters()
 		{
 			for (var i = 0; i < Context.Length; ++i)
 			{
-				Context[i].SetFooter($"{FooterPrefix}{(i + 1).ToString()}/{Context.Length}{FooterSuffix}");
+				Context[i].SetFooter($"{FooterPrefix}{(i + 1).ToString()}/{Context.Length.ToString()}{FooterSuffix}");
 			}
 
 			InformationPage?.SetFooter("ℹ");

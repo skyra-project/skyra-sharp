@@ -35,6 +35,12 @@ namespace Skyra.Worker
 		public Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync { get; set; } = default!;
 		public Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync { get; set; } = default!;
 		public Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync { get; set; } = default!;
+		public Func<MessageReactionAddPayload, Task> OnRawMessageReactionAddAsync { get; set; } = default!;
+		public Func<MessageReactionRemovePayload, Task> OnRawMessageReactionRemoveAsync { get; set; } = default!;
+		public Func<MessageReactionRemoveAllPayload, Task> OnRawMessageReactionRemoveAllAsync { get; set; } = default!;
+
+		public Func<MessageReactionRemoveEmojiPayload, Task> OnRawMessageReactionRemoveEmojiAsync { get; set; } =
+			default!;
 
 		public Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync { get; set; } =
 			default!;
@@ -113,12 +119,18 @@ namespace Skyra.Worker
 				case SkyraEvent.MESSAGE_DELETE_BULK:
 					break;
 				case SkyraEvent.MESSAGE_REACTION_ADD:
+					OnRawMessageReactionAddAsync(JsonConvert.DeserializeObject<MessageReactionAddPayload>(data));
 					break;
 				case SkyraEvent.MESSAGE_REACTION_REMOVE:
+					OnRawMessageReactionRemoveAsync(JsonConvert.DeserializeObject<MessageReactionRemovePayload>(data));
 					break;
 				case SkyraEvent.MESSAGE_REACTION_REMOVE_ALL:
+					OnRawMessageReactionRemoveAllAsync(
+						JsonConvert.DeserializeObject<MessageReactionRemoveAllPayload>(data));
 					break;
 				case SkyraEvent.MESSAGE_REACTION_REMOVE_EMOJI:
+					OnRawMessageReactionRemoveEmojiAsync(
+						JsonConvert.DeserializeObject<MessageReactionRemoveEmojiPayload>(data));
 					break;
 				case SkyraEvent.PRESENCE_UPDATE:
 					break;

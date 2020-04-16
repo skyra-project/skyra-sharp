@@ -28,6 +28,8 @@ namespace Skyra.Worker
 	{
 		internal Client(ClientOptions clientOptions)
 		{
+			IClient.Instance = this;
+
 			var loader = new Loader(this, Assembly.GetExecutingAssembly());
 			Cultures = loader.LoadCultures(new[] {"en-US", "es-ES", "sl"});
 			EventHandler = new EventHandler();

@@ -28,6 +28,10 @@ namespace Skyra.Core
 		Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync { get; set; }
 		Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync { get; set; }
 		Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync { get; set; }
+		Func<MessageReactionAddPayload, Task> OnRawMessageReactionAddAsync { get; set; }
+		Func<MessageReactionRemovePayload, Task> OnRawMessageReactionRemoveAsync { get; set; }
+		Func<MessageReactionRemoveAllPayload, Task> OnRawMessageReactionRemoveAllAsync { get; set; }
+		Func<MessageReactionRemoveEmojiPayload, Task> OnRawMessageReactionRemoveEmojiAsync { get; set; }
 		event Action<ReadyDispatch> OnReady;
 		event Action<Guild> OnRawGuildCreate;
 		event Action<Guild> OnRawGuildUpdate;

@@ -15,7 +15,7 @@ namespace Skyra.Worker.Commands
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message, uint page = 0)
+		public async Task RunAsync([NotNull] CoreMessage message, [Argument(Minimum = 1)] int page = 1)
 		{
 			var richDisplay = new CoreRichDisplay(message.AuthorId, message.Id);
 			foreach (var (key, value) in Client.Commands)
@@ -23,9 +23,9 @@ namespace Skyra.Worker.Commands
 				richDisplay.AddPage(embed => embed.SetTitle(key).SetDescription(value.Name));
 			}
 
-			await richDisplay.RunAsync(message, new CoreRichDisplayRunOptions
+			await richDisplay.SetUpAsync(message, new CoreRichDisplayRunOptions
 			{
-				StartPage = page
+				StartPage = page - 1
 			});
 		}
 	}

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -24,9 +25,10 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return ToKey(ChannelId, AuthorId);
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message, [NotNull] CorePromptStateMessage state)
+		public async Task<TimeSpan?> RunAsync([NotNull] CoreMessage message, [NotNull] CorePromptStateMessage state)
 		{
 			await Task.CompletedTask;
+			return null;
 		}
 
 		[NotNull]

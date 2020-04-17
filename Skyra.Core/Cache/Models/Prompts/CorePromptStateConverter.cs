@@ -24,7 +24,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 				CorePromptStateType.MessageSingleUser => serializer.Deserialize<CorePromptStateMessage>(data)!,
 				CorePromptStateType.ReactionSingleUser => serializer.Deserialize<CorePromptStateReaction>(data)!,
 				CorePromptStateType.RichDisplay => serializer.Deserialize<CoreRichDisplay>(data)!,
-				_ => throw new ArgumentOutOfRangeException()
+				_ => throw new ArgumentOutOfRangeException(nameof(type))
 			};
 
 			return new CorePromptState(null!, type, state);

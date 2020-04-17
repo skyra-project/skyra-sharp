@@ -22,14 +22,13 @@ namespace Skyra.Core.Cache.Models.Prompts
 			FooterEnabled = false;
 			FooterPrefix = null;
 			FooterSuffix = null;
-			Context = new CoreMessageEmbed[0];
+			Pages = new List<CoreMessageEmbed>();
 			PagePosition = 0;
 		}
 
 		[JsonConstructor]
-		public CoreRichDisplay(ulong authorId, ulong messageId, [CanBeNull] CoreMessageEmbed[] context,
-			CoreMessageEmbed?
-				informationPage, int pagePosition, (CoreRichDisplayReactionType, string)[] allowedEmojis)
+		public CoreRichDisplay(ulong authorId, ulong messageId, List<CoreMessageEmbed> pages,
+			CoreMessageEmbed? informationPage, int pagePosition, (CoreRichDisplayReactionType, string)[] allowedEmojis)
 		{
 			AuthorId = authorId;
 			MessageId = messageId;
@@ -40,15 +39,15 @@ namespace Skyra.Core.Cache.Models.Prompts
 			FooterEnabled = false;
 			FooterPrefix = null;
 			FooterSuffix = null;
-			Context = context ?? new CoreMessageEmbed[0];
+			Pages = pages;
 			PagePosition = pagePosition;
 		}
 
 		[JsonProperty("ip")]
 		public CoreMessageEmbed? InformationPage { get; set; }
 
-		[JsonProperty("ctx")]
-		public CoreMessageEmbed[] Context { get; set; }
+		[JsonProperty("ps")]
+		public List<CoreMessageEmbed> Pages { get; set; }
 
 		[JsonProperty("ae")]
 		public (CoreRichDisplayReactionType, string)[] AllowedEmojis { get; set; }
@@ -122,13 +121,13 @@ namespace Skyra.Core.Cache.Models.Prompts
 					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
 					return null;
 				case CoreRichDisplayReactionType.Forward:
-					if (PagePosition == Context.Length - 1) return TimeSpan.Zero;
+					if (PagePosition == Pages.Count - 1) return TimeSpan.Zero;
 					++PagePosition;
 					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
 					return null;
 				case CoreRichDisplayReactionType.Last:
-					if (PagePosition == Context.Length - 1) return TimeSpan.Zero;
-					PagePosition = Context.Length - 1;
+					if (PagePosition == Pages.Count - 1) return TimeSpan.Zero;
+					PagePosition = Pages.Count - 1;
 					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
 					return null;
 				case CoreRichDisplayReactionType.Info:
@@ -144,7 +143,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 					// TODO(kyranet): Render
 					return TimeSpan.FromMinutes(10);
 				default:
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException(nameof(action));
 			}
 		}
 
@@ -181,7 +180,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[NotNull]
 		public CoreRichDisplay AddPage(CoreMessageEmbed embed)
 		{
-			Context = Context.Append(embed).ToArray();
+			Pages.Add(embed);
 			return this;
 		}
 
@@ -189,7 +188,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 		public CoreRichDisplay AddPage([NotNull] Func<CoreMessageEmbed, CoreMessageEmbed> callback)
 		{
 			var value = callback(Template);
-			Context = Context.Append(value).ToArray();
+			Pages.Add(value);
 			return this;
 		}
 
@@ -213,7 +212,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 			var messageUpdateQuery = IClient.Instance.Rest.Channels[channelId]
 				.Messages[MessageId.ToString()].PatchAsync(new SendableMessage
 				{
-					Embed = PagePosition == -1 ? InformationPage : Context[PagePosition]
+					Embed = PagePosition == -1 ? InformationPage : Pages[PagePosition]
 				});
 
 			return await Utilities.ResolveAsBooleanOnErrorCodes(messageUpdateQuery, IgnoreMessageUpdateCodes);
@@ -277,7 +276,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		private IEnumerable<(CoreRichDisplayReactionType, string)> IterateEmojis(bool stop, bool jump, bool firstLast)
 		{
-			if (Context.Length > 1 || InformationPage != null)
+			if (Pages.Count > 1 || InformationPage != null)
 			{
 				if (firstLast)
 				{
@@ -304,9 +303,9 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		private void SetFooters()
 		{
-			for (var i = 0; i < Context.Length; ++i)
+			for (var i = 0; i < Pages.Count; ++i)
 			{
-				Context[i].SetFooter($"{FooterPrefix}{(i + 1).ToString()}/{Context.Length.ToString()}{FooterSuffix}");
+				Pages[i].SetFooter($"{FooterPrefix}{(i + 1).ToString()}/{Pages.Count.ToString()}{FooterSuffix}");
 			}
 
 			InformationPage?.SetFooter("ℹ");

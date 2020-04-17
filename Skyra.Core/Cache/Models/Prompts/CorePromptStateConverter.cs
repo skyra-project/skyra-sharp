@@ -34,6 +34,5 @@ namespace Skyra.Core.Cache.Models.Prompts
 		{
 			return typeof(CorePromptState).IsAssignableFrom(objectType);
 		}
-
 	}
 }

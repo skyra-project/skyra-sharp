@@ -7,7 +7,8 @@ namespace Skyra.Tests.Core.Utils
 	public class EmojiRegexTests
 	{
 		[Test]
-		public void EmojiRegex_Match([Values(
+		[Parallelizable]
+		public void EmojiRegex_Matches_ValidEmojis([Values(
 				"😀", "😃", "😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "🙃", "😉", "😊", "😇", "🥰", "😍", "🤩", "😘",
 				"😗", "😚", "😙", "😋", "😛", "😜", "🤪", "😝", "🤑", "🤗", "🤭", "🤫", "🤔", "🤐", "🤨", "😐", "😑",
 				"😶", "😏", "😒", "🙄", "😬", "🤥", "😌", "😔", "😪", "🤤", "😴", "😷", "🤒", "🤕", "🤢", "🤮", "🤧",
@@ -24,7 +25,8 @@ namespace Skyra.Tests.Core.Utils
 		}
 
 		[Test]
-		public void EmojiRegex_NotMatch([Values(
+		[Parallelizable]
+		public void EmojiRegex_DoesntMatch_InvalidEmojis([Values(
 				"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t",
 				"u", "v", "w", "x", "y", "z", "ア"
 			)]

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Spectacles.NET.Types;
 
@@ -13,6 +14,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 			MessageId = messageId;
 		}
 
+		[NotNull]
 		public string ToKey()
 		{
 			return ICorePromptStateReaction.ToKey(MessageId, AuthorId);

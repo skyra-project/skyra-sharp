@@ -133,7 +133,7 @@ namespace Skyra.Worker.Monitors
 			}
 		}
 
-		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync(CoreMessage message)
+		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync([NotNull] CoreMessage message)
 		{
 			var mentionPrefix = GetMentionPrefix(message);
 			return mentionPrefix.Item2 == PrefixTypeResult.None

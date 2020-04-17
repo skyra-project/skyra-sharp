@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Structures;
@@ -21,7 +22,7 @@ namespace Skyra.Worker.Events.Raw
 			await RunReactionPrompts(state);
 		}
 
-		private async Task RunReactionPrompts(MessageReactionAddPayload payload)
+		private async Task RunReactionPrompts([NotNull] MessageReactionAddPayload payload)
 		{
 			var key = ICorePromptStateReaction.ToKey(payload);
 			var result = await Client.Cache.Prompts.GetAsync(key);

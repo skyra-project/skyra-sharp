@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,6 +24,7 @@ namespace Skyra.Rest.Controllers
 		}
 
 		[HttpGet]
+		[NotNull]
 		public IEnumerable<WeatherForecast> Get()
 		{
 			var rng = new Random();

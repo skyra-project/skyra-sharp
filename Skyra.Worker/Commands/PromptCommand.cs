@@ -5,6 +5,7 @@ using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Spectacles.NET.Types;
 
 namespace Skyra.Worker.Commands
 {
@@ -25,7 +26,11 @@ namespace Skyra.Worker.Commands
 
 			await richDisplay.SetUpAsync(message, new CoreRichDisplayRunOptions
 			{
-				StartPage = page - 1
+				StartPage = page - 1,
+				MessageContent = new SendableMessage
+				{
+					Content = "Loading..."
+				}
 			});
 		}
 	}

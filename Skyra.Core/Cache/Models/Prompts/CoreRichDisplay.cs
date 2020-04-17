@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Skyra.Core.Utils;
-using Spectacles.NET.Rest.APIError;
 using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models.Prompts
@@ -27,8 +26,9 @@ namespace Skyra.Core.Cache.Models.Prompts
 			PagePosition = 0;
 		}
 
-		public CoreRichDisplay(ulong authorId, ulong messageId, CoreMessageEmbed[] context, CoreMessageEmbed?
-			informationPage, int pagePosition, (CoreRichDisplayReactionType, string)[] allowedEmojis)
+		public CoreRichDisplay(ulong authorId, ulong messageId, [CanBeNull] CoreMessageEmbed[] context,
+			CoreMessageEmbed?
+				informationPage, int pagePosition, (CoreRichDisplayReactionType, string)[] allowedEmojis)
 		{
 			AuthorId = authorId;
 			MessageId = messageId;
@@ -78,6 +78,19 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[JsonIgnore]
 		public string? FooterSuffix { get; set; }
 
+		private IEnumerable<DiscordApiErrorCodes> IgnoreMessageUpdateCodes { get; } = new[]
+		{
+			DiscordApiErrorCodes.UnknownMessage, DiscordApiErrorCodes.UnknownChannel,
+			DiscordApiErrorCodes.UnknownGuild
+		};
+
+		private IEnumerable<DiscordApiErrorCodes> IgnoreReactionRemoveCodes { get; } = new[]
+		{
+			DiscordApiErrorCodes.UnknownMessage, DiscordApiErrorCodes.UnknownChannel,
+			DiscordApiErrorCodes.UnknownGuild, DiscordApiErrorCodes.UnknownEmoji
+		};
+
+		[NotNull]
 		public string ToKey()
 		{
 			return ICorePromptStateReaction.ToKey(MessageId, AuthorId);
@@ -89,9 +102,10 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[JsonProperty("mid")]
 		public ulong MessageId { get; set; }
 
-		public async Task<TimeSpan?> RunAsync(MessageReactionAddPayload reaction)
+		public async Task<TimeSpan?> RunAsync([NotNull] MessageReactionAddPayload reaction)
 		{
-			var action = RetrieveEntry(Utilities.ResolveEmoji(reaction.Emoji));
+			var emoji = Utilities.ResolveEmoji(reaction.Emoji);
+			var action = RetrieveEntry(emoji);
 			switch (action)
 			{
 				case CoreRichDisplayReactionType.None:
@@ -122,6 +136,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 					if (await Render(reaction.ChannelId)) return TimeSpan.FromMinutes(10);
 					return null;
 				case CoreRichDisplayReactionType.Stop:
+					// await RemoveReactions(reaction.ChannelId);
 					return null;
 				case CoreRichDisplayReactionType.Jump:
 					// TODO(kyranet): Create text prompt to ask for the number
@@ -184,29 +199,23 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return this;
 		}
 
+		private async Task<bool> RemoveReactions(string channelId)
+		{
+			var reactionDeleteQuery =
+				IClient.Instance.Rest.Channels[channelId].Messages[MessageId.ToString()].Reactions.DeleteAsync();
+
+			return await Utilities.ResolveAsBooleanOnErrorCodes(reactionDeleteQuery, IgnoreMessageUpdateCodes);
+		}
+
 		private async Task<bool> Render(string channelId)
 		{
-			try
-			{
-				await IClient.Instance.Rest.Channels[channelId].Messages[MessageId.ToString()].PatchAsync<object>(
-					new SendableMessage
-					{
-						Embed = PagePosition == -1 ? InformationPage : Context[PagePosition]
-					});
-
-				return true;
-			}
-			catch (DiscordAPIException exception)
-			{
-				if (exception.ErrorCode is null) throw;
-				return (DiscordApiErrorCodes) exception.ErrorCode! switch
+			var messageUpdateQuery = IClient.Instance.Rest.Channels[channelId]
+				.Messages[MessageId.ToString()].PatchAsync(new SendableMessage
 				{
-					DiscordApiErrorCodes.UnknownMessage => false,
-					DiscordApiErrorCodes.UnknownChannel => false,
-					DiscordApiErrorCodes.UnknownGuild => false,
-					_ => throw exception
-				};
-			}
+					Embed = PagePosition == -1 ? InformationPage : Context[PagePosition]
+				});
+
+			return await Utilities.ResolveAsBooleanOnErrorCodes(messageUpdateQuery, IgnoreMessageUpdateCodes);
 		}
 
 		private CoreRichDisplayReactionType RetrieveEntry(string emoji)
@@ -227,20 +236,9 @@ namespace Skyra.Core.Cache.Models.Prompts
 			PagePosition = options.StartPage;
 			if (!FooterEnabled) SetFooters();
 
-			if (message.AuthorId == message.Client.Id)
+			if (message.AuthorId != message.Client.Id)
 			{
-				await message.EditAsync(new SendableMessage
-				{
-					Embed = Context[PagePosition]
-				});
-				MessageId = message.Id;
-			}
-			else
-			{
-				var sent = await message.SendAsync(new SendableMessage
-				{
-					Embed = Context[PagePosition]
-				});
+				var sent = await message.SendAsync(options.MessageContent);
 				MessageId = sent.Id;
 			}
 
@@ -249,6 +247,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 			await message.Client.Cache.Prompts.SetAsync(
 				new CorePromptState(message.Client, CorePromptStateType.RichDisplay, this), options.Duration);
+			await Render(message.ChannelId.ToString());
 			return this;
 		}
 
@@ -261,21 +260,12 @@ namespace Skyra.Core.Cache.Models.Prompts
 			AllowedEmojis = emojis.ToArray();
 			foreach (var (_, emoji) in AllowedEmojis)
 			{
-				try
+				var query = message.Client.Rest.Channels[channelId].Messages[messageId].Reactions[emoji]["@me"]
+					.PutAsync<object>(null);
+
+				if (!await Utilities.ResolveAsBooleanOnErrorCodes(query, IgnoreReactionRemoveCodes))
 				{
-					await message.Client.Rest.Channels[channelId].Messages[messageId].Reactions[emoji]["@me"]
-						.PutAsync<object>(null);
-				}
-				catch (DiscordAPIException exception)
-				{
-					if (exception.ErrorCode is null) return false;
-					return (DiscordApiErrorCodes) exception.ErrorCode! switch
-					{
-						DiscordApiErrorCodes.UnknownMessage => false,
-						DiscordApiErrorCodes.UnknownChannel => false,
-						DiscordApiErrorCodes.UnknownGuild => false,
-						_ => throw exception
-					};
+					return false;
 				}
 
 				reacted = true;
@@ -307,8 +297,8 @@ namespace Skyra.Core.Cache.Models.Prompts
 				yield return (CoreRichDisplayReactionType.Info, Emojis.Info);
 			}
 
-			if (Emojis.Stop != null && stop) yield return (CoreRichDisplayReactionType.Stop, Emojis.Stop);
-			if (Emojis.Jump != null && jump) yield return (CoreRichDisplayReactionType.Jump, Emojis.Jump);
+			// if (Emojis.Stop != null && stop) yield return (CoreRichDisplayReactionType.Stop, Emojis.Stop);
+			// if (Emojis.Jump != null && jump) yield return (CoreRichDisplayReactionType.Jump, Emojis.Jump);
 		}
 
 		private void SetFooters()

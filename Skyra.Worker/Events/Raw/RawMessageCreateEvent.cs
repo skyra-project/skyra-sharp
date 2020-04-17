@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Skyra.Core;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
@@ -15,7 +16,7 @@ namespace Skyra.Worker.Events.Raw
 			Client.EventHandler.OnRawMessageCreateAsync += RunAsync;
 		}
 
-		private async Task RunAsync(Message rawMessage)
+		private async Task RunAsync([NotNull] Message rawMessage)
 		{
 			// Instantiate CoreMessage for usage everywhere
 			var message = CoreMessage.From(Client, rawMessage);

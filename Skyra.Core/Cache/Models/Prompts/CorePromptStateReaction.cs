@@ -1,55 +1,35 @@
+using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CorePromptStateReaction : ICorePromptState
+	public sealed class CorePromptStateReaction : ICorePromptState, ICorePromptStateReaction
 	{
-		public CorePromptStateReaction(ulong authorId, ulong messageId, object context)
+		public CorePromptStateReaction(ulong authorId, ulong messageId)
 		{
 			AuthorId = authorId;
 			MessageId = messageId;
-			Context = context;
+		}
+
+		[NotNull]
+		public string ToKey()
+		{
+			return ICorePromptStateReaction.ToKey(MessageId, AuthorId);
 		}
 
 		[JsonProperty("aid")]
 		public ulong AuthorId { get; }
 
 		[JsonProperty("mid")]
-		public ulong MessageId { get; }
+		public ulong MessageId { get; set; }
 
-		[JsonProperty("ctx")]
-		public object Context { get; private set; }
-
-		[NotNull]
-		public ICorePromptState Patch([NotNull] ICorePromptState value)
-		{
-			Context = value.Context;
-			return this;
-		}
-
-		[NotNull]
-		public string ToKey()
-		{
-			return ToKey(MessageId, AuthorId);
-		}
-
-		public async Task RunAsync(CoreMessageReaction reaction, CorePromptStateReaction state)
+		public async Task<TimeSpan?> RunAsync(MessageReactionAddPayload reaction)
 		{
 			await Task.CompletedTask;
-		}
-
-		[NotNull]
-		public static string ToKey(ulong messageId, ulong authorId)
-		{
-			return $"r:{messageId.ToString()}:{authorId.ToString()}";
-		}
-
-		[NotNull]
-		public static string ToKey([NotNull] CoreMessageReaction reaction)
-		{
-			return ToKey(reaction.MessageId, reaction.UserId);
+			return null;
 		}
 	}
 }

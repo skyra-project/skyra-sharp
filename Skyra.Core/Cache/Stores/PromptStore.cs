@@ -13,7 +13,7 @@ namespace Skyra.Core.Cache.Stores
 		{
 		}
 
-		public async Task SetAsync(CorePromptState entry, TimeSpan duration, string? parent = null)
+		public async Task SetAsync([NotNull] CorePromptState entry, TimeSpan duration, string? parent = null)
 		{
 			var id = FormatKeyName(parent, GetKey(entry));
 			await Database.StringSetAsync(id, SerializeValue(entry));

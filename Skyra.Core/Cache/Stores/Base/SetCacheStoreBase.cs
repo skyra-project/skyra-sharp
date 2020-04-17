@@ -46,7 +46,7 @@ namespace Skyra.Core.Cache.Stores.Base
 		[NotNull]
 		protected string FormatKeyName(string? parent, [CanBeNull] string? id)
 		{
-			return id == null ? FormatKeyName(parent) : $"{FormatKeyName(parent)}:{parent}";
+			return id == null ? FormatKeyName(parent) : $"{FormatKeyName(parent)}:{id}";
 		}
 	}
 }

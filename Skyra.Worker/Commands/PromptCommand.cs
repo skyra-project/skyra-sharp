@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Skyra.Core;
@@ -6,6 +5,7 @@ using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
+using Spectacles.NET.Types;
 
 namespace Skyra.Worker.Commands
 {
@@ -16,13 +16,22 @@ namespace Skyra.Worker.Commands
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message)
+		public async Task RunAsync([NotNull] CoreMessage message, [Argument(Minimum = 1)] int page = 1)
 		{
-			var state = new CorePromptStateMessage(message.AuthorId, message.ChannelId, message.Content);
-			var prompt = new CorePromptState(Client, CorePromptStateType.MessageSingleUser, state);
-			await Client.Cache.Prompts.SetAsync(prompt, TimeSpan.FromMinutes(5));
+			var richDisplay = new CoreRichDisplay(message.AuthorId, message.Id);
+			foreach (var (key, value) in Client.Commands)
+			{
+				richDisplay.AddPage(embed => embed.SetTitle(key).SetDescription(value.Name));
+			}
 
-			await message.SendAsync("Say something!");
+			await richDisplay.SetUpAsync(message, new CoreRichDisplayRunOptions
+			{
+				StartPage = page - 1,
+				MessageContent = new SendableMessage
+				{
+					Content = "Loading..."
+				}
+			});
 		}
 	}
 }

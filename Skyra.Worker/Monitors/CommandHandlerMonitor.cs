@@ -39,8 +39,15 @@ namespace Skyra.Worker.Monitors
 
 			var state = (result.State as CorePromptStateMessage)!;
 			// ReSharper disable once PossibleNullReferenceException
-			await state.RunAsync(message, state);
-			await Client.Cache.Prompts.DeleteAsync(key);
+			var delay = await state.RunAsync(message, state);
+			if (delay is null)
+			{
+				await Client.Cache.Prompts.DeleteAsync(key);
+			}
+			else
+			{
+				await Client.Cache.Prompts.SetAsync(result, (TimeSpan) delay);
+			}
 		}
 
 		private async Task<bool> RunCommandParsingAsync([NotNull] CoreMessage message)
@@ -126,7 +133,7 @@ namespace Skyra.Worker.Monitors
 			}
 		}
 
-		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync(CoreMessage message)
+		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync([NotNull] CoreMessage message)
 		{
 			var mentionPrefix = GetMentionPrefix(message);
 			return mentionPrefix.Item2 == PrefixTypeResult.None

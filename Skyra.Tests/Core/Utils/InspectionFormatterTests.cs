@@ -341,35 +341,4 @@ namespace Skyra.Tests.Core.Utils
 
 		private delegate int DelegateMultipleArguments(int a, int b);
 	}
-
-	internal struct TestEmptyStruct
-	{
-	}
-
-	internal struct TestStruct
-	{
-		public char Char { get; set; }
-		public sbyte Code { get; set; }
-	}
-
-	internal enum IdentifierType
-	{
-		LowerCase
-	}
-
-	internal struct InnerTestStruct
-	{
-		public IdentifierType Identifier { get; set; }
-		public string Name { get; set; }
-		public TestStruct Data { get; set; }
-	}
-
-	internal sealed class ReferenceTest
-	{
-		public ReferenceTest? Pointer { get; set; }
-	}
-
-	internal sealed class ExtendedDictionaryTest : Dictionary<int, int>
-	{
-	}
 }

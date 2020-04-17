@@ -26,20 +26,13 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[NotNull]
 		public CorePromptState Patch([NotNull] CorePromptState value)
 		{
-			return Patch(value.State);
+			return this;
 		}
 
 		[NotNull]
 		public CorePromptState Clone()
 		{
 			return new CorePromptState(Client, Type, State);
-		}
-
-		[NotNull]
-		public CorePromptState Patch(ICorePromptState value)
-		{
-			State = State.Patch(value);
-			return this;
 		}
 	}
 }

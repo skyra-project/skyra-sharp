@@ -28,6 +28,7 @@ namespace Skyra.Core
 		IEventHandler EventHandler { get; }
 		CacheClient Cache { get; }
 		Logger Logger { get; }
+		static IClient Instance { get; protected set; }
 		Task ConnectAsync();
 	}
 }

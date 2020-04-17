@@ -26,6 +26,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 			PagePosition = 0;
 		}
 
+		[JsonConstructor]
 		public CoreRichDisplay(ulong authorId, ulong messageId, [CanBeNull] CoreMessageEmbed[] context,
 			CoreMessageEmbed?
 				informationPage, int pagePosition, (CoreRichDisplayReactionType, string)[] allowedEmojis)

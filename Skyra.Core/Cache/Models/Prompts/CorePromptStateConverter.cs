@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,20 +7,6 @@ namespace Skyra.Core.Cache.Models.Prompts
 {
 	internal sealed class CorePromptStateConverter : JsonConverter
 	{
-		private Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>> TypeResolvers { get; } =
-			new Dictionary<CorePromptStateType, Func<JToken, ICorePromptState>>(new[]
-			{
-				new KeyValuePair<CorePromptStateType, Func<JToken, ICorePromptState>>(
-					CorePromptStateType.MessageSingleUser,
-					ParseMessageSingleUser),
-				new KeyValuePair<CorePromptStateType, Func<JToken, ICorePromptState>>(
-					CorePromptStateType.ReactionSingleUser,
-					ParseReactionSingleUser),
-				new KeyValuePair<CorePromptStateType, Func<JToken, ICorePromptState>>(
-					CorePromptStateType.RichDisplay,
-					ParseRichDisplay)
-			});
-
 		public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
 		{
 			throw new NotImplementedException();
@@ -29,11 +14,19 @@ namespace Skyra.Core.Cache.Models.Prompts
 
 		[NotNull]
 		public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue,
-			JsonSerializer serializer)
+			[NotNull] JsonSerializer serializer)
 		{
 			var jo = JObject.Load(reader);
 			var type = Enum.Parse<CorePromptStateType>((string) jo["type"]!);
-			var state = TypeResolvers[type](jo["s"]!);
+			var data = jo["s"]!.CreateReader();
+			ICorePromptState state = type switch
+			{
+				CorePromptStateType.MessageSingleUser => serializer.Deserialize<CorePromptStateMessage>(data)!,
+				CorePromptStateType.ReactionSingleUser => serializer.Deserialize<CorePromptStateReaction>(data)!,
+				CorePromptStateType.RichDisplay => serializer.Deserialize<CoreRichDisplay>(data)!,
+				_ => throw new ArgumentOutOfRangeException()
+			};
+
 			return new CorePromptState(null!, type, state);
 		}
 
@@ -42,25 +35,5 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return typeof(CorePromptState).IsAssignableFrom(objectType);
 		}
 
-		[NotNull]
-		private static ICorePromptState ParseMessageSingleUser([NotNull] JToken state)
-		{
-			return new CorePromptStateMessage((ulong) state["aid"]!, (ulong) state["cid"]!);
-		}
-
-		[NotNull]
-		private static ICorePromptState ParseReactionSingleUser([NotNull] JToken state)
-		{
-			return new CorePromptStateReaction((ulong) state["aid"]!, (ulong) state["mid"]!);
-		}
-
-		[NotNull]
-		private static ICorePromptState ParseRichDisplay([NotNull] JToken state)
-		{
-			return new CoreRichDisplay((ulong) state["aid"]!, (ulong) state["mid"]!,
-				state["ctx"]!.ToObject<CoreMessageEmbed[]>()!, state["ip"]?.ToObject<CoreMessageEmbed?>(),
-				(int) state["pp"]!,
-				state["ae"]!.ToObject<(CoreRichDisplayReactionType, string)[]>()!);
-		}
 	}
 }

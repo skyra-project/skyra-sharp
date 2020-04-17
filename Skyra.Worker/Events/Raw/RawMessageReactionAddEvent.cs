@@ -17,7 +17,7 @@ namespace Skyra.Worker.Events.Raw
 			Client.EventHandler.OnRawMessageReactionAddAsync += RunAsync;
 		}
 
-		private async Task RunAsync(MessageReactionAddPayload state)
+		private async Task RunAsync([NotNull] MessageReactionAddPayload state)
 		{
 			await RunReactionPrompts(state);
 		}

@@ -5,6 +5,6 @@ namespace Skyra.Core.Structures.Base
 {
 	public interface IInhibitor
 	{
-		Task<bool> RunAsync(CoreMessage message, CommandInfo command);
+		Task<bool> RunAsync(Message message, CommandInfo command);
 	}
 }

@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CorePromptStateMessage : ICorePromptState
+	public sealed class PromptDataMessage : IPromptData
 	{
-		public CorePromptStateMessage(ulong authorId, ulong channelId)
+		public PromptDataMessage(ulong authorId, ulong channelId)
 		{
 			AuthorId = authorId;
 			ChannelId = channelId;
@@ -25,14 +25,14 @@ namespace Skyra.Core.Cache.Models.Prompts
 			return ToKey(ChannelId, AuthorId);
 		}
 
-		public async Task<TimeSpan?> RunAsync([NotNull] CoreMessage message, [NotNull] CorePromptStateMessage state)
+		public async Task<TimeSpan?> RunAsync([NotNull] Message message, [NotNull] PromptDataMessage data)
 		{
 			await Task.CompletedTask;
 			return null;
 		}
 
 		[NotNull]
-		public static string ToKey([NotNull] CoreMessage message)
+		public static string ToKey([NotNull] Message message)
 		{
 			return ToKey(message.ChannelId, message.AuthorId);
 		}

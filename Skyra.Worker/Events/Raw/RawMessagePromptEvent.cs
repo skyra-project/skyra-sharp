@@ -15,7 +15,7 @@ namespace Skyra.Worker.Events.Raw
 			Client.EventHandler.OnRawMessagePromptAsync += RunAsync;
 		}
 
-		private Task RunAsync(CorePromptStateMessage state, CoreMessage message)
+		private Task RunAsync(PromptDataMessage data, Message message)
 		{
 			return Task.CompletedTask;
 		}

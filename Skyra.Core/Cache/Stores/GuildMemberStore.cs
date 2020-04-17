@@ -3,31 +3,31 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Stores.Base;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public sealed class GuildMemberStore : HashMapCacheStoreBase<CoreGuildMember>
+	public sealed class GuildMemberStore : HashMapCacheStoreBase<GuildMember>
 	{
 		internal GuildMemberStore(CacheClient context) : base(context, "members")
 		{
 		}
 
-		public async Task SetAsync([NotNull] IEnumerable<GuildMember> entries, string? parent = null)
+		public async Task SetAsync([NotNull] IEnumerable<Spectacles.NET.Types.GuildMember> entries,
+			string? parent = null)
 		{
-			var users = new List<CoreUser>();
-			var members = new List<CoreGuildMember>();
+			var users = new List<User>();
+			var members = new List<GuildMember>();
 			foreach (var entry in entries)
 			{
-				users.Add(CoreUser.From(Context.Client, entry.User));
-				members.Add(CoreGuildMember.From(Context.Client, entry));
+				users.Add(User.From(Context.Client, entry.User));
+				members.Add(GuildMember.From(Context.Client, entry));
 			}
 
 			await Task.WhenAll(Context.Users.SetAsync(users), SetAsync(members, parent));
 		}
 
 		[NotNull]
-		protected override string GetKey([NotNull] CoreGuildMember value)
+		protected override string GetKey([NotNull] GuildMember value)
 		{
 			return value.Id.ToString();
 		}

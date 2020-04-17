@@ -6,13 +6,13 @@ using Spectacles.NET.Types;
 namespace Skyra.Core.Cache.Models
 {
 	/// <inheritdoc />
-	public sealed class CoreMessageEmbed : Embed
+	public sealed class MessageEmbed : Embed
 	{
-		public CoreMessageEmbed()
+		public MessageEmbed()
 		{
 		}
 
-		public CoreMessageEmbed([NotNull] Embed embed)
+		public MessageEmbed([NotNull] Embed embed)
 		{
 			Title = embed.Title;
 			Type = embed.Type;
@@ -36,7 +36,7 @@ namespace Skyra.Core.Cache.Models
 		public string? HexColor => Color?.ToString("x6");
 
 		[NotNull]
-		public CoreMessageEmbed AddField(string name, string value, bool inline = false)
+		public MessageEmbed AddField(string name, string value, bool inline = false)
 		{
 			Fields.Append(new EmbedField
 			{
@@ -48,13 +48,13 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessageEmbed AddBlankField(bool inline = false)
+		public MessageEmbed AddBlankField(bool inline = false)
 		{
 			return AddField("\u200B", "\u200B", inline);
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetAuthor(string name, string? iconUrl = null, string? url = null)
+		public MessageEmbed SetAuthor(string name, string? iconUrl = null, string? url = null)
 		{
 			return SetAuthor(new EmbedAuthor
 			{
@@ -65,21 +65,21 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetAuthor(EmbedAuthor? author = null)
+		public MessageEmbed SetAuthor(EmbedAuthor? author = null)
 		{
 			Author = author;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetColor(int color)
+		public MessageEmbed SetColor(int color)
 		{
 			Color = color;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetFooter(string text, string? iconUrl = null)
+		public MessageEmbed SetFooter(string text, string? iconUrl = null)
 		{
 			return SetFooter(new EmbedFooter
 			{
@@ -89,14 +89,14 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetFooter(EmbedFooter? footer = null)
+		public MessageEmbed SetFooter(EmbedFooter? footer = null)
 		{
 			Footer = footer;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetImage(string url)
+		public MessageEmbed SetImage(string url)
 		{
 			return SetImage(new EmbedImage
 			{
@@ -105,14 +105,14 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetImage(EmbedImage? image = null)
+		public MessageEmbed SetImage(EmbedImage? image = null)
 		{
 			Image = image;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetThumbnail(string url)
+		public MessageEmbed SetThumbnail(string url)
 		{
 			return SetThumbnail(new EmbedThumbnail
 			{
@@ -121,35 +121,35 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetThumbnail(EmbedThumbnail? thumbnail = null)
+		public MessageEmbed SetThumbnail(EmbedThumbnail? thumbnail = null)
 		{
 			Thumbnail = thumbnail;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed UpdateTimestamp()
+		public MessageEmbed UpdateTimestamp()
 		{
 			Timestamp = DateTime.Now;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetTitle(string? title = null)
+		public MessageEmbed SetTitle(string? title = null)
 		{
 			Title = title;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetDescription(string? description = null)
+		public MessageEmbed SetDescription(string? description = null)
 		{
 			Description = description;
 			return this;
 		}
 
 		[NotNull]
-		public CoreMessageEmbed SetUrl(string? url = null)
+		public MessageEmbed SetUrl(string? url = null)
 		{
 			URL = url;
 			return this;

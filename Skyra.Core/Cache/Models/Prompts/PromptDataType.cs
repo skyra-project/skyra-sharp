@@ -1,6 +1,6 @@
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public enum CorePromptStateType
+	public enum PromptDataType
 	{
 		MessageSingleUser,
 		ReactionSingleUser,

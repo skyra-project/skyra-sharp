@@ -15,7 +15,7 @@ namespace Skyra.Worker.Events.Raw
 			Client.EventHandler.OnRawReactionPromptAsync += RunAsync;
 		}
 
-		private Task RunAsync(CorePromptStateReaction state, CoreMessageReaction reaction)
+		private Task RunAsync(PromptDataReaction data, MessageReaction reaction)
 		{
 			return Task.CompletedTask;
 		}

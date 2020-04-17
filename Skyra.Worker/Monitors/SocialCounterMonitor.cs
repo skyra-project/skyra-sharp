@@ -15,7 +15,7 @@ namespace Skyra.Worker.Monitors
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message)
+		public async Task RunAsync([NotNull] Message message)
 		{
 			Client.Logger.Information(
 				"Received Message [{Id}] from {Username} with content '{Content}'.", message.Id,

@@ -5,7 +5,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public interface ICorePromptStateReaction
+	public interface IPromptDataReaction
 	{
 		ulong AuthorId { get; }
 		ulong MessageId { get; }
@@ -19,7 +19,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 		}
 
 		[NotNull]
-		static string ToKey([NotNull] CoreMessageReaction reaction)
+		static string ToKey([NotNull] MessageReaction reaction)
 		{
 			return ToKey(reaction.MessageId, reaction.UserId);
 		}

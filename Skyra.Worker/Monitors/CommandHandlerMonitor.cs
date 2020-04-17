@@ -23,7 +23,7 @@ namespace Skyra.Worker.Monitors
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message)
+		public async Task RunAsync([NotNull] Message message)
 		{
 			if (!await RunCommandParsingAsync(message))
 			{
@@ -31,13 +31,13 @@ namespace Skyra.Worker.Monitors
 			}
 		}
 
-		private async Task RunPromptAsync([NotNull] CoreMessage message)
+		private async Task RunPromptAsync([NotNull] Message message)
 		{
-			var key = CorePromptStateMessage.ToKey(message);
+			var key = PromptDataMessage.ToKey(message);
 			var result = await Client.Cache.Prompts.GetAsync(key);
 			if (result is null) return;
 
-			var state = (result.State as CorePromptStateMessage)!;
+			var state = (result.Data as PromptDataMessage)!;
 			// ReSharper disable once PossibleNullReferenceException
 			var delay = await state.RunAsync(message, state);
 			if (delay is null)
@@ -50,7 +50,7 @@ namespace Skyra.Worker.Monitors
 			}
 		}
 
-		private async Task<bool> RunCommandParsingAsync([NotNull] CoreMessage message)
+		private async Task<bool> RunCommandParsingAsync([NotNull] Message message)
 		{
 			var (prefix, typeResult) = await GetPrefixAsync(message);
 			if (typeResult == PrefixTypeResult.None) return false;
@@ -75,7 +75,7 @@ namespace Skyra.Worker.Monitors
 			return false;
 		}
 
-		private async Task RunInhibitorsAsync(CoreMessage message, CommandInfo command, string content)
+		private async Task RunInhibitorsAsync(Message message, CommandInfo command, string content)
 		{
 			foreach (var inhibitor in command.Inhibitors)
 			{
@@ -98,7 +98,7 @@ namespace Skyra.Worker.Monitors
 			await RunArgumentsAsync(message, command, content);
 		}
 
-		private async Task RunArgumentsAsync(CoreMessage message, CommandInfo command, string content)
+		private async Task RunArgumentsAsync(Message message, CommandInfo command, string content)
 		{
 			var parser = new CommandUsageParser(command, message, content);
 			try
@@ -116,7 +116,7 @@ namespace Skyra.Worker.Monitors
 			}
 		}
 
-		private async Task RunCommandAsync(CoreMessage message, CommandInfo command,
+		private async Task RunCommandAsync(Message message, CommandInfo command,
 			[NotNull] CommandUsageParser parser)
 		{
 			try
@@ -133,7 +133,7 @@ namespace Skyra.Worker.Monitors
 			}
 		}
 
-		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync([NotNull] CoreMessage message)
+		private async Task<(string?, PrefixTypeResult)> GetPrefixAsync([NotNull] Message message)
 		{
 			var mentionPrefix = GetMentionPrefix(message);
 			return mentionPrefix.Item2 == PrefixTypeResult.None
@@ -143,7 +143,7 @@ namespace Skyra.Worker.Monitors
 				: mentionPrefix;
 		}
 
-		private (string?, PrefixTypeResult) GetMentionPrefix([NotNull] CoreMessage message)
+		private (string?, PrefixTypeResult) GetMentionPrefix([NotNull] Message message)
 		{
 			// If the content is shorter than the minimum characters needed for a mention prefix, skip
 			if (message.Content.Length < 20)
@@ -172,7 +172,7 @@ namespace Skyra.Worker.Monitors
 		}
 
 		private static async Task<(string?, PrefixTypeResult)> GetGuildPrefixAsync(
-			[NotNull] CoreMessage message)
+			[NotNull] Message message)
 		{
 			Debug.Assert(message.GuildId != null, "message.GuildId != null");
 			var prefix = await RetrieveGuildPrefixAsync((ulong) message.GuildId);
@@ -181,7 +181,7 @@ namespace Skyra.Worker.Monitors
 				: ((string?) null, PrefixTypeResult.None);
 		}
 
-		private static (string?, PrefixTypeResult) GetDefaultPrefix([NotNull] CoreMessage message)
+		private static (string?, PrefixTypeResult) GetDefaultPrefix([NotNull] Message message)
 		{
 			const string prefix = DefaultPrefix;
 			return message.Content.StartsWith(prefix, StringComparison.Ordinal)

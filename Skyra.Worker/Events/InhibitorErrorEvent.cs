@@ -16,7 +16,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnInhibitorExceptionAsync += RunAsync;
 		}
 
-		private async Task RunAsync([NotNull] CoreMessage message, string command, [NotNull] Exception exception)
+		private async Task RunAsync([NotNull] Message message, string command, [NotNull] Exception exception)
 		{
 			Client.Logger.Error("[INHIBITORS]: {Name} | {Exception}", command, exception);
 			await message.SendAsync($"Inhibitor Error: {exception.InnerException?.Message ?? exception.Message}");

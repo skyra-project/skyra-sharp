@@ -1,6 +1,6 @@
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public interface ICorePromptState
+	public interface IPromptData
 	{
 		public string ToKey();
 	}

@@ -4,14 +4,14 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public sealed class VoiceStateStore : HashMapCacheStoreBase<CoreVoiceState>
+	public sealed class VoiceStateStore : HashMapCacheStoreBase<VoiceState>
 	{
 		internal VoiceStateStore(CacheClient context) : base(context, "voiceStates")
 		{
 		}
 
 		[NotNull]
-		protected override string GetKey([NotNull] CoreVoiceState value)
+		protected override string GetKey([NotNull] VoiceState value)
 		{
 			return value.UserId.ToString();
 		}

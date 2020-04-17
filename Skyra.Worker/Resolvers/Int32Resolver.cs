@@ -17,7 +17,7 @@ namespace Skyra.Worker.Resolvers
 		}
 
 		[NotNull]
-		public Task<int> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument, string content)
+		public Task<int> ResolveAsync(Message message, CommandUsageOverloadArgument argument, string content)
 		{
 			if (!int.TryParse(content, out var resolved))
 			{

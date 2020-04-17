@@ -1,6 +1,6 @@
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public enum CoreRichDisplayReactionType
+	public enum RichDisplayReactionType
 	{
 		None,
 		First,

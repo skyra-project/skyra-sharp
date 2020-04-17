@@ -3,31 +3,30 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Stores.Base;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public sealed class GuildStore : HashMapCacheStoreBase<CoreGuild>
+	public sealed class GuildStore : HashMapCacheStoreBase<Guild>
 	{
 		internal GuildStore(CacheClient context) : base(context, "guilds")
 		{
 		}
 
-		public async Task SetAsync([NotNull] Guild entry, string? parent = null)
+		public async Task SetAsync([NotNull] Spectacles.NET.Types.Guild entry, string? parent = null)
 		{
 			await Task.WhenAll(Context.GuildMembers.SetAsync(entry.Members, entry.Id),
-				Context.GuildRoles.SetAsync(entry.Roles.Select(x => CoreGuildRole.From(Context.Client, x)), entry.Id),
-				Context.GuildChannels.SetAsync(entry.Channels.Select(x => CoreGuildChannel.From(Context.Client, x)),
+				Context.GuildRoles.SetAsync(entry.Roles.Select(x => GuildRole.From(Context.Client, x)), entry.Id),
+				Context.GuildChannels.SetAsync(entry.Channels.Select(x => GuildChannel.From(Context.Client, x)),
 					entry.Id),
-				Context.VoiceStates.SetAsync(entry.VoiceStates.Select(x => CoreVoiceState.From(Context.Client, x)),
+				Context.VoiceStates.SetAsync(entry.VoiceStates.Select(x => VoiceState.From(Context.Client, x)),
 					entry.Id),
-				Context.GuildEmojis.SetAsync(entry.Emojis.Select(x => CoreGuildEmoji.From(Context.Client, x)),
+				Context.GuildEmojis.SetAsync(entry.Emojis.Select(x => GuildEmoji.From(Context.Client, x)),
 					entry.Id),
-				SetAsync(CoreGuild.From(Context.Client, entry), parent));
+				SetAsync(Guild.From(Context.Client, entry), parent));
 		}
 
 		[NotNull]
-		protected override string GetKey([NotNull] CoreGuild value)
+		protected override string GetKey([NotNull] Guild value)
 		{
 			return value.Id.ToString();
 		}

@@ -6,13 +6,13 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public sealed class MessageStore : SetCacheStoreBase<CoreMessage>
+	public sealed class MessageStore : SetCacheStoreBase<Message>
 	{
 		internal MessageStore(CacheClient context) : base(context, "messages")
 		{
 		}
 
-		public override async Task SetAsync(CoreMessage entry, string? parent = null)
+		public override async Task SetAsync(Message entry, string? parent = null)
 		{
 			var id = FormatKeyName(parent, GetKey(entry));
 			await Database.StringSetAsync(id, SerializeValue(entry));
@@ -20,7 +20,7 @@ namespace Skyra.Core.Cache.Stores
 		}
 
 		[NotNull]
-		protected override string GetKey([NotNull] CoreMessage value)
+		protected override string GetKey([NotNull] Message value)
 		{
 			return value.Id.ToString();
 		}

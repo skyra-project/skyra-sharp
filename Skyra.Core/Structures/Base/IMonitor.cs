@@ -5,6 +5,6 @@ namespace Skyra.Core.Structures.Base
 {
 	public interface IMonitor
 	{
-		Task RunAsync(CoreMessage message);
+		Task RunAsync(Message message);
 	}
 }

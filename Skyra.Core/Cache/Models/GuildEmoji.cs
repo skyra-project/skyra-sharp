@@ -4,9 +4,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreGuildEmoji : ICoreBaseStructure<CoreGuildEmoji>
+	public sealed class GuildEmoji : IBaseStructure<GuildEmoji>
 	{
-		public CoreGuildEmoji(IClient client, ulong id, string name, bool animated)
+		public GuildEmoji(IClient client, ulong id, string name, bool animated)
 		{
 			Client = client;
 			Id = id;
@@ -27,7 +27,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreGuildEmoji Patch([NotNull] CoreGuildEmoji value)
+		public GuildEmoji Patch([NotNull] GuildEmoji value)
 		{
 			Animated = value.Animated;
 			Name = value.Name;
@@ -35,18 +35,18 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreGuildEmoji Clone()
+		public GuildEmoji Clone()
 		{
-			return new CoreGuildEmoji(Client,
+			return new GuildEmoji(Client,
 				Id,
 				Name,
 				Animated);
 		}
 
 		[NotNull]
-		public static CoreGuildEmoji From(IClient client, [NotNull] Emoji emoji)
+		public static GuildEmoji From(IClient client, [NotNull] Emoji emoji)
 		{
-			return new CoreGuildEmoji(client, ulong.Parse(emoji.Id), emoji.Name, emoji.Animated ?? false);
+			return new GuildEmoji(client, ulong.Parse(emoji.Id), emoji.Name, emoji.Animated ?? false);
 		}
 	}
 }

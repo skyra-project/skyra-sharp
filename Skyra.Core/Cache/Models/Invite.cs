@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreInvite : ICoreBaseStructure<CoreInvite>
+	public sealed class Invite : IBaseStructure<Invite>
 	{
-		public CoreInvite(IClient client, string code, ulong guildId, ulong channelId)
+		public Invite(IClient client, string code, ulong guildId, ulong channelId)
 		{
 			Client = client;
 			Code = code;
@@ -28,34 +27,34 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreInvite Patch(CoreInvite value)
+		public Invite Patch(Invite value)
 		{
 			return this;
 		}
 
 		[NotNull]
-		public CoreInvite Clone()
+		public Invite Clone()
 		{
-			return new CoreInvite(Client,
+			return new Invite(Client,
 				Code,
 				GuildId,
 				ChannelId);
 		}
 
 		[NotNull]
-		public static CoreInvite From(IClient client, [NotNull] Invite invite)
+		public static Invite From(IClient client, [NotNull] Spectacles.NET.Types.Invite invite)
 		{
-			return new CoreInvite(client, invite.Code, ulong.Parse(invite.Guild.Id), ulong.Parse(invite.Channel.Id));
+			return new Invite(client, invite.Code, ulong.Parse(invite.Guild.Id), ulong.Parse(invite.Channel.Id));
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuild?> GetGuildAsync()
+		public async Task<Guild?> GetGuildAsync()
 		{
 			return await Client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuildChannel?> GetChannelAsync()
+		public async Task<GuildChannel?> GetChannelAsync()
 		{
 			return await Client.Cache.GuildChannels.GetAsync(ChannelId.ToString());
 		}

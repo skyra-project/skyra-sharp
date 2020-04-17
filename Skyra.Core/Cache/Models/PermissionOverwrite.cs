@@ -5,16 +5,16 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public struct CorePermissionOverwrite
+	public struct PermissionOverwrite
 	{
-		public static CorePermissionOverwrite From([NotNull] PermissionOverwrite overwrite)
+		public static PermissionOverwrite From([NotNull] Spectacles.NET.Types.PermissionOverwrite overwrite)
 		{
-			return new CorePermissionOverwrite(ulong.Parse(overwrite.Id),
-				overwrite.Type == "role" ? CorePermissionOverwriteType.Role : CorePermissionOverwriteType.Member,
+			return new PermissionOverwrite(ulong.Parse(overwrite.Id),
+				overwrite.Type == "role" ? PermissionOverwriteType.Role : PermissionOverwriteType.Member,
 				overwrite.Allow, overwrite.Deny);
 		}
 
-		public CorePermissionOverwrite(ulong id, CorePermissionOverwriteType type, Permission allow, Permission deny)
+		public PermissionOverwrite(ulong id, PermissionOverwriteType type, Permission allow, Permission deny)
 		{
 			Id = id;
 			Type = type;
@@ -29,7 +29,7 @@ namespace Skyra.Core.Cache.Models
 		/// <summary>either "role" or "member"</summary>
 		[JsonProperty("type")]
 		[JsonConverter(typeof(StringEnumConverter))]
-		public CorePermissionOverwriteType Type { get; set; }
+		public PermissionOverwriteType Type { get; set; }
 
 		/// <summary>permission bit set</summary>
 		[JsonProperty("allow")]

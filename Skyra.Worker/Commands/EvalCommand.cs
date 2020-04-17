@@ -25,7 +25,7 @@ namespace Skyra.Commands
 			_eval = eval;
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message, string code)
+		public async Task RunAsync([NotNull] Message message, string code)
 		{
 			var (threw, result, exception) = await ExecuteAsync(message, code);
 			var output = Format(threw ? exception : result);
@@ -49,7 +49,7 @@ namespace Skyra.Commands
 			}
 		}
 
-		private async Task<(bool, object?, Exception?)> ExecuteAsync(CoreMessage message, string code)
+		private async Task<(bool, object?, Exception?)> ExecuteAsync(Message message, string code)
 		{
 			var globals = new ScriptGlobals {Message = message, Client = Client};
 			try
@@ -78,7 +78,7 @@ namespace Skyra.Commands
 		[UsedImplicitly]
 		public sealed class ScriptGlobals
 		{
-			public CoreMessage Message { get; set; } = null!;
+			public Message Message { get; set; } = null!;
 			public IClient Client { get; set; } = null!;
 		}
 

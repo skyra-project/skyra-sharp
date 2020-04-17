@@ -16,7 +16,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnCommandErrorAsync += RunAsync;
 		}
 
-		private async Task RunAsync([NotNull] CoreMessage message, string command, object?[] parameters,
+		private async Task RunAsync([NotNull] Message message, string command, object?[] parameters,
 			Exception exception)
 		{
 			Client.Logger.Error("[COMMANDS]: {Name} | {Exception}", command, exception);

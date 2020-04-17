@@ -17,7 +17,7 @@ namespace Skyra.Worker.Resolvers
 		}
 
 		[NotNull]
-		public Task<CommandInfo> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument,
+		public Task<CommandInfo> ResolveAsync(Message message, CommandUsageOverloadArgument argument,
 			[NotNull] string content)
 		{
 			if (Client.Commands.TryGetValue(content, out var resolved)) return Task.FromResult(resolved);

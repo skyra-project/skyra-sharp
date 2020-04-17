@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace Skyra.Core.Cache.Stores.Base
 {
-	public abstract class HashMapCacheStoreBase<T> : CacheStoreBase<T> where T : class, ICoreBaseStructure<T>
+	public abstract class HashMapCacheStoreBase<T> : CacheStoreBase<T> where T : class, IBaseStructure<T>
 	{
 		protected HashMapCacheStoreBase(CacheClient context, string prefix) : base(context, prefix)
 		{

@@ -6,10 +6,10 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreGuildChannel : CoreChannel, ICoreBaseStructure<CoreGuildChannel>
+	public sealed class GuildChannel : Channel, IBaseStructure<GuildChannel>
 	{
-		public CoreGuildChannel(IClient client, ulong id, ChannelType type, CoreGuild? guild, ulong guildId,
-			string name, int? rawPosition, ulong parentId, CorePermissionOverwrite[] permissionOverwrites) : base(
+		public GuildChannel(IClient client, ulong id, ChannelType type, Guild? guild, ulong guildId,
+			string name, int? rawPosition, ulong parentId, PermissionOverwrite[] permissionOverwrites) : base(
 			client, id, type)
 		{
 			Guild = guild;
@@ -21,7 +21,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[JsonIgnore]
-		public CoreGuild? Guild { get; private set; }
+		public Guild? Guild { get; private set; }
 
 		[JsonProperty("gid")]
 		public ulong GuildId { get; set; }
@@ -36,10 +36,10 @@ namespace Skyra.Core.Cache.Models
 		public ulong ParentId { get; set; }
 
 		[JsonProperty("po")]
-		public CorePermissionOverwrite[] PermissionOverwrites { get; set; }
+		public PermissionOverwrite[] PermissionOverwrites { get; set; }
 
 		[NotNull]
-		public CoreGuildChannel Patch([NotNull] CoreGuildChannel value)
+		public GuildChannel Patch([NotNull] GuildChannel value)
 		{
 			base.Patch(value);
 			Name = value.Name;
@@ -50,9 +50,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public new CoreGuildChannel Clone()
+		public new GuildChannel Clone()
 		{
-			return new CoreGuildChannel(Client,
+			return new GuildChannel(Client,
 				Id,
 				Type,
 				Guild,
@@ -64,18 +64,18 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuild?> GetGuildAsync(IClient client)
+		public async Task<Guild?> GetGuildAsync(IClient client)
 		{
 			return Guild ??= await client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
 		[NotNull]
-		public new static CoreGuildChannel From(IClient client, [NotNull] Channel channel)
+		public new static GuildChannel From(IClient client, [NotNull] Spectacles.NET.Types.Channel channel)
 		{
-			return new CoreGuildChannel(client, ulong.Parse(channel.Id), channel.Type, null,
+			return new GuildChannel(client, ulong.Parse(channel.Id), channel.Type, null,
 				ulong.Parse(channel.GuildId),
 				channel.Name, channel.Position, ulong.Parse(channel.ParentId),
-				channel.PermissionOverwrites.Select(CorePermissionOverwrite.From).ToArray());
+				channel.PermissionOverwrites.Select(PermissionOverwrite.From).ToArray());
 		}
 	}
 }

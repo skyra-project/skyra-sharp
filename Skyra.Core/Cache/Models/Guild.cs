@@ -5,9 +5,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreGuild : ICoreBaseStructure<CoreGuild>
+	public sealed class Guild : IBaseStructure<Guild>
 	{
-		public CoreGuild(IClient client, ulong id, string name, string region, string? icon, Permission? permissions,
+		public Guild(IClient client, ulong id, string name, string region, string? icon, Permission? permissions,
 			int? memberCount, string ownerId)
 		{
 			Client = client;
@@ -45,7 +45,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreGuild Patch([NotNull] CoreGuild value)
+		public Guild Patch([NotNull] Guild value)
 		{
 			Name = value.Name;
 			Region = value.Region;
@@ -57,9 +57,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreGuild Clone()
+		public Guild Clone()
 		{
-			return new CoreGuild(Client,
+			return new Guild(Client,
 				Id,
 				Name,
 				Region,
@@ -70,27 +70,27 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		public async Task<CoreGuildChannel[]> GetChannelsAsync()
+		public async Task<GuildChannel[]> GetChannelsAsync()
 		{
 			return await Client.Cache.GuildChannels.GetAllAsync(Id.ToString());
 		}
 
 		[ItemNotNull]
-		public async Task<CoreGuildRole[]> GetRolesAsync()
+		public async Task<GuildRole[]> GetRolesAsync()
 		{
 			return await Client.Cache.GuildRoles.GetAllAsync(Id.ToString());
 		}
 
 		[ItemNotNull]
-		public async Task<CoreGuildMember[]> GetMembersAsync()
+		public async Task<GuildMember[]> GetMembersAsync()
 		{
 			return await Client.Cache.GuildMembers.GetAllAsync(Id.ToString());
 		}
 
 		[NotNull]
-		public static CoreGuild From(IClient client, [NotNull] Guild guild)
+		public static Guild From(IClient client, [NotNull] Spectacles.NET.Types.Guild guild)
 		{
-			return new CoreGuild(client, ulong.Parse(guild.Id), guild.Name, guild.Region, guild.Icon, guild.Permissions,
+			return new Guild(client, ulong.Parse(guild.Id), guild.Name, guild.Region, guild.Icon, guild.Permissions,
 				guild.MemberCount, guild.OwnerId);
 		}
 	}

@@ -16,13 +16,13 @@ namespace Skyra.Worker.Commands
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message)
+		public async Task RunAsync([NotNull] Message message)
 		{
 			var response = await message.SendLocaleAsync("Ping");
 			await response.EditLocaleAsync("Pong", Difference(message, response).Milliseconds);
 		}
 
-		private static TimeSpan Difference([NotNull] CoreMessage message, [NotNull] CoreMessage response)
+		private static TimeSpan Difference([NotNull] Message message, [NotNull] Message response)
 		{
 			return (response.EditedTimestamp ?? response.Timestamp) - (message.EditedTimestamp ?? message.Timestamp);
 		}

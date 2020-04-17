@@ -4,14 +4,14 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public sealed class GuildRoleStore : HashMapCacheStoreBase<CoreGuildRole>
+	public sealed class GuildRoleStore : HashMapCacheStoreBase<GuildRole>
 	{
 		internal GuildRoleStore(CacheClient context) : base(context, "roles")
 		{
 		}
 
 		[NotNull]
-		protected override string GetKey([NotNull] CoreGuildRole value)
+		protected override string GetKey([NotNull] GuildRole value)
 		{
 			return value.Id.ToString();
 		}

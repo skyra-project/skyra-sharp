@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Skyra.Core;
-using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
+using Message = Skyra.Core.Cache.Models.Message;
 
 namespace Skyra.Worker.Events.Raw
 {
@@ -21,7 +21,7 @@ namespace Skyra.Worker.Events.Raw
 			// Instantiate CoreMessage for usage everywhere
 			var previousMessage = await Client.Cache.Messages.GetAsync(messageUpdate.Id, messageUpdate.ChannelId);
 			var message = previousMessage == null
-				? CoreMessage.From(Client, messageUpdate)
+				? Message.From(Client, messageUpdate)
 				: previousMessage.Clone().Patch(messageUpdate);
 			await message.CacheAsync();
 

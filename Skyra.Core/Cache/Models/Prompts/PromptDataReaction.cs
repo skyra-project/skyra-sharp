@@ -6,9 +6,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CorePromptStateReaction : ICorePromptState, ICorePromptStateReaction
+	public sealed class PromptDataReaction : IPromptData, IPromptDataReaction
 	{
-		public CorePromptStateReaction(ulong authorId, ulong messageId)
+		public PromptDataReaction(ulong authorId, ulong messageId)
 		{
 			AuthorId = authorId;
 			MessageId = messageId;
@@ -17,7 +17,7 @@ namespace Skyra.Core.Cache.Models.Prompts
 		[NotNull]
 		public string ToKey()
 		{
-			return ICorePromptStateReaction.ToKey(MessageId, AuthorId);
+			return IPromptDataReaction.ToKey(MessageId, AuthorId);
 		}
 
 		[JsonProperty("aid")]

@@ -14,7 +14,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnCommandUnknownAsync += RunAsync;
 		}
 
-		private async Task RunAsync(CoreMessage message, string command)
+		private async Task RunAsync(Message message, string command)
 		{
 			await Task.FromResult(true);
 		}

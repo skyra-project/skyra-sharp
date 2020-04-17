@@ -24,11 +24,11 @@ namespace Skyra.Worker.Events.Raw
 
 		private async Task RunReactionPrompts([NotNull] MessageReactionAddPayload payload)
 		{
-			var key = ICorePromptStateReaction.ToKey(payload);
+			var key = IPromptDataReaction.ToKey(payload);
 			var result = await Client.Cache.Prompts.GetAsync(key);
 			if (result is null) return;
 
-			var state = (result.State as ICorePromptStateReaction)!;
+			var state = (result.Data as IPromptDataReaction)!;
 			// ReSharper disable once PossibleNullReferenceException
 			var delay = await state.RunAsync(payload);
 			if (delay is null)

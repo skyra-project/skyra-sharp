@@ -16,7 +16,7 @@ namespace Skyra.Worker.Commands
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message, CommandInfo command)
+		public async Task RunAsync([NotNull] Message message, CommandInfo command)
 		{
 			await message.SendLocaleAsync(@"UsageCommand", command.Name, GetUsage(command));
 		}

@@ -3,13 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreGuildMember : ICoreBaseStructure<CoreGuildMember>
+	public sealed class GuildMember : IBaseStructure<GuildMember>
 	{
-		public CoreGuildMember(IClient client, ulong id, ulong[] roles, string? nickname, DateTime? joinedAt, bool deaf,
+		public GuildMember(IClient client, ulong id, ulong[] roles, string? nickname, DateTime? joinedAt, bool deaf,
 			bool mute)
 		{
 			Client = client;
@@ -43,7 +42,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreGuildMember Patch([NotNull] CoreGuildMember value)
+		public GuildMember Patch([NotNull] GuildMember value)
 		{
 			Roles = value.Roles;
 			Nickname = value.Nickname;
@@ -54,9 +53,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreGuildMember Clone()
+		public GuildMember Clone()
 		{
-			return new CoreGuildMember(Client,
+			return new GuildMember(Client,
 				Id,
 				Roles,
 				Nickname,
@@ -66,13 +65,14 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreUser?> GetUserAsync()
+		public async Task<User?> GetUserAsync()
 		{
 			return await Client.Cache.Users.GetAsync(Id.ToString());
 		}
 
 		[NotNull]
-		public static CoreGuildMember From(IClient client, [NotNull] GuildMember guildMember, User? user = null)
+		public static GuildMember From(IClient client, [NotNull] Spectacles.NET.Types.GuildMember guildMember,
+			Spectacles.NET.Types.User? user = null)
 		{
 			DateTime? joinedAt;
 			if (DateTime.TryParse(guildMember.JoinedAt, out var result))
@@ -84,7 +84,7 @@ namespace Skyra.Core.Cache.Models
 				joinedAt = null;
 			}
 
-			return new CoreGuildMember(client, ulong.Parse((guildMember.User ?? user!).Id),
+			return new GuildMember(client, ulong.Parse((guildMember.User ?? user!).Id),
 				guildMember.Roles.Select(ulong.Parse).ToArray(),
 				guildMember.Nickname, joinedAt, guildMember.Deaf, guildMember.Mute);
 		}

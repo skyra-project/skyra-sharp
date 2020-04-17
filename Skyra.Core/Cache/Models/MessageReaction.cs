@@ -5,9 +5,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreMessageReaction : ICoreBaseStructure<CoreMessageReaction>
+	public sealed class MessageReaction : IBaseStructure<MessageReaction>
 	{
-		public CoreMessageReaction(IClient client, ulong messageId, ulong channelId, ulong guildId, ulong userId,
+		public MessageReaction(IClient client, ulong messageId, ulong channelId, ulong guildId, ulong userId,
 			Emoji emoji)
 		{
 			Client = client;
@@ -36,21 +36,21 @@ namespace Skyra.Core.Cache.Models
 		[JsonIgnore]
 		public IClient Client { get; set; }
 
-		public CoreMessageReaction Patch(CoreMessageReaction value)
+		public MessageReaction Patch(MessageReaction value)
 		{
 			throw new NotImplementedException();
 		}
 
 		[NotNull]
-		public CoreMessageReaction Clone()
+		public MessageReaction Clone()
 		{
-			return new CoreMessageReaction(Client, MessageId, ChannelId, GuildId, UserId, Emoji);
+			return new MessageReaction(Client, MessageId, ChannelId, GuildId, UserId, Emoji);
 		}
 
 		[NotNull]
-		public CoreMessageReaction From(IClient client, [NotNull] MessageReactionAddPayload reaction)
+		public MessageReaction From(IClient client, [NotNull] MessageReactionAddPayload reaction)
 		{
-			return new CoreMessageReaction(client, ulong.Parse(reaction.MessageId), ulong.Parse(reaction.ChannelId),
+			return new MessageReaction(client, ulong.Parse(reaction.MessageId), ulong.Parse(reaction.ChannelId),
 				ulong.Parse(reaction.GuildId), ulong.Parse(reaction.UserId), reaction.Emoji);
 		}
 	}

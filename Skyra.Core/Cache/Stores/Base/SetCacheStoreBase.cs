@@ -7,7 +7,7 @@ using Skyra.Core.Cache.Models;
 
 namespace Skyra.Core.Cache.Stores.Base
 {
-	public abstract class SetCacheStoreBase<T> : CacheStoreBase<T> where T : class, ICoreBaseStructure<T>
+	public abstract class SetCacheStoreBase<T> : CacheStoreBase<T> where T : class, IBaseStructure<T>
 	{
 		protected SetCacheStoreBase(CacheClient context, string prefix) : base(context, prefix)
 		{

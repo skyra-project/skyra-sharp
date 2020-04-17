@@ -24,7 +24,7 @@ namespace Skyra.Core.Structures.Usage
 
 		private static readonly string[] Quotes = {"\"", "'", "“”", "‘’"};
 
-		public CommandUsageParser(CommandInfo command, CoreMessage message, string content)
+		public CommandUsageParser(CommandInfo command, Message message, string content)
 		{
 			Message = message;
 			Command = command;
@@ -52,7 +52,7 @@ namespace Skyra.Core.Structures.Usage
 		public CommandUsage Usage { get; }
 		public CommandUsageOverload? Overload { get; private set; }
 		public CommandUsageOverloadArgument? Argument { get; private set; }
-		private CoreMessage Message { get; }
+		private Message Message { get; }
 		private int ParameterPosition { get; set; }
 		private int ArgumentPosition { get; set; }
 

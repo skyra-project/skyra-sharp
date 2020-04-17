@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	internal sealed class CorePromptStateConverter : JsonConverter
+	internal sealed class PromptDataConverter : JsonConverter
 	{
 		public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
 		{
@@ -17,22 +17,22 @@ namespace Skyra.Core.Cache.Models.Prompts
 			[NotNull] JsonSerializer serializer)
 		{
 			var jo = JObject.Load(reader);
-			var type = Enum.Parse<CorePromptStateType>((string) jo["type"]!);
+			var type = Enum.Parse<PromptDataType>((string) jo["type"]!);
 			var data = jo["s"]!.CreateReader();
-			ICorePromptState state = type switch
+			IPromptData state = type switch
 			{
-				CorePromptStateType.MessageSingleUser => serializer.Deserialize<CorePromptStateMessage>(data)!,
-				CorePromptStateType.ReactionSingleUser => serializer.Deserialize<CorePromptStateReaction>(data)!,
-				CorePromptStateType.RichDisplay => serializer.Deserialize<CoreRichDisplay>(data)!,
+				PromptDataType.MessageSingleUser => serializer.Deserialize<PromptDataMessage>(data)!,
+				PromptDataType.ReactionSingleUser => serializer.Deserialize<PromptDataReaction>(data)!,
+				PromptDataType.RichDisplay => serializer.Deserialize<RichDisplay>(data)!,
 				_ => throw new ArgumentOutOfRangeException(nameof(type))
 			};
 
-			return new CorePromptState(null!, type, state);
+			return new PromptData(null!, type, state);
 		}
 
 		public override bool CanConvert(Type objectType)
 		{
-			return typeof(CorePromptState).IsAssignableFrom(objectType);
+			return typeof(PromptData).IsAssignableFrom(objectType);
 		}
 	}
 }

@@ -7,35 +7,35 @@ using Skyra.Core.Cache.Stores.Base;
 
 namespace Skyra.Core.Cache.Stores
 {
-	public sealed class PromptStore : SetCacheStoreBase<CorePromptState>
+	public sealed class PromptStore : SetCacheStoreBase<PromptData>
 	{
 		internal PromptStore(CacheClient context) : base(context, "prompts")
 		{
 		}
 
-		public async Task SetAsync([NotNull] CorePromptState entry, TimeSpan duration, string? parent = null)
+		public async Task SetAsync([NotNull] PromptData entry, TimeSpan duration, string? parent = null)
 		{
 			var id = FormatKeyName(parent, GetKey(entry));
 			await Database.StringSetAsync(id, SerializeValue(entry));
 			await Database.KeyExpireAsync(id, duration);
 		}
 
-		public override async Task<CorePromptState?> GetAsync(string id, string? parent = null)
+		public override async Task<PromptData?> GetAsync(string id, string? parent = null)
 		{
 			var result = await Database.StringGetAsync(FormatKeyName(parent, id));
 			return result.IsNull ? null : DeserializeValue(result.ToString());
 		}
 
 		[NotNull]
-		protected override string GetKey([NotNull] CorePromptState value)
+		protected override string GetKey([NotNull] PromptData value)
 		{
-			return value.State.ToKey();
+			return value.Data.ToKey();
 		}
 
 		[NotNull]
-		private new CorePromptState DeserializeValue(string value)
+		private new PromptData DeserializeValue(string value)
 		{
-			var deserialized = JsonConvert.DeserializeObject<CorePromptState>(value, new CorePromptStateConverter())!;
+			var deserialized = JsonConvert.DeserializeObject<PromptData>(value, new PromptDataConverter())!;
 			deserialized.Client = Context.Client;
 			return deserialized;
 		}

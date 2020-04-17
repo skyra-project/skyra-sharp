@@ -1,6 +1,6 @@
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CoreRichDisplayEmojis
+	public sealed class RichDisplayEmojis
 	{
 		public string? First { get; } = "%E2%8F%AE";
 		public string? Back { get; } = "%E2%97%80";

@@ -9,11 +9,11 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreMessage : ICoreBaseStructure<CoreMessage>
+	public sealed class Message : IBaseStructure<Message>
 	{
-		public CoreMessage(IClient client, ulong id, MessageType type, CoreChannel? channel, ulong channelId,
-			CoreGuild? guild, ulong? guildId, CoreGuildMember? member, Webhook? webhook, ulong? webhookId,
-			CoreUser? author, ulong authorId, string content, Embed[] embeds, Attachment[] attachments,
+		public Message(IClient client, ulong id, MessageType type, Channel? channel, ulong channelId,
+			Guild? guild, ulong? guildId, GuildMember? member, Webhook? webhook, ulong? webhookId,
+			User? author, ulong authorId, string content, Embed[] embeds, Attachment[] attachments,
 			DateTime timestamp, DateTime? editedTimestamp, CultureInfo? language)
 		{
 			Client = client;
@@ -44,19 +44,19 @@ namespace Skyra.Core.Cache.Models
 		public MessageType Type { get; private set; }
 
 		[JsonIgnore]
-		public CoreChannel? Channel { get; private set; }
+		public Channel? Channel { get; private set; }
 
 		[JsonProperty("cid")]
 		public ulong ChannelId { get; private set; }
 
 		[JsonIgnore]
-		public CoreGuild? Guild { get; private set; }
+		public Guild? Guild { get; private set; }
 
 		[JsonProperty("gid")]
 		public ulong? GuildId { get; private set; }
 
 		[JsonIgnore]
-		public CoreGuildMember? Member { get; private set; }
+		public GuildMember? Member { get; private set; }
 
 		[JsonIgnore]
 		public Webhook? Webhook { get; }
@@ -65,7 +65,7 @@ namespace Skyra.Core.Cache.Models
 		public ulong? WebhookId { get; private set; }
 
 		[JsonIgnore]
-		public CoreUser? Author { get; private set; }
+		public User? Author { get; private set; }
 
 		[JsonProperty("aid")]
 		public ulong AuthorId { get; private set; }
@@ -92,7 +92,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreMessage Patch([NotNull] CoreMessage value)
+		public Message Patch([NotNull] Message value)
 		{
 			Content = value.Content;
 			Embeds = value.Embeds;
@@ -101,9 +101,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessage Clone()
+		public Message Clone()
 		{
-			return new CoreMessage(Client,
+			return new Message(Client,
 				Id,
 				Type,
 				Channel,
@@ -124,7 +124,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreMessage Patch([NotNull] MessageUpdatePayload value)
+		public Message Patch([NotNull] MessageUpdatePayload value)
 		{
 			Content = value.Content;
 			Embeds = value.Embeds.ToArray();
@@ -133,19 +133,19 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreUser?> GetAuthorAsync()
+		public async Task<User?> GetAuthorAsync()
 		{
 			return Author ??= await Client.Cache.Users.GetAsync(AuthorId.ToString());
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuildMember?> GetMemberAsync()
+		public async Task<GuildMember?> GetMemberAsync()
 		{
 			return Member ??= await Client.Cache.GuildMembers.GetAsync(AuthorId.ToString(), GuildId.ToString());
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreChannel?> GetChannelAsync()
+		public async Task<Channel?> GetChannelAsync()
 		{
 			return Channel ??= GuildId == null
 				? await Client.Cache.Channels.GetAsync(ChannelId.ToString())
@@ -153,7 +153,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuild?> GetGuildAsync()
+		public async Task<Guild?> GetGuildAsync()
 		{
 			if (GuildId == null) return null;
 			return Guild ??= await Client.Cache.Guilds.GetAsync(GuildId.ToString()!);
@@ -170,7 +170,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		public async Task<CoreMessage> SendAsync(string content)
+		public async Task<Message> SendAsync(string content)
 		{
 			return await SendAsync(new SendableMessage
 			{
@@ -179,7 +179,7 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		public async Task<CoreMessage> SendAsync(SendableMessage data)
+		public async Task<Message> SendAsync(SendableMessage data)
 		{
 			// Cache the string values
 			var id = Id.ToString();
@@ -188,7 +188,7 @@ namespace Skyra.Core.Cache.Models
 			// Retrieve the previous message
 			var previous = await Client.Cache.EditableMessages.GetAsync(id, channel);
 
-			CoreMessage response;
+			Message response;
 
 			// If a previous message exists...
 			if (previous != null)
@@ -199,7 +199,7 @@ namespace Skyra.Core.Cache.Models
 					// We update the message and return.
 					response = From(Client, await Client.Rest.Channels[channel]
 						.Messages[previous.OwnMessageId.ToString()]
-						.PatchAsync<Message>(data));
+						.PatchAsync<Spectacles.NET.Types.Message>(data));
 					response.GuildId = GuildId;
 					return response;
 				}
@@ -209,19 +209,20 @@ namespace Skyra.Core.Cache.Models
 			}
 
 			// Send a message to Discord, receive a Message back.
-			response = From(Client, await Client.Rest.Channels[channel].Messages.PostAsync<Message>(data));
+			response = From(Client,
+				await Client.Rest.Channels[channel].Messages.PostAsync<Spectacles.NET.Types.Message>(data));
 			response.GuildId = GuildId;
 
 			// Store the message into Redis for later processing.
 			await Client.Cache.EditableMessages.SetAsync(
-				new CoreEditableMessage(Client, Id, response.Id), channel);
+				new EditableMessage(Client, Id, response.Id), channel);
 
 			// Return the response.
 			return response;
 		}
 
 		[ItemNotNull]
-		public async Task<CoreMessage> EditAsync(string content)
+		public async Task<Message> EditAsync(string content)
 		{
 			return await EditAsync(new SendableMessage
 			{
@@ -230,14 +231,14 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemNotNull]
-		public async Task<CoreMessage> EditAsync(SendableMessage data)
+		public async Task<Message> EditAsync(SendableMessage data)
 		{
 			return From(Client, await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()]
-				.PatchAsync<Message>(data));
+				.PatchAsync<Spectacles.NET.Types.Message>(data));
 		}
 
 		[ItemNotNull]
-		public async Task<CoreMessage> DeleteAsync(string? reason)
+		public async Task<Message> DeleteAsync(string? reason)
 		{
 			await Client.Rest.Channels[ChannelId.ToString()].Messages[Id.ToString()].DeleteAsync(reason);
 			return this;
@@ -254,7 +255,7 @@ namespace Skyra.Core.Cache.Models
 		{
 			var channelTask = GuildId == null
 				? Client.Cache.Channels.SetNullableAsync(Channel)
-				: Client.Cache.GuildChannels.SetNullableAsync(Channel as CoreGuildChannel, GuildId.ToString());
+				: Client.Cache.GuildChannels.SetNullableAsync(Channel as GuildChannel, GuildId.ToString());
 			var authorTask = Client.Cache.Users.SetNullableAsync(Author);
 			var memberTask = Client.Cache.GuildMembers.SetNullableAsync(Member, GuildId.ToString());
 			var messageTask = Client.Cache.Messages.SetAsync(this, ChannelId.ToString());
@@ -262,27 +263,27 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public static CoreMessage From(IClient client, [NotNull] Message message)
+		public static Message From(IClient client, [NotNull] Spectacles.NET.Types.Message message)
 		{
-			return new CoreMessage(client, ulong.Parse(message.Id), message.Type, null, ulong.Parse(message.ChannelId),
+			return new Message(client, ulong.Parse(message.Id), message.Type, null, ulong.Parse(message.ChannelId),
 				null,
 				message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
-				message.Member == null ? null : CoreGuildMember.From(client, message.Member, message.Author), null,
+				message.Member == null ? null : GuildMember.From(client, message.Member, message.Author), null,
 				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
-				CoreUser.From(client, message.Author), ulong.Parse(message.Author.Id), message.Content,
+				User.From(client, message.Author), ulong.Parse(message.Author.Id), message.Content,
 				message.Embeds.ToArray(), message.Attachments.ToArray(), message.Timestamp, message.EditedTimestamp,
 				null);
 		}
 
 		[NotNull]
-		public static CoreMessage From(IClient client, [NotNull] MessageUpdatePayload message)
+		public static Message From(IClient client, [NotNull] MessageUpdatePayload message)
 		{
-			return new CoreMessage(client, ulong.Parse(message.Id), MessageType.DEFAULT, null,
+			return new Message(client, ulong.Parse(message.Id), MessageType.DEFAULT, null,
 				ulong.Parse(message.ChannelId),
 				null, message.GuildId == null ? (ulong?) null : ulong.Parse(message.GuildId),
-				message.Member == null ? null : CoreGuildMember.From(client, message.Member, message.Author), null,
+				message.Member == null ? null : GuildMember.From(client, message.Member, message.Author), null,
 				message.WebhookId == null ? (ulong?) null : ulong.Parse(message.WebhookId),
-				CoreUser.From(client, message.Author), ulong.Parse(message.Author.Id), message.Content,
+				User.From(client, message.Author), ulong.Parse(message.Author.Id), message.Content,
 				message.Embeds.ToArray(), message.Attachments.ToArray(), message.Timestamp ?? DateTime.MinValue,
 				message.EditedTimestamp, null);
 		}

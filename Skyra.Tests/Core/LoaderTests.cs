@@ -43,7 +43,7 @@ namespace Skyra.Tests.Core
 			{
 			}
 
-			public Task RunAsync(CoreMessage message)
+			public Task RunAsync(Message message)
 			{
 				throw new NotImplementedException();
 			}

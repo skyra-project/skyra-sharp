@@ -7,27 +7,29 @@ using Skyra.Core.Models;
 using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
+using Guild = Spectacles.NET.Types.Guild;
+using Message = Skyra.Core.Cache.Models.Message;
 
 namespace Skyra.Core
 {
 	public interface IEventHandler
 	{
-		Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync { get; set; }
-		Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync { get; set; }
-		Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync { get; set; }
-		Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync { get; set; }
-		Func<CoreMessage, string, object?[], Task> OnCommandRunAsync { get; set; }
-		Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync { get; set; }
-		Func<CoreMessage, string, Task> OnCommandUnknownAsync { get; set; }
-		Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync { get; set; }
-		Func<CoreMessage, Task> OnMessageCreateAsync { get; set; }
-		Func<MessageDeletePayload, CoreMessage?, Task> OnMessageDeleteAsync { get; set; }
-		Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync { get; set; }
-		Func<Message, Task> OnRawMessageCreateAsync { get; set; }
+		Func<Message, string, Exception, Task> OnArgumentErrorAsync { get; set; }
+		Func<Message, string, ArgumentException, Task> OnCommandArgumentExceptionAsync { get; set; }
+		Func<Message, string, object?[], Exception, Task> OnCommandErrorAsync { get; set; }
+		Func<Message, string, InhibitorException, Task> OnCommandInhibitedAsync { get; set; }
+		Func<Message, string, object?[], Task> OnCommandRunAsync { get; set; }
+		Func<Message, string, object?[], Task> OnCommandSuccessAsync { get; set; }
+		Func<Message, string, Task> OnCommandUnknownAsync { get; set; }
+		Func<Message, string, Exception, Task> OnInhibitorExceptionAsync { get; set; }
+		Func<Message, Task> OnMessageCreateAsync { get; set; }
+		Func<MessageDeletePayload, Message?, Task> OnMessageDeleteAsync { get; set; }
+		Func<Message?, Message, Task> OnMessageUpdateAsync { get; set; }
+		Func<Spectacles.NET.Types.Message, Task> OnRawMessageCreateAsync { get; set; }
 		Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync { get; set; }
-		Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync { get; set; }
+		Func<PromptDataMessage, Message, Task> OnRawMessagePromptAsync { get; set; }
 		Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync { get; set; }
-		Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync { get; set; }
+		Func<PromptDataReaction, MessageReaction, Task> OnRawReactionPromptAsync { get; set; }
 		Func<MessageReactionAddPayload, Task> OnRawMessageReactionAddAsync { get; set; }
 		Func<MessageReactionRemovePayload, Task> OnRawMessageReactionRemoveAsync { get; set; }
 		Func<MessageReactionRemoveAllPayload, Task> OnRawMessageReactionRemoveAllAsync { get; set; }

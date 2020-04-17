@@ -1,12 +1,11 @@
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreUser : ICoreBaseStructure<CoreUser>
+	public sealed class User : IBaseStructure<User>
 	{
-		public CoreUser(IClient client, ulong id, bool bot, string username, string discriminator, string? avatar)
+		public User(IClient client, ulong id, bool bot, string username, string discriminator, string? avatar)
 		{
 			Client = client;
 			Id = id;
@@ -35,7 +34,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreUser Patch([NotNull] CoreUser value)
+		public User Patch([NotNull] User value)
 		{
 			Username = value.Username;
 			Discriminator = value.Discriminator;
@@ -44,9 +43,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreUser Clone()
+		public User Clone()
 		{
-			return new CoreUser(Client,
+			return new User(Client,
 				Id,
 				Bot,
 				Username,
@@ -55,9 +54,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public static CoreUser From(IClient client, [NotNull] User user)
+		public static User From(IClient client, [NotNull] Spectacles.NET.Types.User user)
 		{
-			return new CoreUser(client, ulong.Parse(user.Id), user.Bot, user.Username, user.Discriminator, user.Avatar);
+			return new User(client, ulong.Parse(user.Id), user.Bot, user.Username, user.Discriminator, user.Avatar);
 		}
 	}
 }

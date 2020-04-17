@@ -8,7 +8,6 @@ using Skyra.Core.Cache.Models;
 using Skyra.Core.Database;
 using Skyra.Core.Database.Models;
 using Spectacles.NET.Rest.APIError;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Structures
 {
@@ -33,17 +32,18 @@ namespace Skyra.Core.Structures
 
 		[Pure]
 		[ItemNotNull]
-		public async Task<IEnumerable<CoreMessage>> GetModerationLogsMessagesAsync(uint retryTimes = 5)
+		public async Task<IEnumerable<Message>> GetModerationLogsMessagesAsync(uint retryTimes = 5)
 		{
 			var channelId = await GetModerationLogsChannelAsync();
-			if (channelId == null) return new CoreMessage[0];
+			if (channelId == null) return new Message[0];
 
 			try
 			{
-				var result = await Client.Rest.Channels[channelId.ToString()].Messages.GetAsync<Message[]>(
-					new Dictionary<string, string>
-						{{"limit", "100"}});
-				return result.Select(v => CoreMessage.From(Client, v));
+				var result = await Client.Rest.Channels[channelId.ToString()].Messages
+					.GetAsync<Spectacles.NET.Types.Message[]>(
+						new Dictionary<string, string>
+							{{"limit", "100"}});
+				return result.Select(v => Message.From(Client, v));
 			}
 			catch (DiscordAPIException)
 			{

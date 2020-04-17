@@ -4,9 +4,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreGuildRole : ICoreBaseStructure<CoreGuildRole>
+	public sealed class GuildRole : IBaseStructure<GuildRole>
 	{
-		public CoreGuildRole(IClient client, ulong id, string name, uint color, bool managed, bool mentionable,
+		public GuildRole(IClient client, ulong id, string name, uint color, bool managed, bool mentionable,
 			Permission permissions, uint position)
 		{
 			Client = client;
@@ -44,7 +44,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreGuildRole Patch([NotNull] CoreGuildRole value)
+		public GuildRole Patch([NotNull] GuildRole value)
 		{
 			Name = value.Name;
 			Color = value.Color;
@@ -55,9 +55,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreGuildRole Clone()
+		public GuildRole Clone()
 		{
-			return new CoreGuildRole(Client,
+			return new GuildRole(Client,
 				Id,
 				Name,
 				Color,
@@ -68,9 +68,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public static CoreGuildRole From(IClient client, [NotNull] Role role)
+		public static GuildRole From(IClient client, [NotNull] Role role)
 		{
-			return new CoreGuildRole(client, ulong.Parse(role.Id), role.Name, (uint) role.Color, role.Managed,
+			return new GuildRole(client, ulong.Parse(role.Id), role.Name, (uint) role.Color, role.Managed,
 				role.Mentionable,
 				(Permission) role.Permissions, (uint) role.Position);
 		}

@@ -17,7 +17,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnMessageCreateAsync += RunAsync;
 		}
 
-		private async Task RunAsync(CoreMessage message)
+		private async Task RunAsync(Message message)
 		{
 			foreach (var monitor in Client.Monitors.Values.Where(m => ShouldRunMonitor(message, m)))
 			{
@@ -32,7 +32,7 @@ namespace Skyra.Worker.Events
 			}
 		}
 
-		private bool ShouldRunMonitor([NotNull] CoreMessage message, MonitorInfo monitor)
+		private bool ShouldRunMonitor([NotNull] Message message, MonitorInfo monitor)
 		{
 			return monitor.AllowedTypes.Contains(message.Type)
 			       && !(monitor.IgnoreBots && message.Author!.Bot)

@@ -8,7 +8,7 @@ using StackExchange.Redis;
 
 namespace Skyra.Core.Cache.Stores.Base
 {
-	public abstract class CacheStoreBase<T> where T : class, ICoreBaseStructure<T>
+	public abstract class CacheStoreBase<T> where T : class, IBaseStructure<T>
 	{
 		/// <summary>
 		///     Create a cache store.

@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreEditableMessage : ICoreBaseStructure<CoreEditableMessage>
+	public sealed class EditableMessage : IBaseStructure<EditableMessage>
 	{
-		public CoreEditableMessage(IClient client, ulong id, ulong ownMessageId)
+		public EditableMessage(IClient client, ulong id, ulong ownMessageId)
 		{
 			Client = client;
 			Id = id;
@@ -23,20 +23,20 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreEditableMessage Patch([NotNull] CoreEditableMessage value)
+		public EditableMessage Patch([NotNull] EditableMessage value)
 		{
 			OwnMessageId = value.OwnMessageId;
 			return this;
 		}
 
 		[NotNull]
-		public CoreEditableMessage Clone()
+		public EditableMessage Clone()
 		{
-			return new CoreEditableMessage(Client, Id, OwnMessageId);
+			return new EditableMessage(Client, Id, OwnMessageId);
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreMessage?> GetMessageAsync()
+		public async Task<Message?> GetMessageAsync()
 		{
 			return await Client.Cache.Messages.GetAsync(OwnMessageId.ToString());
 		}

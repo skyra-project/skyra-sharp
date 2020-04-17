@@ -16,7 +16,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnCommandInhibitedAsync += RunAsync;
 		}
 
-		private async Task RunAsync(CoreMessage message, string command, [NotNull] InhibitorException exception)
+		private async Task RunAsync(Message message, string command, [NotNull] InhibitorException exception)
 		{
 			if (exception.Silent)
 			{

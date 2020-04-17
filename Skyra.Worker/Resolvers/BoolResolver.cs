@@ -21,7 +21,7 @@ namespace Skyra.Worker.Resolvers
 		}
 
 		[NotNull]
-		public Task<bool> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument,
+		public Task<bool> ResolveAsync(Message message, CommandUsageOverloadArgument argument,
 			[NotNull] string content)
 		{
 			var boolean = content.ToLower();

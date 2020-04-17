@@ -16,7 +16,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnCommandArgumentExceptionAsync += RunAsync;
 		}
 
-		private async Task RunAsync([NotNull] CoreMessage message, string command,
+		private async Task RunAsync([NotNull] Message message, string command,
 			[NotNull] ArgumentException exception)
 		{
 			await message.SendAsync($"Argument Error: {exception.InnerException?.Message ?? exception.Message}");

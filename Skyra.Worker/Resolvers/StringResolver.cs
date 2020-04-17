@@ -17,7 +17,7 @@ namespace Skyra.Worker.Resolvers
 		}
 
 		[NotNull]
-		public Task<string> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument,
+		public Task<string> ResolveAsync(Message message, CommandUsageOverloadArgument argument,
 			[CanBeNull] string content)
 		{
 			if (string.IsNullOrEmpty(content))

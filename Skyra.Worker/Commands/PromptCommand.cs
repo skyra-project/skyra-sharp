@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Skyra.Core;
-using Skyra.Core.Cache.Models;
 using Skyra.Core.Cache.Models.Prompts;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
+using Message = Skyra.Core.Cache.Models.Message;
 
 namespace Skyra.Worker.Commands
 {
@@ -16,15 +16,15 @@ namespace Skyra.Worker.Commands
 		{
 		}
 
-		public async Task RunAsync([NotNull] CoreMessage message, [Argument(Minimum = 1)] int page = 1)
+		public async Task RunAsync([NotNull] Message message, [Argument(Minimum = 1)] int page = 1)
 		{
-			var richDisplay = new CoreRichDisplay(message.AuthorId, message.Id);
+			var richDisplay = new RichDisplay(message.AuthorId, message.Id);
 			foreach (var (key, value) in Client.Commands)
 			{
 				richDisplay.AddPage(embed => embed.SetTitle(key).SetDescription(value.Name));
 			}
 
-			await richDisplay.SetUpAsync(message, new CoreRichDisplayRunOptions
+			await richDisplay.SetUpAsync(message, new RichDisplayRunOptions
 			{
 				StartPage = page - 1,
 				MessageContent = new SendableMessage

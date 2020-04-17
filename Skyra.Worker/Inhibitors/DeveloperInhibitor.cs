@@ -17,7 +17,7 @@ namespace Skyra.Worker.Inhibitors
 		}
 
 		[NotNull]
-		public Task<bool> RunAsync([NotNull] CoreMessage message, CommandInfo command)
+		public Task<bool> RunAsync([NotNull] Message message, CommandInfo command)
 		{
 			return Task.FromResult(!Client.Owners.Contains(message.AuthorId));
 		}

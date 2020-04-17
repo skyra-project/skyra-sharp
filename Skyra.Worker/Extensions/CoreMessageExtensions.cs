@@ -9,7 +9,7 @@ namespace Skyra.Worker.Extensions
 	public static class CoreMessageExtensions
 	{
 		[ItemNotNull]
-		public static async Task<CoreMessage> SendLocaleAsync([NotNull] this CoreMessage message, string key)
+		public static async Task<Message> SendLocaleAsync([NotNull] this Message message, string key)
 		{
 			var language = await message.GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
@@ -18,7 +18,7 @@ namespace Skyra.Worker.Extensions
 		}
 
 		[ItemNotNull]
-		public static async Task<CoreMessage> SendLocaleAsync([NotNull] this CoreMessage message, string key,
+		public static async Task<Message> SendLocaleAsync([NotNull] this Message message, string key,
 			[NotNull] params object?[] values)
 		{
 			var language = await message.GetLanguageAsync();
@@ -28,7 +28,7 @@ namespace Skyra.Worker.Extensions
 		}
 
 		[ItemNotNull]
-		public static async Task<CoreMessage> EditLocaleAsync([NotNull] this CoreMessage message, string key)
+		public static async Task<Message> EditLocaleAsync([NotNull] this Message message, string key)
 		{
 			var language = await message.GetLanguageAsync();
 			var content = Languages.ResourceManager.GetString(key, language) ??
@@ -37,7 +37,7 @@ namespace Skyra.Worker.Extensions
 		}
 
 		[ItemNotNull]
-		public static async Task<CoreMessage> EditLocaleAsync([NotNull] this CoreMessage message, string key,
+		public static async Task<Message> EditLocaleAsync([NotNull] this Message message, string key,
 			[NotNull] params object?[] values)
 		{
 			var language = await message.GetLanguageAsync();

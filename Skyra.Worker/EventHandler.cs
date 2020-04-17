@@ -10,6 +10,8 @@ using Skyra.Core.Models;
 using Skyra.Core.Structures.Exceptions;
 using Spectacles.NET.Broker.Amqp.EventArgs;
 using Spectacles.NET.Types;
+using Guild = Spectacles.NET.Types.Guild;
+using Message = Skyra.Core.Cache.Models.Message;
 
 // ReSharper disable RedundantDefaultMemberInitializer
 
@@ -17,23 +19,23 @@ namespace Skyra.Worker
 {
 	public sealed class EventHandler : IEventHandler
 	{
-		public Func<CoreMessage, string, Exception, Task> OnArgumentErrorAsync { get; set; } = default!;
+		public Func<Message, string, Exception, Task> OnArgumentErrorAsync { get; set; } = default!;
 
-		public Func<CoreMessage, string, ArgumentException, Task> OnCommandArgumentExceptionAsync { get; set; } =
+		public Func<Message, string, ArgumentException, Task> OnCommandArgumentExceptionAsync { get; set; } =
 			default!;
 
-		public Func<CoreMessage, string, object?[], Exception, Task> OnCommandErrorAsync { get; set; } = default!;
-		public Func<CoreMessage, string, InhibitorException, Task> OnCommandInhibitedAsync { get; set; } = default!;
-		public Func<CoreMessage, string, object?[], Task> OnCommandRunAsync { get; set; } = default!;
-		public Func<CoreMessage, string, object?[], Task> OnCommandSuccessAsync { get; set; } = default!;
-		public Func<CoreMessage, string, Task> OnCommandUnknownAsync { get; set; } = default!;
-		public Func<CoreMessage, string, Exception, Task> OnInhibitorExceptionAsync { get; set; } = default!;
-		public Func<CoreMessage, Task> OnMessageCreateAsync { get; set; } = default!;
-		public Func<MessageDeletePayload, CoreMessage?, Task> OnMessageDeleteAsync { get; set; } = default!;
-		public Func<CoreMessage?, CoreMessage, Task> OnMessageUpdateAsync { get; set; } = default!;
-		public Func<Message, Task> OnRawMessageCreateAsync { get; set; } = default!;
+		public Func<Message, string, object?[], Exception, Task> OnCommandErrorAsync { get; set; } = default!;
+		public Func<Message, string, InhibitorException, Task> OnCommandInhibitedAsync { get; set; } = default!;
+		public Func<Message, string, object?[], Task> OnCommandRunAsync { get; set; } = default!;
+		public Func<Message, string, object?[], Task> OnCommandSuccessAsync { get; set; } = default!;
+		public Func<Message, string, Task> OnCommandUnknownAsync { get; set; } = default!;
+		public Func<Message, string, Exception, Task> OnInhibitorExceptionAsync { get; set; } = default!;
+		public Func<Message, Task> OnMessageCreateAsync { get; set; } = default!;
+		public Func<MessageDeletePayload, Message?, Task> OnMessageDeleteAsync { get; set; } = default!;
+		public Func<Message?, Message, Task> OnMessageUpdateAsync { get; set; } = default!;
+		public Func<Spectacles.NET.Types.Message, Task> OnRawMessageCreateAsync { get; set; } = default!;
 		public Func<MessageDeletePayload, Task> OnRawMessageDeleteAsync { get; set; } = default!;
-		public Func<CorePromptStateMessage, CoreMessage, Task> OnRawMessagePromptAsync { get; set; } = default!;
+		public Func<PromptDataMessage, Message, Task> OnRawMessagePromptAsync { get; set; } = default!;
 		public Func<MessageUpdatePayload, Task> OnRawMessageUpdateAsync { get; set; } = default!;
 		public Func<MessageReactionAddPayload, Task> OnRawMessageReactionAddAsync { get; set; } = default!;
 		public Func<MessageReactionRemovePayload, Task> OnRawMessageReactionRemoveAsync { get; set; } = default!;
@@ -42,7 +44,7 @@ namespace Skyra.Worker
 		public Func<MessageReactionRemoveEmojiPayload, Task> OnRawMessageReactionRemoveEmojiAsync { get; set; } =
 			default!;
 
-		public Func<CorePromptStateReaction, CoreMessageReaction, Task> OnRawReactionPromptAsync { get; set; } =
+		public Func<PromptDataReaction, MessageReaction, Task> OnRawReactionPromptAsync { get; set; } =
 			default!;
 
 		public event Action<ReadyDispatch> OnReady = dispatch => { };
@@ -108,7 +110,7 @@ namespace Skyra.Worker
 				case SkyraEvent.INVITE_DELETE:
 					break;
 				case SkyraEvent.MESSAGE_CREATE:
-					OnRawMessageCreateAsync(JsonConvert.DeserializeObject<Message>(data));
+					OnRawMessageCreateAsync(JsonConvert.DeserializeObject<Spectacles.NET.Types.Message>(data));
 					break;
 				case SkyraEvent.MESSAGE_UPDATE:
 					OnRawMessageUpdateAsync(JsonConvert.DeserializeObject<MessageUpdatePayload>(data));

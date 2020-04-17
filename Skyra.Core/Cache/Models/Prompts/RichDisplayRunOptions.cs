@@ -3,7 +3,7 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models.Prompts
 {
-	public sealed class CoreRichDisplayRunOptions
+	public sealed class RichDisplayRunOptions
 	{
 		public bool Stop { get; set; } = true;
 		public bool Jump { get; set; } = true;

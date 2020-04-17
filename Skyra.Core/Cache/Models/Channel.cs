@@ -4,9 +4,9 @@ using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public class CoreChannel : ICoreBaseStructure<CoreChannel>
+	public class Channel : IBaseStructure<Channel>
 	{
-		public CoreChannel(IClient client, ulong id, ChannelType type)
+		public Channel(IClient client, ulong id, ChannelType type)
 		{
 			Client = client;
 			Id = id;
@@ -23,22 +23,22 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreChannel Patch([NotNull] CoreChannel value)
+		public Channel Patch([NotNull] Channel value)
 		{
 			Type = value.Type;
 			return this;
 		}
 
 		[NotNull]
-		public CoreChannel Clone()
+		public Channel Clone()
 		{
-			return new CoreChannel(Client, Id, Type);
+			return new Channel(Client, Id, Type);
 		}
 
 		[NotNull]
-		public static CoreChannel From(IClient client, [NotNull] Channel channel)
+		public static Channel From(IClient client, [NotNull] Spectacles.NET.Types.Channel channel)
 		{
-			return new CoreChannel(client, ulong.Parse(channel.Id), channel.Type);
+			return new Channel(client, ulong.Parse(channel.Id), channel.Type);
 		}
 	}
 }

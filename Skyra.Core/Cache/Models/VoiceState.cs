@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Spectacles.NET.Types;
 
 namespace Skyra.Core.Cache.Models
 {
-	public sealed class CoreVoiceState : ICoreBaseStructure<CoreVoiceState>
+	public sealed class VoiceState : IBaseStructure<VoiceState>
 	{
-		public CoreVoiceState(IClient client, string sessionId, bool deaf, bool mute, bool suppress, ulong userId,
+		public VoiceState(IClient client, string sessionId, bool deaf, bool mute, bool suppress, ulong userId,
 			ulong channelId, ulong guildId, bool selfDeaf, bool selfMute)
 		{
 			Client = client;
@@ -53,7 +52,7 @@ namespace Skyra.Core.Cache.Models
 		public IClient Client { get; set; }
 
 		[NotNull]
-		public CoreVoiceState Patch([NotNull] CoreVoiceState value)
+		public VoiceState Patch([NotNull] VoiceState value)
 		{
 			SessionId = value.SessionId;
 			Deaf = value.Deaf;
@@ -66,9 +65,9 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[NotNull]
-		public CoreVoiceState Clone()
+		public VoiceState Clone()
 		{
-			return new CoreVoiceState(Client,
+			return new VoiceState(Client,
 				SessionId,
 				Deaf,
 				Mute,
@@ -81,27 +80,27 @@ namespace Skyra.Core.Cache.Models
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuild?> GetGuildAsync()
+		public async Task<Guild?> GetGuildAsync()
 		{
 			return await Client.Cache.Guilds.GetAsync(GuildId.ToString());
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreGuildChannel?> GetChannelAsync()
+		public async Task<GuildChannel?> GetChannelAsync()
 		{
 			return await Client.Cache.GuildChannels.GetAsync(GuildId.ToString());
 		}
 
 		[ItemCanBeNull]
-		public async Task<CoreUser?> GetUserAsync()
+		public async Task<User?> GetUserAsync()
 		{
 			return await Client.Cache.Users.GetAsync(UserId.ToString());
 		}
 
 		[NotNull]
-		public static CoreVoiceState From(IClient client, [NotNull] VoiceState voiceState)
+		public static VoiceState From(IClient client, [NotNull] Spectacles.NET.Types.VoiceState voiceState)
 		{
-			return new CoreVoiceState(client, voiceState.SessionId, voiceState.Deaf, voiceState.Mute,
+			return new VoiceState(client, voiceState.SessionId, voiceState.Deaf, voiceState.Mute,
 				voiceState.Suppress,
 				ulong.Parse(voiceState.UserId), ulong.Parse(voiceState.ChannelId), ulong.Parse(voiceState.UserId),
 				voiceState.SelfDeaf, voiceState.SelfMute);

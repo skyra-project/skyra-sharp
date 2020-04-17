@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Skyra.Core;
-using Skyra.Core.Cache.Models;
 using Skyra.Core.Structures;
 using Skyra.Core.Structures.Attributes;
 using Spectacles.NET.Types;
+using Message = Skyra.Core.Cache.Models.Message;
 
 namespace Skyra.Worker.Events
 {
@@ -16,7 +16,7 @@ namespace Skyra.Worker.Events
 			Client.EventHandler.OnMessageDeleteAsync += RunAsync;
 		}
 
-		private Task RunAsync([NotNull] MessageDeletePayload payload, [CanBeNull] CoreMessage? message)
+		private Task RunAsync([NotNull] MessageDeletePayload payload, [CanBeNull] Message? message)
 		{
 			Client.Logger.Information(
 				"Received Deleted Message [{Id}] with content '{Content}'.", payload.Id,

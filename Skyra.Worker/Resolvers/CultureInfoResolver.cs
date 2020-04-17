@@ -18,7 +18,7 @@ namespace Skyra.Worker.Resolvers
 		}
 
 		[NotNull]
-		public Task<CultureInfo> ResolveAsync(CoreMessage message, CommandUsageOverloadArgument argument,
+		public Task<CultureInfo> ResolveAsync(Message message, CommandUsageOverloadArgument argument,
 			[NotNull] string content)
 		{
 			if (Client.Cultures.TryGetValue(content, out var resolved)) return Task.FromResult(resolved);

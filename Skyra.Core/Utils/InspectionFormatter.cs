@@ -226,7 +226,7 @@ namespace Skyra.Core.Utils
 
 			var sb = new StringBuilder();
 			sb.Append(header);
-			sb.Append(" {\n");
+			sb.Append(" {" + Environment.NewLine);
 
 			var count = value.Count;
 			var index = 0;
@@ -239,7 +239,7 @@ namespace Skyra.Core.Utils
 				sb.Append(new InspectionFormatter(pair.Key, NextDepth, this));
 				sb.Append(" => ");
 				sb.Append(new InspectionFormatter(pair.Value, NextDepth, this));
-				if (++index < count) sb.Append(",\n");
+				if (++index < count) sb.Append("," + Environment.NewLine);
 			}
 
 			sb.Append(" }");
@@ -331,7 +331,7 @@ namespace Skyra.Core.Utils
 
 			var sb = new StringBuilder();
 			sb.Append(CleanName(type.Name));
-			sb.Append(" {\n");
+			sb.Append(" {" + Environment.NewLine);
 			var count = properties.Length;
 			var index = 0;
 			foreach (var property in properties)
@@ -340,7 +340,7 @@ namespace Skyra.Core.Utils
 				sb.Append(property.Name);
 				sb.Append(": ");
 				sb.Append(new InspectionFormatter(property.GetValue(value), NextDepth, this));
-				if (++index < count) sb.Append(",\n");
+				if (++index < count) sb.Append("," + Environment.NewLine);
 			}
 
 			sb.Append(" }");
